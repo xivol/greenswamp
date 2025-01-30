@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greenswamp Feed</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        swamp: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-swamp-50">
+    <!-- Navigation (Same as homepage) -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                    <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Swamp</a>
+                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
+                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
+                    <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Ribbit</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Feed Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Left Sidebar -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Create Post Card -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <img src="user-avatar.png" alt="User" class="w-10 h-10 rounded-full">
+                        <button class="flex-1 text-left p-3 bg-swamp-50 rounded-full hover:bg-swamp-100 text-swamp-600"
+                                onclick="openPostModal()">
+                            What's hopping on campus?
+                        </button>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-2">
+                        <button class="flex items-center justify-center space-x-2 p-2 hover:bg-swamp-50 rounded-lg">
+                            <svg class="w-5 h-5 text-swamp-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                            <span class="text-sm font-medium">Anonymous Post</span>
+                        </button>
+                        <button class="flex items-center justify-center space-x-2 p-2 hover:bg-swamp-50 rounded-lg">
+                            <svg class="w-5 h-5 text-swamp-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                            </svg>
+                            <span class="text-sm font-medium">Add Poll</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Campus Quick Links -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold text-swamp-900 mb-4">Pond Shortcuts</h3>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-swamp-50 rounded-lg">
+                                <span class="w-2 h-2 bg-swamp-400 rounded-full"></span>
+                                <span class="text-swamp-700">#DiningHallChat</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-swamp-50 rounded-lg">
+                                <span class="w-2 h-2 bg-swamp-400 rounded-full"></span>
+                                <span class="text-swamp-700">#LibraryQuietZone</span>
+                            </a>
+                        </li>
+                        <!-- Add more shortcuts -->
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Feed -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Post Card -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-start space-x-3">
+                        <img src="user-avatar2.png" alt="User" class="w-10 h-10 rounded-full">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2">
+                                <h4 class="font-semibold text-swamp-900">FroggyFriends</h4>
+                                <span class="text-sm text-swamp-500">@dorm23_frogs · 2h</span>
+                            </div>
+                            <p class="mt-2 text-swamp-700">
+                                Anyone want to form a study group for the biology midterm? 🐸 
+                                Meeting at the lilypad cafe tomorrow 3PM! #StudySwamp
+                            </p>
+                            <div class="mt-4 flex items-center space-x-6 text-swamp-500">
+                                <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                    </svg>
+                                    <span>12</span>
+                                </button>
+                                <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                    <span>24</span>
+                                </button>
+                                <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                    </svg>
+                                    <span>Share</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Event Post -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-swamp-400">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-10 h-10 bg-swamp-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-swamp-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-swamp-900">Campus Bonfire Night</h4>
+                            <p class="mt-2 text-swamp-700">
+                                🔥 Friday at 8PM - South Quad 
+                                <span class="block text-sm mt-1 text-swamp-500">Hosted by Student Activities Board</span>
+                            </p>
+                            <div class="mt-4 flex items-center space-x-4">
+                                <button class="bg-swamp-500 text-white px-4 py-2 rounded-full text-sm hover:bg-swamp-600">
+                                    RSVP (63 going)
+                                </button>
+                                <button class="text-swamp-600 hover:text-swamp-800 text-sm">
+                                    Add to Calendar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Trending Ponds -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold text-swamp-900 mb-4">Trending Ponds</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="#" class="flex items-center space-x-3 group">
+                                <div class="w-8 h-8 bg-swamp-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-swamp-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-swamp-900 group-hover:text-swamp-600">#MidtermStudyGroup</h4>
+                                    <p class="text-sm text-swamp-500">1.2k posts</p>
+                                </div>
+                            </a>
+                        </li>
+                        <!-- Add more trending ponds -->
+                    </ul>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold text-swamp-900 mb-4">Upcoming Events</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-12 flex-shrink-0 text-center">
+                                <div class="text-sm font-semibold text-swamp-600">MAR</div>
+                                <div class="text-2xl font-bold text-swamp-900">15</div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-swamp-900">Career Fair Prep</h4>
+                                <p class="text-sm text-swamp-500">Career Center · 3PM</p>
+                            </div>
+                        </div>
+                        <!-- Add more events -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Modal (Hidden by default) -->
+    <div id="postModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">Create Croak</h3>
+                <button onclick="closePostModal()" class="text-swamp-500 hover:text-swamp-700">
+                    ✕
+                </button>
+            </div>
+            <textarea class="w-full p-4 border border-swamp-200 rounded-lg focus:ring-2 focus:ring-swamp-400 focus:border-transparent" 
+                      rows="4" 
+                      placeholder="What's hopping on campus?"></textarea>
+            <div class="mt-4 flex justify-between items-center">
+                <div class="space-x-2">
+                    <button class="p-2 hover:bg-swamp-100 rounded-lg">
+                        🐸 Add Frogmoji
+                    </button>
+                </div>
+                <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">
+                    Post Croak
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openPostModal() {
+            document.getElementById('postModal').classList.remove('hidden');
+        }
+
+        function closePostModal() {
+            document.getElementById('postModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
