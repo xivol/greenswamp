@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greenswamp - Campus Connection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        swamp: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-swamp-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                    <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
+                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Swamps</a>
+                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Events</a>
+                    <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Croak</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-b from-swamp-400 to-swamp-700">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">
+                    Hop Into Campus Life
+                </h1>
+                <p class="mt-3 max-w-md mx-auto text-base text-swamp-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+                    Connect with classmates through lilypad posts and swamp chats.
+                </p>
+                <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
+                    <button class="w-full bg-white text-swamp-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-swamp-50 sm:w-auto">
+                        Join the Swamp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Feature Card 1 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="w-12 h-12 bg-swamp-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-swamp-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                    </svg>
+                </div>
+                <h3 class="mt-4 text-xl font-semibold text-swamp-900">Quick Ribbits</h3>
+                <p class="mt-2 text-swamp-600">Share short updates, questions, or campus alerts in 280 characters or less.</p>
+            </div>
+
+            <!-- Feature Card 2 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="w-12 h-12 bg-swamp-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-swamp-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
+                <h3 class="mt-4 text-xl font-semibold text-swamp-900">Lillypad Groups</h3>
+                <p class="mt-2 text-swamp-600">Join or create groups for your dorm, classes, clubs, or interests.</p>
+            </div>
+
+            <!-- Feature Card 3 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <div class="w-12 h-12 bg-swamp-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-swamp-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                    </svg>
+                </div>
+                <h3 class="mt-4 text-xl font-semibold text-swamp-900">Firefly Events</h3>
+                <p class="mt-2 text-swamp-600">Never miss a campus event, party, or study session again.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-swamp-900 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                        <span class="text-xl font-bold">Greenswamp</span>
+                    </div>
+                      <p class="mt-4 text-sm text-swamp-300">
+                        Connecting campuses one ribbit at a time.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-sm font-semibold">Company</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><a href="#" class="text-swamp-300 hover:text-white">About</a></li>
+                            <li><a href="#" class="text-swamp-300 hover:text-white">Careers</a></li>
+                            <li><a href="#" class="text-swamp-300 hover:text-white">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold">Legal</h4>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><a href="#" class="text-swamp-300 hover:text-white">Privacy</a></li>
+                            <li><a href="#" class="text-swamp-300 hover:text-white">Terms</a></li>
+                            <li><a href="#" class="text-swamp-300 hover:text-white">Security</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold">Stay Updated</h4>
+                    <form class="mt-4 flex">
+                        <input type="email" placeholder="Enter your email" class="px-4 py-2 rounded-l-full flex-1 text-swamp-900">
+                        <button class="bg-swamp-500 px-6 py-2 rounded-r-full hover:bg-swamp-600">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
