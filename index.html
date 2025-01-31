@@ -27,6 +27,22 @@
             }
         }
     </script>
+    <style>
+    #mobile-menu {
+        transition: all 0.3s ease-out;
+        transform-origin: top;
+    }
+    
+    #mobile-menu.hidden {
+        opacity: 0;
+        transform: scaleY(0);
+    }
+    
+    #mobile-menu.block {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    </style>
 </head>
 <body class="bg-swamp-50">
     <!-- Navigation -->
