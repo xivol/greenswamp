@@ -30,6 +30,70 @@
 </head>
 <body class="bg-swamp-50">
     <!-- Navigation -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex items-center space-x-2">
+                <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Swamps</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Events</a>
+                <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Croak</button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-swamp-600 hover:text-swamp-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
+        <div class="px-4 py-2 space-y-4">
+            <a href="#" class="block text-swamp-600 hover:text-swamp-800">Feed</a>
+            <a href="#" class="block text-swamp-600 hover:text-swamp-800">Swamps</a>
+            <a href="#" class="block text-swamp-600 hover:text-swamp-800">Events</a>
+            <button class="w-full bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">
+                Post Croak
+            </button>
+        </div>
+    </div>
+</nav>
+
+<script>
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        if(isHidden) {
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('block');
+        } else {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('block');
+        }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (event) => {
+        if(!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('block');
+        }
+    });
+</script>
+<!--
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-16">
@@ -47,7 +111,7 @@
             </div>
         </div>
     </nav>
-
+-->
     <!-- Hero Section -->
 <!--     <div class="bg-gradient-to-b from-swamp-400 to-swamp-700">
         <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
