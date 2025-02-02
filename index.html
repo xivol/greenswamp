@@ -57,7 +57,7 @@
 				
 				<!-- Desktop Menu -->
 				<div class="hidden md:flex space-x-8">
-					<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
+					<a href="feed.html" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
 						<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Groups</a>
 						<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Events</a>
 					<button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Ribbit</button>
@@ -199,13 +199,79 @@
                 </div>
                 <div>
                     <h4 class="text-sm font-semibold">Stay Updated</h4>
-                    <form class="mt-4 flex">
+                    <!-- <form class="mt-4 flex">
                         <input type="email" placeholder="Enter your email" class="px-4 py-2 rounded-l-full flex-1 text-swamp-900">
                         <button class="bg-swamp-500 px-6 py-2 rounded-r-full hover:bg-swamp-600">Subscribe</button>
-                    </form>
+                    </form> -->
+					<form class="mt-4 flex" onsubmit="handleSubscribe(event)">
+						<input 
+							type="email" 
+							id="subscribeEmail"
+							placeholder="Enter your email" 
+							required
+							class="px-4 py-2 rounded-l-full flex-1 text-swamp-900 border border-swamp-200 focus:ring-2 focus:ring-swamp-400 focus:border-transparent"
+						>
+						<button 
+							type="submit"
+							class="bg-swamp-500 px-6 py-2 rounded-r-full hover:bg-swamp-600 transition-colors text-white"
+						>
+							Subscribe
+						</button>
+					</form>
                 </div>
             </div>
         </div>
     </footer>
+	
+	<div id="subscribePopup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[100]">
+		<div class="bg-white rounded-xl max-w-md w-full p-6 relative shadow-lg">
+			<div class="text-center">
+				<div class="mx-auto w-16 h-16 bg-swamp-100 rounded-full flex items-center justify-center mb-4">
+					<span class="text-3xl">🐸</span>
+				</div>
+				<h3 class="text-xl font-bold text-swamp-900 mb-2">You're In the Pond!</h3>
+				<p class="text-swamp-700">
+					Thanks for hopping on board! Check your inbox for 
+					<span class="italic">lilypad updates</span>.
+				</p>
+				<button onclick="closeSubscribePopup()" 
+						class="mt-6 bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600 transition-colors">
+					Ribbitastic!
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function handleSubscribe(e) {
+			e.preventDefault();
+			const email = document.getElementById('subscribeEmail').value;
+			
+			// Basic email validation
+			if (/^\S+@\S+\.\S+$/.test(email)) {
+				showSubscribePopup();
+				document.getElementById('subscribeEmail').value = ''; // Clear input
+			}
+		}
+
+		function showSubscribePopup() {
+			const popup = document.getElementById('subscribePopup');
+			popup.classList.remove('hidden');
+			popup.setAttribute('aria-hidden', 'false');
+		}
+
+		function closeSubscribePopup() {
+			const popup = document.getElementById('subscribePopup');
+			popup.classList.add('hidden');
+			popup.setAttribute('aria-hidden', 'true');
+		}
+
+		// Close popup when clicking outside
+		document.getElementById('subscribePopup').addEventListener('click', (e) => {
+			if (e.target === document.getElementById('subscribePopup')) {
+				closeSubscribePopup();
+			}
+		});
+	</script>
 </body>
 </html>
