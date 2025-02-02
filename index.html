@@ -46,106 +46,71 @@
 </head>
 <body class="bg-swamp-50">
     <!-- Navigation -->
-<nav class="bg-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
-            <!-- Logo -->
-            <div class="flex items-center space-x-2">
-                <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
-                <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
-            </div>
-            
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex space-x-8">
-                <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
-                <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Ribbit</button>
-            </div>
+	<nav class="bg-white shadow-lg sticky top-0 z-50">
+		<div class="max-w-7xl mx-auto px-4">
+			<div class="flex justify-between items-center h-16">
+				<!-- Logo -->
+				<a href="index.html" class="flex items-center space-x-2">				
+					<img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+					<span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
+				</a>
+				
+				<!-- Desktop Menu -->
+				<div class="hidden md:flex space-x-8">
+					<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
+						<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Groups</a>
+						<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Events</a>
+					<button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Ribbit</button>
+				</div>
 
-            <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden text-swamp-600 hover:text-swamp-800">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
-    </div>
+				<!-- Mobile Menu Button -->
+				<button id="mobile-menu-button" class="md:hidden text-swamp-600 hover:text-swamp-800">
+					<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+					</svg>
+				</button>
+			</div>
+		</div>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
-        <div class="px-4 py-2 space-y-4">
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
-            <button class="w-full bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">
-                Post Ribbit
-            </button>
-        </div>
-    </div>
-</nav>
+		<!-- Mobile Menu -->
+		<div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
+			<div class="px-4 py-2 space-y-4">
+						<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
+						<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Groups</a>
+						<a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Events</a>
+				<button class="w-full bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">
+					Post Ribbit
+				</button>
+			</div>
+		</div>
+	</nav>
 
-<script>
-    // Mobile Menu Toggle
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
+	<script>
+		// Mobile Menu Toggle
+		const mobileMenuButton = document.getElementById('mobile-menu-button');
+		const mobileMenu = document.getElementById('mobile-menu');
 
-    mobileMenuButton.addEventListener('click', () => {
-        const isHidden = mobileMenu.classList.contains('hidden');
-        if(isHidden) {
-            mobileMenu.classList.remove('hidden');
-            mobileMenu.classList.add('block');
-        } else {
-            mobileMenu.classList.add('hidden');
-            mobileMenu.classList.remove('block');
-        }
-    });
+		mobileMenuButton.addEventListener('click', () => {
+			const isHidden = mobileMenu.classList.contains('hidden');
+			if(isHidden) {
+				mobileMenu.classList.remove('hidden');
+				mobileMenu.classList.add('block');
+			} else {
+				mobileMenu.classList.add('hidden');
+				mobileMenu.classList.remove('block');
+			}
+		});
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (event) => {
-        if(!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
-            mobileMenu.classList.add('hidden');
-            mobileMenu.classList.remove('block');
-        }
-    });
-</script>
-<!--
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-2">
-                    <img src="https://raw.githubusercontent.com/xivol/greenswamp/10d8a83dbea323d57e185cc338cef0857b6f290f/green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
-                    <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
-                </div>
-                
-                <div class="hidden md:flex space-x-8">
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
-                    <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Ribbit</button>
-                </div>
-            </div>
-        </div>
-    </nav>
--->
-    <!-- Hero Section -->
-<!--     <div class="bg-gradient-to-b from-swamp-400 to-swamp-700">
-        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">
-                    Hop Into Campus Life
-                </h1>
-                <p class="mt-3 max-w-md mx-auto text-base text-swamp-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                    Connect with classmates through lilypad groups and swamp chats.
-                </p>
-                <div class="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-                    <button class="w-full bg-white text-swamp-600 px-8 py-3 rounded-full text-lg font-semibold hover:bg-swamp-50 sm:w-auto">
-                        Join the Swamp
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div> -->
+		// Close menu when clicking outside
+		document.addEventListener('click', (event) => {
+			if(!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+				mobileMenu.classList.add('hidden');
+				mobileMenu.classList.remove('block');
+			}
+		});
+	</script>
+	<!-- Main Content -->
+
 	<div class="relative h-[500px]">
 	    <!-- Background Image with Overlay -->
 	    <div class="absolute inset-0 z-0">
@@ -170,6 +135,7 @@
 		</div>
 	    </div>
 	</div>
+	
     <!-- Features Grid -->
     <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
         <div class="grid md:grid-cols-3 gap-8">
@@ -226,7 +192,7 @@
                     <div>
                         <h4 class="text-sm font-semibold">Legal</h4>
                         <ul class="mt-4 space-y-2 text-sm">
-                            <li><a href="#" class="text-swamp-300 hover:text-white">Privacy</a></li>
+                            <li><a href="privacy.html" class="text-swamp-300 hover:text-white">Privacy</a></li>
                             <li><a href="tos.html" class="text-swamp-300 hover:text-white">Terms</a></li>
                         </ul>
                     </div>
