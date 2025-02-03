@@ -41,8 +41,7 @@
                 <div class="hidden md:flex space-x-8">
                     <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Swamp</a>
                     <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Ponds</a>
-                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
-                    
+                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>                    
                 </div>
             </div>
         </div>
@@ -54,7 +53,7 @@
 		<div class="grid grid-cols-1 lg:grid-cols-4 gap-0 lg:divide-x sm:divide-y lg:h-[calc(100vb-4rem)]">
             <!-- Left Sidebar -->
             <div class="lg:col-span-1 bg-white">
-                <!-- User Card -->
+				<!-- User Card -->
 				<div class="p-6 pb-0">
 					<div class="flex space-x-3">
 						<img src="https://i.pravatar.cc/100?u=frogger_vig@pravatar.com" alt="User" class="w-16 h-16 rounded-full">
@@ -96,9 +95,6 @@
 						</button>
 					</div>
 				</div>
-							
-							
-
 
                 <!-- Quick Links -->
                 <div class="p-6">
@@ -122,108 +118,195 @@
             </div>
 
             <!-- Main Feed -->
-            <div class="lg:col-span-2 divide-y">
-                <!-- Post Card -->
-                <div class="bg-white shadow-sm p-6">
+            <div class="lg:col-span-2 divide-y bg-white">
+				<!-- Profile Header -->
+				<div class="relative overflow-hidden">
+				 <!-- Banner -->
+					<div class="h-48 bg-swamp-800 relative">
+						<div class="absolute inset-0 bg-gradient-to-b from-swamp-600 to-swamp-200"></div>
+						
+						<!-- Avatar Container -->
+						<div class="absolute -bottom-12 left-6 z-9">
+							<div class="w-32 h-32 rounded-full border-4 border-swamp-600 bg-swamp-800 overflow-hidden shadow-xl">
+								<img src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" class="w-full h-full object-cover" alt="Profile avatar">
+							</div>
+						</div>
+					</div>
+
+
+					<!-- Profile Info -->
+					<div class="pt-20 pb-6 px-6">
+						<div class="flex justify-between items-start">
+							<div>
+								<h1 class="text-2xl font-bold text-swamp-900">Viggo The Frogger</h1>
+								<p class="text-swamp-500">@frogger_vig</p>
+							</div>
+							<button class="px-6 py-2 bg-swamp-500 text-white rounded-full hover:bg-swamp-600 transition-all">							
+								Follow
+							</button>
+						</div>
+
+						<!-- Stats -->
+						<div class="mt-4 flex gap-6 text-swamp-700">							
+							<div><span class="text-swamp-400 font-medium">120</span> Following</div>
+							<div><span class="text-swamp-400 font-medium">58</span> Followers</div>
+						</div>
+
+						<!-- Bio -->
+						<p class="mt-4 text-swamp-700 leading-relaxed">
+							Digital artist exploring the cyber frontier •<br/>
+							Creator of neural interfaces •<br/>
+							Posts about tech, art, and the future 🤖🖌️🚀
+						</p>
+					</div>
+					
+					
+					<!-- Content Tabs -->
+					<div class="flex gap-4 items-center">
+						<button class="p-2 pl-4 pr-4 text-swamp-700 border-b-2 border-swamp-500">Ribbits</button>
+						<button class="p-2 pl-4 pr-4 text-swamp-500 hover:text-swamp-700">Ponds</button>
+						<button class="p-2 pl-4 pr-4 text-swamp-500 hover:text-swamp-700">Replies</button>
+						<button class="p-2 pl-4 pr-4 text-swamp-500 hover:text-swamp-700">Media</button>
+					</div>
+				</div>
+
+				
+
+				<!-- Post Feed -->
+				<div class="space-y-6">
+
+					<!-- Post Item -->
+					<div class="bg-white shadow-sm p-6">
                     <div class="flex items-start space-x-3">
-                        <img src="https://i.pravatar.cc/100?u=dorm23_frogs@pravatar.com" alt="User" class="w-16 h-16 rounded-full">
+                        <img src="https://i.pravatar.cc/100?u=frogger_vig@pravatar.com" alt="User" class="w-16 h-16 rounded-full">
                         <div class="flex-1">
                             <div class="flex items-center space-x-2">
-								<h4 class="font-semibold text-swamp-900">FroggyFriends</h4>
-								<a href="#"  class="text-sm text-swamp-500 hover:text-swamp-700">@dorm23_frogs</a>
+								<h4 class="font-semibold text-swamp-900">Viggo The Frogger</h4>
+								<a href="#"  class="text-sm text-swamp-500 hover:text-swamp-700">@frogger_vig</a>
 								<span class="text-swamp-500">·</span>
-								<a href="#" class="text-sm text-swamp-500 hover:text-swamp-700">29min</a>
+								<a href="#" class="text-sm text-swamp-500 hover:text-swamp-700">2h ago</a>
                             </div>
-                            <p class="mt-2 text-swamp-700">
-                                Anyone want to form a study group for the biology midterm? 🐸 
-                                Meeting at the lilypad cafe tomorrow 3PM! <span class="text-swamp-700 hover:text-swamp-500">#StudySwamp</span>
+                            <p class="mt-2 text-swamp-700">                                
+								When the code compiles on the first try 🐸✨
+								<span class="text-swamp-700 hover:text-swamp-500">#TechMagic</span> 
+								<span class="text-swamp-700 hover:text-swamp-500">#PixelFrog</span>							
                             </p>
+							<div class="mt-4 rounded-lg overflow-hidden cyber-border hover:cyber-glow transition-all">
+								<video 
+									class="w-full aspect-video object-cover bg-slate-900"
+									poster="https://via.placeholder.com/800x450" 
+									controls
+									preload="metadata"
+								>
+									<source src="Standard_Mode_a_looed_gif_of_a_pixel_frog_flyi.mp4" type="video/mp4">
+									Your browser does not support the video tag.
+								</video>
+							</div>
+							
                             <div class="mt-4 flex items-center space-x-6 text-swamp-500">
                                 <button class="flex items-center space-x-2 hover:text-swamp-600">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                                     </svg>
-                                    <span>12 Answers</span>
+                                    <span>1 Answer</span>
                                 </button>
 								<button class="flex items-center space-x-2 hover:text-swamp-600">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
 									</svg>
-                                    <span>6 Reribbs</span>
+                                    <span>1 Reribb</span>
                                 </button>
-                                <!--<button class="flex items-center space-x-2 hover:text-swamp-600">
-									<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-									</svg>
-                                    <span>24</span>
-                                </button>-->
-                                <!-- <button class="flex items-center space-x-2 hover:text-swamp-600">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				
+				<!-- Post Item -->
+				<div class="bg-white shadow-sm p-6">
+                    <div class="flex items-start space-x-3">
+                        <img src="https://i.pravatar.cc/100?u=frogger_vig@pravatar.com" alt="User" class="w-16 h-16 rounded-full">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2">
+								<h4 class="font-semibold text-swamp-900">Viggo The Frogger</h4>
+								<a href="#"  class="text-sm text-swamp-500 hover:text-swamp-700">@frogger_vig</a>
+								<span class="text-swamp-500">·</span>
+								<a href="#" class="text-sm text-swamp-500 hover:text-swamp-700">8h ago</a>
+                            </div>
+                            <p class="mt-2 text-swamp-700">
+								Debugging my sleep schedule (spoiler: it’s still 404). Send caffeine or existential epiphanies.
+                            </p>
+							<img class="mt-2 p-1 rounded-xl" src="4x3_Photo_of_a_messy_desk_with_table.png" alt="Photo of a messy desk with tablets, coffee, and a sticky note saying “ERROR: BRAIN.EXE HAS CRASHED”"/>
+                            <div class="mt-4 flex items-center space-x-6 text-swamp-500">
+                                <button class="flex items-center space-x-2 hover:text-swamp-600">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                                     </svg>
-                                    <span>Share</span>
-                                </button> -->
+                                    <span>10 Answers</span>
+                                </button>
+								<button class="flex items-center space-x-2 hover:text-swamp-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+									</svg>
+                                    <span>2 Reribbs</span>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Event Post -->
-                <div class="bg-white shadow-sm p-6 border-l-4 border-l-swamp-400">
-                    <div class="flex items-start space-x-3">
-                        <div class="w-10 h-10 bg-swamp-100 rounded-full flex items-center justify-center">
-                            <svg class="text-swamp-600" fill="currentColor" viewBox="-43.32 -43.32 327.29 327.29" enable-background="new 0 0 240.646 240.646"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="m218.787,119.069c-7.552-18.233-23.021-35.615-43.56-48.944-5.611-3.642-11.369-6.826-17.027-9.48 0.001-0.074 0.005-0.148 0.005-0.222 0-15.537-9.405-28.913-22.818-34.749l12.87-12.87c2.929-2.929 2.929-7.678 0-10.606-2.93-2.929-7.678-2.929-10.607,0l-17.237,17.237-17.068-17.068c-2.93-2.929-7.678-2.929-10.607-8.88178e-16-2.929,2.929-2.929,7.678 0,10.606l12.644,12.644c-13.478,5.809-22.94,19.221-22.94,34.805 0,0.074 0.004,0.148 0.005,0.223-5.659,2.654-11.417,5.839-17.029,9.481-20.537,13.329-36.006,30.711-43.558,48.943-8.021,19.364 1.207,41.645 20.573,49.667 4.648,1.925 9.538,2.901 14.534,2.901 6.008-0.001 11.758-1.412 16.9-3.96 9.77,16.056 27.176,26.038 46.456,26.038 19.279,0 36.686-9.981 46.456-26.036 5.142,2.546 10.893,3.958 16.901,3.958 4.996,0 9.886-0.976 14.534-2.901 19.366-8.022 28.595-30.303 20.573-49.667zm-98.464-81.528c10.602,0 19.541,7.25 22.127,17.051-5.886-1.723-11.348-2.661-16.02-2.661l-12.216,.001c-4.672,0-10.133,0.938-16.019,2.661 2.586-9.802 11.526-17.052 22.128-17.052zm21.517,94.241h-43.034l21.518-52.555 21.516,52.555zm-84.875,24.855c-3.016,0-5.974-0.592-8.793-1.759-11.724-4.856-17.311-18.345-12.455-30.068 10.062-24.291 36.026-43.406 57.037-52.348 0.341-0.115 0.672-0.248 0.986-0.407 5.579-2.307 10.785-3.89 15.208-4.632l-28.217,68.921c-0.008,0.018-0.016,0.036-0.022,0.054l-2.468,6.027c-1.387,3.347-3.497,6.227-6.099,8.509-0.101,0.079-0.197,0.162-0.293,0.245-4.069,3.45-9.293,5.457-14.884,5.458zm63.358,22.078c-14.55,0-27.627-7.844-34.513-20.336 2.575-3.007 4.724-6.438 6.3-10.242l.555-1.355h55.316l.566,1.384c1.572,3.794 3.716,7.217 6.287,10.218-6.887,12.489-19.963,20.331-34.511,20.331zm72.152-23.838c-2.819,1.167-5.778,1.759-8.795,1.759-5.617,0-10.865-2.026-14.94-5.502-0.068-0.058-0.136-0.117-0.206-0.172-2.612-2.281-4.73-5.162-6.117-8.51l-2.477-6.049c-0.009-0.022-0.018-0.044-0.027-0.066l-28.218-68.923c4.429,0.74 9.648,2.328 15.245,4.645 0.289,0.145 0.593,0.266 0.904,0.373 21.006,8.931 47.013,28.06 57.085,52.377 4.856,11.724-0.731,25.212-12.454,30.068z"></path> <path d="m175.408,183.757c-2.93-2.929-7.678-2.929-10.607,0-2.929,2.929-2.929,7.678 0,10.606l16.592,16.592c1.465,1.464 3.385,2.197 5.304,2.197 1.919,0 3.839-0.732 5.304-2.197 2.929-2.929 2.929-7.678 0-10.606l-16.593-16.592z"></path> <path d="m120.323,202.182c-4.143,0-7.5,3.358-7.5,7.5v23.464c0,4.142 3.357,7.5 7.5,7.5s7.5-3.358 7.5-7.5v-23.464c0-4.142-3.357-7.5-7.5-7.5z"></path> <path d="m65.239,183.758l-16.591,16.591c-2.929,2.929-2.929,7.678 0,10.606 1.465,1.464 3.385,2.197 5.304,2.197 1.919,0 3.839-0.732 5.304-2.197l16.591-16.591c2.929-2.929 2.929-7.678 0-10.606-2.93-2.929-7.678-2.929-10.608,0z"></path> </g> </g></svg>
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-semibold text-swamp-900">Campus Bonfire Night</h4>
-                            <p class="mt-2 text-swamp-700">
-                                🔥 Friday at 8PM - South Quad 
-                                <span class="block text-sm mt-1 text-swamp-500">Hosted by Student Activities Board</span>
-                            </p>
-                            <div class="mt-4 flex items-center space-x-4">
-                                <button class="bg-swamp-500 text-white px-4 py-2 rounded-full text-sm hover:bg-swamp-600">
-                                    RSVP (63 going)
-                                </button>
-                                <button class="text-swamp-600 hover:text-swamp-800 text-sm">
-                                    Add to Calendar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-								
-				<!-- Post Card -->
-                <div class="bg-white shadow-sm p-6">
-                    <div class="flex items-start space-x-3">
-                        <img src="https://i.pravatar.cc/100?u=ptst_toad@pravatar.com" alt="User" class="w-16 h-16 rounded-full">
-                        <div class="flex-1">
-                            <div class="flex items-center space-x-2">
-                                <h4 class="font-semibold text-swamp-900">Princess Toadstool</h4>
-                                <a href="#"  class="text-sm text-swamp-500 hover:text-swamp-700">@ptst_toad</a>
-								<span class="text-swamp-500">·</span>
-								<a href="#" class="text-sm text-swamp-500 hover:text-swamp-700">11h</a>
-                            </div>
-                            <p class="mt-2 text-swamp-700">
-                                What's hopping friends? ☂️ <span class="text-swamp-700 hover:text-swamp-500">#SwampLife</span>
-                            </p>
-                            <div class="mt-4 flex items-center space-x-6 text-swamp-500">
-                                <button class="flex items-center space-x-2 hover:text-swamp-600">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                                    </svg>
-                                    <span>2 Answers</span>
-                                </button>
-								<button class="flex items-center space-x-2 hover:text-swamp-600">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-									</svg>
-                                    <span></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+					<!-- Additional posts... -->
+					
+<!--
+--- 2h ago ---
+[Digital painting of a neon frog piloting a cyberpunk airship]
+Caption: “When the code compiles on the first try 🐸✨ #DigitalArtistsWillUnderstand”
+Tags: #TechMagic #PixelFrog
+
+--- 8h ago ---
+[Photo of a messy desk with tablets, coffee, and a sticky note saying “ERROR: BRAIN.EXE HAS CRASHED”]
+Caption: “Debugging my sleep schedule (spoiler: it’s still 404). Send caffeine or existential epiphanies.”
+Comments: 23 🐸 | Poll: Coffee vs. Tea vs. “Just reboot”
+
+--- 1d ago ---
+[Timelapse video of a glitchy cyber-forest artwork]
+Caption: “Me: ‘I’ll finish this in 2 hours.’ Also me: spends 6 hours animating ONE leaf 🌿💻”
+Tags: #ArtProcess #GlitchAesthetic
+
+--- 2d ago ---
+[Meme format: Distracted Boyfriend]
+Left panel: “My to-do list”
+Right panel: “Me hyper-fixating on retro VR aesthetics for no reason”
+Caption: “ADHD + art software = infinite rabbit holes. No regrets. 🕳️🐇”
+
+--- 3d ago ---
+[Screenshot of a code snippet with comments like “// wizardry starts here”]
+Caption: “Teaching an AI to generate frog-themed synthwave. Results so far: 30% bops, 70% cursed. 🎹🤖”
+Tags: #CreativeCoding #AIMusic
+
+--- 5d ago ---
+[Selfie with funky LED glasses at a tech convention]
+Caption: “Future me: a cyborg. Current me: just here for the free keychain shaped like a motherboard. 🔌😎”
+
+--- 1wk ago ---
+[Digital sketch of a robot frog holding a “Welcome to the Internet” sign]
+Caption: “New mascot for my coding tutorials? Y/N? 🤖🐸 P.S. Yes, it will judge your spaghetti code.”
+
+--- 1wk ago ---
+[Text post]
+“Hot take: The ‘singularity’ is just humans and AI collectively forgetting how to use a toaster. Discuss.”
+Comments: 45 🐸 | Top reply: “But can it render toast in 4K?”
+
+--- 2wk ago ---
+[Photo of a notebook scribbled with “WHAT IF WE MADE A FROG METAVERSE” circled wildly]
+Caption: “Brainstorming session vs. 3AM delirium? The world may never know. 🌐✨”
+
+--- 3wk ago ---
+[GIF of pixel-art frogs dancing to chiptune music]
+Caption: “When someone says ‘art and tech can’t collide’ – 🐸🎮 activates cha cha slide algorithm”
+-->
+				</div>
+			</div>
+
 
             <!-- Right Sidebar -->
             <div class="lg:col-span-1 bg-white invisible lg:visible">
