@@ -28,38 +28,38 @@
         }
     </script>
     <style>
-    #mobile-menu {
-        transition: all 0.3s ease-out;
-        transform-origin: top;
-    }
-    
-    #mobile-menu.hidden {
-        opacity: 0;
-        transform: scaleY(0);
-    }
-    
-    #mobile-menu.block {
-        opacity: 1;
-        transform: scaleY(1);
-    }
+        #mobile-menu {
+            transition: all 0.3s ease-out;
+            transform-origin: top;
+        }
+
+        #mobile-menu.hidden {
+            opacity: 0;
+            transform: scaleY(0);
+        }
+
+        #mobile-menu.block {
+            opacity: 1;
+            transform: scaleY(1);
+        }
     </style>
 </head>
 <body class="bg-swamp-50">
-    <!-- Navigation -->
+<!-- Navigation -->
 <nav class="bg-white shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
-            <div class="flex items-center space-x-2">
+            <a href="index.html" class="flex items-center space-x-2">
                 <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
                 <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
-            </div>
-            
+            </a>
+
             <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8">
                 <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
+                <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
+                <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
                 <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Ribbit</button>
             </div>
 
@@ -75,9 +75,9 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
         <div class="px-4 py-2 space-y-4">
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
-                    <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
+            <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
+            <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
+            <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
             <button class="w-full bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">
                 Post Ribbit
             </button>
@@ -110,130 +110,168 @@
     });
 </script>
 
-    <!-- Main Content -->
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- TOS Content -->
-        <div class="bg-white rounded-xl shadow-sm p-8 space-y-8">
-		<div class="text-center">
+<!-- Main Content -->
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- TOS Content -->
+    <div class="bg-white rounded-xl shadow-sm p-8 space-y-8">
+        <div class="text-center">
             <div class="flex items-center justify-center space-x-3">
-				<svg xmlns="http://www.w3.org/2000/svg" width="1em" viewBox="0 0 640 512" class="text-4xl font-bold text-swamp-600" style="fill:currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M384 32l128 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L398.4 96c-5.2 25.8-22.9 47.1-46.4 57.3L352 448l160 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-192 0-192 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0 0-294.7c-23.5-10.3-41.2-31.6-46.4-57.3L128 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l128 0c14.6-19.4 37.8-32 64-32s49.4 12.6 64 32zm55.6 288l144.9 0L512 195.8 439.6 320zM512 416c-62.9 0-115.2-34-126-78.9c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C627.2 382 574.9 416 512 416zM126.8 195.8L54.4 320l144.9 0L126.8 195.8zM.9 337.1c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C242 382 189.7 416 126.8 416S11.7 382 .9 337.1z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" viewBox="0 0 640 512"
+                     class="text-4xl font-bold text-swamp-600" style="fill:currentColor">
+                    <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                    <path d="M384 32l128 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L398.4 96c-5.2 25.8-22.9 47.1-46.4 57.3L352 448l160 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-192 0-192 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0 0-294.7c-23.5-10.3-41.2-31.6-46.4-57.3L128 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l128 0c14.6-19.4 37.8-32 64-32s49.4 12.6 64 32zm55.6 288l144.9 0L512 195.8 439.6 320zM512 416c-62.9 0-115.2-34-126-78.9c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C627.2 382 574.9 416 512 416zM126.8 195.8L54.4 320l144.9 0L126.8 195.8zM.9 337.1c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C242 382 189.7 416 126.8 416S11.7 382 .9 337.1z"/>
+                </svg>
                 <h1 class="text-4xl font-bold text-swamp-700">Swamp Rules</h1>
-				<svg xmlns="http://www.w3.org/2000/svg" width="1em" viewBox="0 0 640 512" class="text-4xl font-bold text-swamp-600" style="fill:currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M384 32l128 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L398.4 96c-5.2 25.8-22.9 47.1-46.4 57.3L352 448l160 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-192 0-192 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0 0-294.7c-23.5-10.3-41.2-31.6-46.4-57.3L128 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l128 0c14.6-19.4 37.8-32 64-32s49.4 12.6 64 32zm55.6 288l144.9 0L512 195.8 439.6 320zM512 416c-62.9 0-115.2-34-126-78.9c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C627.2 382 574.9 416 512 416zM126.8 195.8L54.4 320l144.9 0L126.8 195.8zM.9 337.1c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C242 382 189.7 416 126.8 416S11.7 382 .9 337.1z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" viewBox="0 0 640 512"
+                     class="text-4xl font-bold text-swamp-600" style="fill:currentColor">
+                    <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                    <path d="M384 32l128 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L398.4 96c-5.2 25.8-22.9 47.1-46.4 57.3L352 448l160 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-192 0-192 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l160 0 0-294.7c-23.5-10.3-41.2-31.6-46.4-57.3L128 96c-17.7 0-32-14.3-32-32s14.3-32 32-32l128 0c14.6-19.4 37.8-32 64-32s49.4 12.6 64 32zm55.6 288l144.9 0L512 195.8 439.6 320zM512 416c-62.9 0-115.2-34-126-78.9c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C627.2 382 574.9 416 512 416zM126.8 195.8L54.4 320l144.9 0L126.8 195.8zM.9 337.1c-2.6-11 1-22.3 6.7-32.1l95.2-163.2c5-8.6 14.2-13.8 24.1-13.8s19.1 5.3 24.1 13.8l95.2 163.2c5.7 9.8 9.3 21.1 6.7 32.1C242 382 189.7 416 126.8 416S11.7 382 .9 337.1z"/>
+                </svg>
             </div>
-			
-				<p class="text-swamp-800 italic">Last Updated: On a Whim of a Toad God</p>
-			</div>
-            <!-- Section 1 -->
-            <section class="space-y-4">
-                <div class="flex items-start space-x-3">
-                    <div class="mx-5">
-						
-                        <h2 class="text-xl font-semibold text-swamp-600">1. Welcome to the Swamp</h2>
-                        <p class="mt-2 text-swamp-800">
-                            By entering our lily pad (aka using our services), you agree to leap into our ecosystem. 
-                            We're all about synergy here—just don't expect actual files in your inbox.
-                        </p>
-                    </div>
+
+            <p class="text-swamp-800 italic">Last Updated: On a Whim of a Toad God</p>
+        </div>
+        <!-- Section 1 -->
+        <section class="space-y-4">
+            <div class="flex items-start space-x-3">
+                <div class="mx-5">
+                    <h2 class="text-xl font-semibold text-swamp-600">1. Welcome to the Swamp</h2>
+                    <p class="mt-2 text-swamp-800">
+                        By entering our lily pad (aka using our services), you agree to leap into our ecosystem.
+                        We're all about synergy here—just don't expect actual files in your inbox.
+                    </p>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Section 2 -->
-            <section class="space-y-4 border-t border-swamp-100 pt-8">
-                <div class="flex items-start space-x-3">
-                    <div class="mx-5">
-                        <h2 class="text-xl font-semibold text-swamp-600">2. Ribbiting Acceptance</h2>
-                        <p class="mt-2 text-swamp-800">
-                            Using our services = your croak of approval. No tadpole exceptions. 
-                            If you're under 18, hop back when you're a legal frog.
-                        </p>
-                    </div>
+        <!-- Section 2 -->
+        <section class="space-y-4 border-t border-swamp-100 pt-8">
+            <div class="flex items-start space-x-3">
+                <div class="mx-5">
+                    <h2 class="text-xl font-semibold text-swamp-600">2. Ribbiting Acceptance</h2>
+                    <p class="mt-2 text-swamp-800">
+                        Using our services = your croak of approval. No tadpole exceptions.
+                        If you're under 18, hop back when you're a legal frog.
+                    </p>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- **Terms of Service**
-*Last Updated: When the Tadpoles Approve*
-**1. Welcome to the Swamp**
-By entering our lily pad (aka using our
-services), you agree to leap into our
-ecosystem. We’re all about synergy here—
-just don’t expect actual flies in your inbox.
-**2. Ribbiting Acceptance**
-Using our services = your croak of approval.
-No tadpole exceptions. If you’re under 18,
-hop back when you’re a legal frog.
-**3. User Responsibilities**
-Keep it clean. No illegal flies, swamp
-sabotage, or bogging down our servers with
-amphibious antics. We reserve the right to
-say “toad-a-loo” to violators.
-**4. Liability Limitation**
-We’re not liable for leapfrogging fails, swamp
-outages, or ribbiting mishaps. If life gives you
-mosquitoes, make frogurt—but that’s on you.
-**5. Modifications**
-We may tweak these terms. Changes will be
-posted on our digital lily pad. Continued use =
-you’re still cool with our hop-timized rules.
-**6. Termination**
-We can terminate access if you muddy the
-waters. You’re free to hop off anytime—no
-hard-shelled feelings.
-**7. Governing Law**
-Disputes? Settled in Swamp County by a wise
-old toad (or binding arbitration, same thing).
+        <!-- Section 3 -->
+        <section class="space-y-4 border-t border-swamp-100 pt-8">
+            <div class="flex items-start space-x-3">
+                <div class="mx-5">
+                    <h2 class="text-xl font-semibold text-swamp-600">3. User Responsibilities</h2>
+                    <p class="mt-2 text-swamp-800">
+                        Keep it clean. No illegal flies, swamp sabotage, or bogging down our servers with amphibious
+                        antics.
+                        We reserve the right to say “toad-a-loo” to violators.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-*Stay froggy, friends.*
-� -->
+        <!-- Section 4 -->
+        <section class="space-y-4 border-t border-swamp-100 pt-8">
+            <div class="flex items-start space-x-3">
+                <div class="mx-5">
+                    <h2 class="text-xl font-semibold text-swamp-600">4. Liability Limitation</h2>
+                    <p class="mt-2 text-swamp-800">
+                        We’re not liable for leapfrogging fails, swamp outages, or ribbiting mishaps.
+                        If life gives you mosquitoes, make frogurt—but that’s on you.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-            <!-- Closing Statement -->
-            <div class="mt-12 text-center border-t border-swamp-100 pt-8">
-                <p class="text-2xl font-semibold text-swamp-700">
-                    Stay froggy, friends
-                    <span class="text-swamp-500">🐸</span>
+        <!-- Section 5 -->
+        <section class="space-y-4 border-t border-swamp-100 pt-8">
+            <div class="flex items-start space-x-3">
+                <div class="mx-5">
+                    <h2 class="text-xl font-semibold text-swamp-600">5. Modifications</h2>
+                    <p class="mt-2 text-swamp-800">
+                        We may tweak these terms. Changes will be posted on our digital lily pad.
+                        Continued use = you’re still cool with our hop-timized rules.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6 -->
+        <section class="space-y-4 border-t border-swamp-100 pt-8">
+            <div class="flex items-start space-x-3">
+                <div class="mx-5">
+                    <h2 class="text-xl font-semibold text-swamp-600">6. Termination</h2>
+                    <p class="mt-2 text-swamp-800">
+                        We can terminate access if you muddy the waters.
+                        You’re free to hop off anytime—no hard-shelled feelings.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7 -->
+        <section class="space-y-4 border-t border-swamp-100 pt-8">
+            <div class="flex items-start space-x-3">
+                <div class="mx-5">
+                    <h2 class="text-xl font-semibold text-swamp-600">7. Governing Law</h2>
+                    <p class="mt-2 text-swamp-800">
+                        Disputes? Settled in Swamp County by a wise old toad (or binding arbitration, same thing).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Closing Statement -->
+        <div class="mt-12 text-center border-t border-swamp-100 pt-8">
+            <p class="text-2xl font-semibold text-swamp-700">
+                Stay froggy, friends
+                <span class="text-swamp-500">🐸</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+<footer class="bg-swamp-900 text-white">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                    <span class="text-xl font-bold">Greenswamp</span>
+                </div>
+                <p class="mt-4 text-sm text-swamp-300">
+                    Connecting people one ribbit at a time.
                 </p>
+            </div>
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-sm font-semibold">Company</h4>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        <li><a href="about.html" class="text-swamp-300 hover:text-white">About</a></li>
+                        <li><a href="contact.html" class="text-swamp-300 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold">Legal</h4>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        <li><a href="privacy.html" class="text-swamp-300 hover:text-white">Privacy</a></li>
+                        <li><a href="tos.html" class="text-swamp-300 hover:text-white">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold">Stay Updated</h4>
+                <form class="mt-4 flex">
+                    <input type="email" placeholder="Enter your email"
+                           class="px-4 py-2 rounded-l-full flex-1 text-swamp-900">
+                    <button class="bg-swamp-500 px-6 py-2 rounded-r-full hover:bg-swamp-600">Subscribe</button>
+                </form>
             </div>
         </div>
     </div>
-
-    
-    <!-- Footer -->
-    <footer class="bg-swamp-900 text-white">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2">
-                        <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
-                        <span class="text-xl font-bold">Greenswamp</span>
-                    </div>
-                      <p class="mt-4 text-sm text-swamp-300">
-                        Connecting people one ribbit at a time.
-                    </p>
-                </div>
-                <div class="grid grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="text-sm font-semibold">Company</h4>
-                        <ul class="mt-4 space-y-2 text-sm">
-                            <li><a href="#" class="text-swamp-300 hover:text-white">About</a></li>
-                            <li><a href="#" class="text-swamp-300 hover:text-white">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-semibold">Legal</h4>
-                        <ul class="mt-4 space-y-2 text-sm">
-                            <li><a href="privacy.html" class="text-swamp-300 hover:text-white">Privacy</a></li>
-                            <li><a href="tos.html" class="text-swamp-300 hover:text-white">Terms</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="text-sm font-semibold">Stay Updated</h4>
-                    <form class="mt-4 flex">
-                        <input type="email" placeholder="Enter your email" class="px-4 py-2 rounded-l-full flex-1 text-swamp-900">
-                        <button class="bg-swamp-500 px-6 py-2 rounded-r-full hover:bg-swamp-600">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </footer>
+</footer>
 </body>
 </html>
