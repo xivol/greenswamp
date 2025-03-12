@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greenswamp - About Greenswamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        swamp: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        #mobile-menu {
+            transition: all 0.3s ease-out;
+            transform-origin: top;
+        }
+
+        #mobile-menu.hidden {
+            opacity: 0;
+            transform: scaleY(0);
+        }
+
+        #mobile-menu.block {
+            opacity: 1;
+            transform: scaleY(1);
+        }
+    </style>
+</head>
+<body class="bg-swamp-50">
+<!-- Navigation -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center space-x-2">
+                <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
+                <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
+                <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
+                <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">Post Ribbit</button>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-swamp-600 hover:text-swamp-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
+        <div class="px-4 py-2 space-y-4">
+            <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Feed</a>
+            <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Lilypads</a>
+            <a href="#" class="my-auto text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
+            <button class="w-full bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">
+                Post Ribbit
+            </button>
+        </div>
+    </div>
+</nav>
+
+<script>
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        if(isHidden) {
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('block');
+        } else {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('block');
+        }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (event) => {
+        if(!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('block');
+        }
+    });
+</script>
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header Section -->
+    <div class="text-center mb-16 mt-16">
+        <div class="flex items-center justify-center space-x-4">
+            <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-20 w-20">
+            <h1 class="text-5xl font-bold text-swamp-900">About Our Pond</h1>
+        </div>
+        <p class="mt-4 text-lg text-swamp-700 max-w-2xl mx-auto">
+            Where campus connections grow like lily pads!
+        </p>
+    </div>
+
+    <!-- Story Section -->
+    <section class="mb-16">
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="flex-1">
+                    <h2 class="text-3xl font-bold text-swamp-900 mb-4">From Tadpole to Toad</h2>
+                    <p class="text-swamp-700 leading-relaxed">
+                        Greenswamp began as a class project in 2023 when our founder,
+                        Professor Ribbit, noticed students hopping between too many apps.
+                        We wanted to create one cozy digital pond where campus life could flourish.
+                        🐸
+                    </p>
+                </div>
+                <img src="professor-about.png" alt="Professor Ribbit"
+                     class="w-full md:w-1/2 rounded-lg shadow-sm">
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="grid md:grid-cols-3 gap-8 mb-16">
+        <div class="bg-white p-6 rounded-xl">
+            <div class="w-12 h-12 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="text-swamp-600" fill="none"
+                     height="48px" width="48px" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M7 20h10"></path>
+                        <path d="M10 20c5.5-2.5.8-6.4 3-10"></path>
+                        <path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"></path>
+                        <path d="M14.1 6a7 7 0 00-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"></path>
+                    </g>
+                </svg>
+            </div>
+            <h3 class="mt-4 text-xl font-semibold text-swamp-900">Grow Together</h3>
+            <p class="mt-2 text-swamp-600">Connect across departments, clubs, and dorms</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm">
+            <div class="w-12 h-12 flex items-center justify-center">
+                <svg class="text-swamp-600" fill="currentColor" height="48px" width="48px" version="1.1" id="Layer_1"
+                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 330 330"
+                     xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier"> <path id="XMLID_893_"
+                                                       d="M282.773,280.435C311.967,250.656,330,209.898,330,165c0-44.898-18.034-85.657-47.228-115.437 c-0.342-0.426-0.705-0.841-1.101-1.236c-0.396-0.395-0.81-0.758-1.235-1.1C250.656,18.033,209.898,0,165,0 C120.103,0,79.345,18.033,49.565,47.226c-0.427,0.342-0.842,0.706-1.238,1.103c-0.396,0.396-0.761,0.812-1.104,1.24 C18.032,79.347,0,120.104,0,165s18.032,85.653,47.224,115.432c0.343,0.428,0.707,0.843,1.103,1.239 c0.396,0.397,0.812,0.761,1.239,1.104C79.345,311.967,120.104,330,165,330s85.654-18.032,115.433-47.225 c0.427-0.343,0.843-0.707,1.238-1.102C282.066,281.277,282.431,280.862,282.773,280.435z M270.428,249.217l-32.076-32.077 C249.153,202.013,254.999,183.961,255,165c0-18.96-5.846-37.013-16.646-52.141l32.075-32.076C288.922,103.888,300,133.172,300,165 C300,196.828,288.922,226.113,270.428,249.217z M164.999,225c-16.026,0-31.094-6.241-42.426-17.574 c-11.333-11.332-17.574-26.399-17.574-42.426s6.241-31.093,17.575-42.427c5.265-5.266,11.348-9.45,18.082-12.436 c7.689-3.41,15.88-5.138,24.343-5.138c16.024,0,31.091,6.24,42.424,17.57c0.001,0.001,0.002,0.003,0.003,0.003 c0.001,0.001,0.002,0.002,0.003,0.003C218.76,133.909,225,148.975,225,165c0,16.026-6.242,31.094-17.575,42.427 C196.093,218.759,181.025,225,164.999,225z M249.216,59.57l-32.075,32.076C202.012,80.846,183.959,75,164.999,75 c-12.679,0-24.96,2.595-36.502,7.713c-5.525,2.45-10.744,5.45-15.637,8.937L80.783,59.572C103.888,41.078,133.172,30,165,30 C196.827,30,226.111,41.078,249.216,59.57z M59.57,80.785l32.075,32.076C80.845,127.988,74.999,146.04,74.999,165 c0,18.961,5.846,37.013,16.646,52.141L59.57,249.215C41.077,226.111,30,196.827,30,165C30,133.173,41.077,103.89,59.57,80.785z M80.783,270.429l32.076-32.075c15.127,10.801,33.18,16.646,52.14,16.646c18.961,0,37.012-5.846,52.139-16.646l32.076,32.076 C226.111,288.923,196.827,300,165,300C133.172,300,103.888,288.922,80.783,270.429z"></path> </g></svg>
+            </div>
+            <h3 class="mt-4 text-xl font-semibold text-swamp-900">Safe Space</h3>
+            <p class="mt-2 text-swamp-600">Verified .edu accounts only - no predators in our pond</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl shadow-sm">
+            <div class="w-12 h-12 flex items-center justify-center">
+                <svg class="text-swamp-600" width="48px" height="48px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M5.5713 14.5L9.46583 18.4141M18.9996 3.60975C17.4044 3.59505 16.6658 4.33233 16.4236 5.07743C16.2103 5.73354 16.4052 7.07735 15.896 8.0727C15.4091 9.02443 14.1204 9.5617 12.6571 9.60697M20 7.6104L20.01 7.61049M19 15.96L19.01 15.9601M7.00001 3.94926L7.01001 3.94936M19 11.1094C17.5 11.1094 16.5 11.6094 15.5949 12.5447M10.2377 7.18796C11 6.10991 11.5 5.10991 11.0082 3.52734M3.53577 20.4645L7.0713 9.85791L14.1424 16.929L3.53577 20.4645Z"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                </svg>
+            </div>
+            <h3 class="mt-4 text-xl font-semibold text-swamp-900">Have Fun</h3>
+            <p class="mt-2 text-swamp-600">Custom frogmojis, events, and campus traditions</p>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="mb-16">
+        <h2 class="text-3xl font-bold text-swamp-900 mb-8 text-center">Our Swamp Keepers</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                <img src="https://i.pravatar.cc/150?img=1"
+                     alt="Team member"
+                     class="w-32 h-32 rounded-full mx-auto mb-4">
+                <h3 class="font-semibold text-swamp-900">Lily Padman</h3>
+                <p class="text-sm text-swamp-600">Chief Pond Officer</p>
+                <p class="mt-2 text-swamp-700 text-sm">"Keeping the algae at bay since '22"</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                <img src="https://i.pravatar.cc/150?img=2"
+                     alt="Team member"
+                     class="w-32 h-32 rounded-full mx-auto mb-4">
+                <h3 class="font-semibold text-swamp-900">Fiona Frogsworth</h3>
+                <p class="text-sm text-swamp-600">Head of Ribbitions</p>
+                <p class="mt-2 text-swamp-700 text-sm">"Professional croak consultant"</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm text-center">
+                <img src="https://i.pravatar.cc/150?img=3"
+                     alt="Team member"
+                     class="w-32 h-32 rounded-full mx-auto mb-4">
+                <h3 class="font-semibold text-swamp-900">Tad Cooper</h3>
+                <p class="text-sm text-swamp-600">Digital Lilypad Engineer</p>
+                <p class="mt-2 text-swamp-700 text-sm">"Building better logs since 2023"</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Footer -->
+<footer class="bg-swamp-900 text-white">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                    <span class="text-xl font-bold">Greenswamp</span>
+                </div>
+                <p class="mt-4 text-sm text-swamp-300">
+                    Connecting people one ribbit at a time.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-sm font-semibold">Company</h4>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        <li><a href="about.html" class="text-swamp-300 hover:text-white">About</a></li>
+                        <li><a href="contact.html" class="text-swamp-300 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold">Legal</h4>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        <li><a href="privacy.html" class="text-swamp-300 hover:text-white">Privacy</a></li>
+                        <li><a href="tos.html" class="text-swamp-300 hover:text-white">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold">Stay Updated</h4>
+                <form class="mt-4 flex">
+                    <input type="email" placeholder="Enter your email"
+                           class="px-4 py-2 rounded-l-full flex-1 text-swamp-900">
+                    <button class="bg-swamp-500 px-6 py-2 rounded-r-full hover:bg-swamp-600">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
