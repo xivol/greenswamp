@@ -29,100 +29,37 @@
     </script>
 </head>
 <body class="bg-swamp-50">
-    <!-- Navigation (Same as homepage) -->
-<!--     <nav class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-2">
-                    <img src="https://raw.githubusercontent.com/xivol/greenswamp/10d8a83dbea323d57e185cc338cef0857b6f290f/green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
-                    <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
-                </div>
-                
-                <div class="hidden md:flex space-x-8">
-                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Swamp</a>
-                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Ponds</a>
-                    <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
-                    
-                </div>
-            </div>
-        </div>
-    </nav> -->
 
     <!-- Main Feed Container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!--<div class="grid grid-cols-1 lg:grid-cols-4 gap-8">-->
 		<div class="grid grid-cols-1 lg:grid-cols-4 gap-0 lg:divide-x sm:divide-y lg:h-[calc(100vb-4rem)]">
             <!-- Left Sidebar -->
-            <div class="lg:col-span-1 bg-white">
-                <!-- User Card -->
-				<div class="p-6 pb-0">
-					<div class="flex space-x-3">
-						<img src="https://i.pravatar.cc/100?u=frogger_vig@pravatar.com" alt="User" class="w-16 h-16 rounded-full">
-						<div class="flex-1">
-							<div class="flex items-center justify-between">
-								<div class="space-y-1">
-									<div class="flex items-center space-x-2">
-										<h4 class="font-semibold text-swamp-900 my-auto">Viggo The Frogger</h4>
-										<!-- Gear Button -->
-										<button onclick="openProfileSettings()" class="text-swamp-500 hover:text-swamp-600 transition-colors rounded-full bg-swamp-100 hover:bg-swamp-300" aria-label="Profile settings">
-											<svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" stroke="none" stroke-linecap="round" stroke-linejoin="round">&gt;								 
-												 <g id="SVGRepo_iconCarrier"> 
-												 <circle cx="18" cy="12" r="1.5" transform="rotate(90 18 12)"></circle> 
-												 <circle cx="12" cy="12" r="1.5" transform="rotate(90 12 12)" >
-												 </circle> <circle cx="6" cy="12" r="1.5" transform="rotate(90 6 12)" ></circle> 
-												 </g>
-											</svg>
-										</button>
-									</div>
-									<a href="profile.html" class="text-sm text-swamp-500 hover:text-swamp-700">@frogger_vig</a>
-								</div>
-							</div>
-							
-							
-						</div>
-					
-					</div>
-					<div class="pt-6"> 
-						<button class="flex items-center bg-swamp-500 text-white space-x-2 px-4 py-2 rounded-full hover:bg-swamp-600" onclick="openPostModal()">
-							<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" color="none">
-								<g id="SVGRepo_iconCarrier"> 
-									<title id="newIconTitle">New</title> 
-									<path d="M19 14V22H2.99997V4H13"></path> 
-									<path d="M17.4608 4.03921C18.2418 3.25817 19.5082 3.25816 20.2892 4.03921L20.9608 4.71079C21.7418 5.49184 21.7418 6.75817 20.9608 7.53921L11.5858 16.9142C11.2107 17.2893 10.702 17.5 10.1716 17.5L7.5 17.5L7.5 14.8284C7.5 14.298 7.71071 13.7893 8.08579 13.4142L17.4608 4.03921Z"></path> 
-									<path d="M16.25 5.25L19.75 8.75"></path> 
-								</g>
-							</svg>
-							<span>New Ribbit</span>
-						</button>
-					</div>
-				</div>
-							
-							
-
+            <div class="lg:col-span-1 bg-white order-1">          
+                <div class="p-6 space-y-4"> 
+                    <div class="flex items-center space-x-2">
+                        <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                        <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
+                    </div>
+                   <div class="space-x-2"> 
+                    <a href="register.html">
+                        <button class="bg-swamp-500 font-semibold text-white px-4 py-2 rounded-full hover:bg-swamp-600">
+                            Register
+                        </button>
+                    </a>
+                    <a href="register.html">
+                    <button class="bg-slate-200 font-semibold text-slate-900 px-4 py-2 rounded-full hover:bg-slate-300">
+                        Login
+                    </button>
+                    </a>
+                    </div>
+                </div>		
 
                 <!-- Quick Links -->
-                <div class="p-6">
-                    <h3 class="text-lg font-semibold text-swamp-900 mb-4">Your Ponds</h3>
-                    <ul class="space-y-3">
-                        <li>
-                            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-swamp-50 rounded-lg">
-                                <span class="w-2 h-2 bg-swamp-400 rounded-full"></span>
-                                <span class="text-swamp-700">#DiningHallChat</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-swamp-50 rounded-lg">
-                                <span class="w-2 h-2"></span>
-                                <span class="text-swamp-700">#LibraryQuietZone</span>
-                            </a>
-                        </li>
-                        <!-- Add more shortcuts -->
-                    </ul>
-                </div>
             </div>
 
             <!-- Main Feed -->
-            <div class="lg:col-span-2 divide-y">
+            <div class="lg:col-span-2 divide-y order-3">
                 <!-- Post Card -->
                 <div class="bg-white shadow-sm p-6">
                     <div class="flex items-start space-x-3">
@@ -217,28 +154,76 @@
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
 									</svg>
-                                    <span></span>
+                                    <span>Reribb</span>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="bg-white shadow-sm p-6">
+                    <div class="flex items-start space-x-3">
+                        <img src="https://i.pravatar.cc/100?u=swamp_finder@pravatar.com" alt="User" class="w-16 h-16 rounded-full">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2">
+                                <h4 class="font-semibold text-swamp-900">SwampFinder</h4>
+                                <a href="#" class="text-sm text-swamp-500 hover:text-swamp-700">@lostnfound</a>
+                                <span class="text-swamp-500">·</span>
+                                <a href="#" class="text-sm text-swamp-500 hover:text-swamp-700">45min</a>
+                            </div>
+                            <p class="mt-2 text-swamp-700">
+                                🚨 LOST: Silver water bottle with algae sticker near Turtle Pond. 
+                                Reward in bug cookies! 🍪 <span class="text-swamp-700 hover:text-swamp-500">#SwampLostAndFound</span>
+                            </p>
+                            <div class="mt-4 flex items-center space-x-6 text-swamp-500">
+                                <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                                    </svg>
+                                    <span>5 Answers</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<!-- Event Post with Border -->
+<div class="bg-white shadow-sm p-6 border-l-4 border-l-swamp-400">
+    <div class="flex items-start space-x-3">
+        <div class="w-10 h-10 bg-swamp-100 rounded-full flex items-center justify-center">
+            <svg class="text-swamp-600" fill="currentColor" viewBox="-43.32 -43.32 327.29 327.29" enable-background="new 0 0 240.646 240.646"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="m218.787,119.069c-7.552-18.233-23.021-35.615-43.56-48.944-5.611-3.642-11.369-6.826-17.027-9.48 0.001-0.074 0.005-0.148 0.005-0.222 0-15.537-9.405-28.913-22.818-34.749l12.87-12.87c2.929-2.929 2.929-7.678 0-10.606-2.93-2.929-7.678-2.929-10.607,0l-17.237,17.237-17.068-17.068c-2.93-2.929-7.678-2.929-10.607-8.88178e-16-2.929,2.929-2.929,7.678 0,10.606l12.644,12.644c-13.478,5.809-22.94,19.221-22.94,34.805 0,0.074 0.004,0.148 0.005,0.223-5.659,2.654-11.417,5.839-17.029,9.481-20.537,13.329-36.006,30.711-43.558,48.943-8.021,19.364 1.207,41.645 20.573,49.667 4.648,1.925 9.538,2.901 14.534,2.901 6.008-0.001 11.758-1.412 16.9-3.96 9.77,16.056 27.176,26.038 46.456,26.038 19.279,0 36.686-9.981 46.456-26.036 5.142,2.546 10.893,3.958 16.901,3.958 4.996,0 9.886-0.976 14.534-2.901 19.366-8.022 28.595-30.303 20.573-49.667zm-98.464-81.528c10.602,0 19.541,7.25 22.127,17.051-5.886-1.723-11.348-2.661-16.02-2.661l-12.216,.001c-4.672,0-10.133,0.938-16.019,2.661 2.586-9.802 11.526-17.052 22.128-17.052zm21.517,94.241h-43.034l21.518-52.555 21.516,52.555zm-84.875,24.855c-3.016,0-5.974-0.592-8.793-1.759-11.724-4.856-17.311-18.345-12.455-30.068 10.062-24.291 36.026-43.406 57.037-52.348 0.341-0.115 0.672-0.248 0.986-0.407 5.579-2.307 10.785-3.89 15.208-4.632l-28.217,68.921c-0.008,0.018-0.016,0.036-0.022,0.054l-2.468,6.027c-1.387,3.347-3.497,6.227-6.099,8.509-0.101,0.079-0.197,0.162-0.293,0.245-4.069,3.45-9.293,5.457-14.884,5.458zm63.358,22.078c-14.55,0-27.627-7.844-34.513-20.336 2.575-3.007 4.724-6.438 6.3-10.242l.555-1.355h55.316l.566,1.384c1.572,3.794 3.716,7.217 6.287,10.218-6.887,12.489-19.963,20.331-34.511,20.331zm72.152-23.838c-2.819,1.167-5.778,1.759-8.795,1.759-5.617,0-10.865-2.026-14.94-5.502-0.068-0.058-0.136-0.117-0.206-0.172-2.612-2.281-4.73-5.162-6.117-8.51l-2.477-6.049c-0.009-0.022-0.018-0.044-0.027-0.066l-28.218-68.923c4.429,0.74 9.648,2.328 15.245,4.645 0.289,0.145 0.593,0.266 0.904,0.373 21.006,8.931 47.013,28.06 57.085,52.377 4.856,11.724-0.731,25.212-12.454,30.068z"></path> <path d="m175.408,183.757c-2.93-2.929-7.678-2.929-10.607,0-2.929,2.929-2.929,7.678 0,10.606l16.592,16.592c1.465,1.464 3.385,2.197 5.304,2.197 1.919,0 3.839-0.732 5.304-2.197 2.929-2.929 2.929-7.678 0-10.606l-16.593-16.592z"></path> <path d="m120.323,202.182c-4.143,0-7.5,3.358-7.5,7.5v23.464c0,4.142 3.357,7.5 7.5,7.5s7.5-3.358 7.5-7.5v-23.464c0-4.142-3.357-7.5-7.5-7.5z"></path> <path d="m65.239,183.758l-16.591,16.591c-2.929,2.929-2.929,7.678 0,10.606 1.465,1.464 3.385,2.197 5.304,2.197 1.919,0 3.839-0.732 5.304-2.197l16.591-16.591c2.929-2.929 2.929-7.678 0-10.606-2.93-2.929-7.678-2.929-10.608,0z"></path> </g> </g></svg>
+        </div>
+        <div class="flex-1">
+            <h4 class="font-semibold text-swamp-900">Swamp Chess Tournament</h4>
+            <p class="mt-2 text-swamp-700">
+                ♟️ March 20th · 4PM - Commons Game Room 
+                <span class="block text-sm mt-1 text-swamp-500">Hosted by Strategy Club</span>
+            </p>
+            <div class="mt-4 flex items-center space-x-4">
+                <button class="bg-swamp-500 text-white px-4 py-2 rounded-full text-sm hover:bg-swamp-600">
+                    Register (18 spots left)
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
 
             <!-- Right Sidebar -->
-            <div class="lg:col-span-1 bg-white invisible lg:visible">
+            <div class="lg:col-span-1 bg-white sm:order-2 order-4">
 			    <!-- Search-->
                 <div class="p-6 pb-0">
 					<div class="relative">
 						<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-							<svg class="w-5 h-5 text-swamp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<svg class="w-5 h-5 text-swamp-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
 							</svg>
 						</div>
 						<input 
 							type="text" 
 							placeholder="Search" 
-							class="w-full pl-10 pr-4 py-2 bg-swamp-100 dark:bg-swamp-900 rounded-full border-none focus:ring-2 focus:ring-swamp-400 focus-visible:ring-swamp-400 placeholder:text-swamp-400"
+							class="w-full pl-10 pr-4 py-2 bg-swamp-100 rounded-full border-none focus:ring-2 
+                            focus:ring-swamp-400 focus-visible:ring-swamp-400 placeholder:text-swamp-600"
 						>
 					</div>
 				</div>
@@ -279,15 +264,16 @@
                     </div>
                 </div>
 				
+                
                 <div class="p-6">                  
-                        <div class="flex items-start space-x-2 text-swamp-600">
-						<a href="#" class="hover:text-swamp-800">Contact</a>
-						<span>•</span>
-						<a href="privacy.html" class="hover:text-swamp-800">Privacy</a>
-						<span>•</span>
-                            <a href="tos.html" class="hover:text-swamp-800">Terms</a>
-                        </div>
+                    <div class="flex items-start space-x-2 text-swamp-600">
+                        <a href="#" class="hover:text-swamp-800">Contact</a>
+                        <span>•</span>
+                        <a href="privacy.html" class="hover:text-swamp-800">Privacy</a>
+                        <span>•</span>
+                        <a href="tos.html" class="hover:text-swamp-800">Terms</a>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
