@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Greenswamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        swamp: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-swamp-50 min-h-screen">
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Logo Header -->
+        <div class="text-center mb-16">
+            <div class="flex items-center justify-center space-x-3 mb-6">
+                <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-16 w-16">
+                <span class="text-4xl font-bold text-swamp-900">Greenswamp</span>
+            </div>
+            <p class="text-lg text-swamp-800">Join the pond community</p>
+        </div>
+
+        <!-- Registration Card -->
+        <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-8 sm:p-12 border border-swamp-100">
+            <form class="space-y-8">
+                <!-- Name Input -->
+                <div class="space-y-2">
+                    <label class="block text-base font-semibold text-swamp-900">Full Name</label>
+                    <input type="text" required 
+                        class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                               border border-swamp-200 focus:border-swamp-400 
+                               focus:ring-2 focus:ring-swamp-200 placeholder-swamp-500
+                               text-swamp-900 shadow-sm"
+                        placeholder="Princess Toadstool">
+                </div>
+
+                <!-- Email Input -->
+                <div class="space-y-2">
+                    <label class="block text-base font-semibold text-swamp-900">Email</label>
+                    <input type="email" required 
+                        class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                               border border-swamp-200 focus:border-swamp-400 
+                               focus:ring-2 focus:ring-swamp-200 placeholder-swamp-500
+                               text-swamp-900 shadow-sm"
+                        placeholder="you@example.com">
+                </div>
+
+                <!-- Password Input -->
+                <div class="space-y-2">
+                    <label class="block text-base font-semibold text-swamp-900">Password</label>
+                    <input type="password" required 
+                        class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                               border border-swamp-200 focus:border-swamp-400 
+                               focus:ring-2 focus:ring-swamp-200 placeholder-swamp-500
+                               text-slate-900 shadow-sm"
+                        placeholder="••••••••">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" 
+                    class="w-full bg-gradient-to-br from-swamp-500 to-swamp-600 text-white 
+                           py-4 px-6 rounded-xl hover:from-swamp-600 hover:to-swamp-700 
+                           focus:ring-2 focus:ring-swamp-400 font-semibold
+                           transition-all duration-200 shadow-lg">
+                    Create Account
+                </button>
+
+                <!-- Login Link -->
+                <p class="text-center text-swamp-700 mt-8">
+                    Already have an account? 
+                    <a href="feed.html" class="font-semibold text-swamp-800 hover:text-swamp-900 underline">
+                        Log in here
+                    </a>
+                </p>
+            </form>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="mt-16 text-center">
+            <div class="flex items-center justify-center space-x-4 text-swamp-700">
+                <a href="privacy.html" class="hover:text-swamp-900 hover:underline">Privacy</a>
+                <span class="text-swamp-500">•</span>
+                <a href="tos.html" class="hover:text-swamp-900 hover:underline">Terms</a>
+                <span class="text-swamp-500">•</span>
+                <a href="#" class="hover:text-swamp-900 hover:underline">Contact</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
