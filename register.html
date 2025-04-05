@@ -33,16 +33,19 @@
             background-repeat: repeat-x;
             background-size: auto 100%;
             background-position: center top;
+            opacity: 0.2;
         }
     </style>
 </head>
-<body class="bg-swamp-50 min-h-screen">
-    <!-- Main Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!--<div class="absolute inset-0 bg-gradient-to-b from-swamp-50/80 to-swamp-100/50 z-0"></div>-->
-        
-        <!-- Content container -->
-        <div class="relative z-10">
+<body class="bg-swamp-50 min-h-screen relative">
+    <!-- Background overlay -->
+    <div class="fixed inset-0 swamp-bg -z-10"></div>
+    <!--<div class="absolute inset-0 bg-gradient-to-b from-swamp-50/90 to-swamp-100/60 z-10"></div> -->
+    
+    <!-- Content container -->
+    <div class="relative z-10">
+        <!-- Main Container -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <!-- Logo Header -->
             <div class="text-center mb-16">
                 <div class="flex items-center justify-center space-x-3 mb-6">
@@ -119,9 +122,6 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Decorative background image -->
-        <div class="fixed inset-0 swamp-bg -z-10 opacity-20"></div>
     </div>
 </body>
 </html>
