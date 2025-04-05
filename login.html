@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Greenswamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        swamp: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .swamp-bg {
+            background-image: url('https://c7.alamy.com/comp/2N4MK40/a-vertical-shot-of-a-swamp-with-green-vegetation-2N4MK40.jpg');
+            background-repeat: repeat-x;
+            background-size: auto 100%;
+            background-position: center top;
+            opacity: 0.15;
+        }
+        
+    </style>
+</head>
+<body class="bg-swamp-50 min-h-screen relative">
+    <!-- Background overlay -->
+    <div class="fixed inset-0 swamp-bg -z-20"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-swamp-50/90 to-swamp-100/60 z-10"></div>
+    
+    <!-- Content container -->
+    <div class="relative z-20">
+        <!-- Main Container -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <!-- Logo Header -->
+            <div class="text-center mb-16">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-16 w-16">
+                    <span class="text-4xl font-bold text-swamp-900">Greenswamp</span>
+                </div>
+                <p class="text-lg text-swamp-800">Welcome back to the pond</p>
+            </div>
+
+            <!-- Login Card -->
+            <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-8 sm:p-12 border border-swamp-100">
+                <form class="space-y-8">
+                    <!-- Email Input -->
+                    <div class="space-y-2">
+                        <label class="block text-base font-semibold text-swamp-900">Email</label>
+                        <input type="email" required 
+                            class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                                   border border-swamp-200 focus:border-swamp-400 
+                                   focus:ring-2 focus:ring-swamp-200 placeholder-swamp-500
+                                   text-swamp-900 shadow-sm"
+                            placeholder="you@example.com">
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="space-y-2">
+                        <label class="block text-base font-semibold text-swamp-900">Password</label>
+                        <input type="password" required 
+                            class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                                   border border-swamp-200 focus:border-swamp-400 
+                                   focus:ring-2 focus:ring-swamp-200 placeholder-swamp-500
+                                   text-swamp-900 shadow-sm"
+                            placeholder="••••••••">
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center space-x-2 text-swamp-700">
+                            <input type="checkbox" class="rounded border-swamp-300 text-swamp-600 focus:ring-swamp-400">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="text-swamp-700 hover:text-swamp-900 hover:underline text-sm">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" 
+                        class="w-full bg-gradient-to-br from-swamp-500 to-swamp-600 text-white 
+                               py-4 px-6 rounded-xl hover:from-swamp-600 hover:to-swamp-700 
+                               focus:ring-2 focus:ring-swamp-400 font-semibold
+                               transition-all duration-200 shadow-lg">
+                        Log In
+                    </button>
+
+                    <!-- Registration Link -->
+                    <p class="text-center text-swamp-700 mt-8">
+                        New to Greenswamp? 
+                        <a href="register.html" class="font-semibold text-swamp-800 hover:text-swamp-900 underline">
+                            Create account
+                        </a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- Footer Links -->
+            <div class="mt-16 text-center">
+                <div class="flex items-center justify-center space-x-4 text-swamp-700">
+                    <a href="privacy.html" class="hover:text-swamp-900 hover:underline">Privacy</a>
+                    <span class="text-swamp-500">•</span>
+                    <a href="tos.html" class="hover:text-swamp-900 hover:underline">Terms</a>
+                    <span class="text-swamp-500">•</span>
+                    <a href="#" class="hover:text-swamp-900 hover:underline">Contact</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
