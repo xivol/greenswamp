@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - Greenswamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        swamp: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-swamp-50">
+    <!-- Main Feed Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-0 lg:divide-x lg:h-[calc(100vh-4rem)]">
+            <!-- Left Sidebar -->
+            <div class="lg:col-span-1 bg-white">
+                <!-- User Card -->
+                <div class="p-6 pb-0">
+                    <div class="flex space-x-3">
+                        <img src="https://i.pravatar.cc/100?u=frogger_vig@pravatar.com" alt="User"
+                            class="w-16 h-16 rounded-full">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <div class="space-y-1">
+                                    <div class="flex items-center space-x-2">
+                                        <h4 class="font-semibold text-swamp-900">Viggo The Frogger</h4>
+                                        <!-- Dropdown Container -->
+                                        <div class="relative">
+                                            <!-- Gear Button -->
+                                            <button id="settingsButton"
+                                                class="text-swamp-700 hover:text-swamp-700 transition-colors"
+                                                aria-label="Profile settings" aria-haspopup="true">
+                                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"
+                                                    stroke="none" stroke-linecap="round" stroke-linejoin="round">&gt;
+                                                    <g id="SVGRepo_iconCarrier">
+                                                        <circle cx="18" cy="12" r="1.5" transform="rotate(90 18 12)">
+                                                        </circle>
+                                                        <circle cx="12" cy="12" r="1.5" transform="rotate(90 12 12)">
+                                                        </circle>
+                                                        <circle cx="6" cy="12" r="1.5" transform="rotate(90 6 12)">
+                                                        </circle>
+                                                    </g>
+                                                </svg>
+                                            </button>
+
+                                            <!-- Dropdown Menu -->
+                                            <div id="settingsDropdown"
+                                                class="absolute hidden right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-swamp-100 z-50">
+                                                <div class="py-1">
+                                                    <button
+                                                        class="w-full px-4 py-2 text-sm text-swamp-700 hover:bg-swamp-50 flex items-center space-x-2">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        </svg>
+                                                        <span>Settings</span>
+                                                    </button>
+                                                    <button
+                                                        class="w-full px-4 py-2 text-sm text-swamp-700 hover:bg-swamp-50 flex items-center space-x-2">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                                        </svg>
+                                                        <span>Sign Out</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <a href="profile.html"
+                                        class="text-sm text-swamp-500 hover:text-swamp-700">@frogger_vig</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="p-6 space-y-4">
+                    <button
+                        class="flex items-center bg-swamp-500 text-white space-x-2 p-2 px-4 rounded-full hover:bg-swamp-600"
+                        onclick="openPostModal()">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" color="none">
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M19 14V22H2.99997V4H13"></path>
+                                <path
+                                    d="M17.4608 4.03921C18.2418 3.25817 19.5082 3.25816 20.2892 4.03921L20.9608 4.71079C21.7418 5.49184 21.7418 6.75817 20.9608 7.53921L11.5858 16.9142C11.2107 17.2893 10.702 17.5 10.1716 17.5L7.5 17.5L7.5 14.8284C7.5 14.298 7.71071 13.7893 8.08579 13.4142L17.4608 4.03921Z">
+                                </path>
+                                <path d="M16.25 5.25L19.75 8.75"></path>
+                            </g>
+                        </svg>
+                        <span>New Ribbit</span>
+                    </button>
+                    <a href="feed.html"
+                        class="p-1 text-swamp-900 flex items-center space-x-2 hover:bg-swamp-50 rounded-lg">
+                        <svg class="w-8 h-8 " fill="currentColor" stroke="currentColor"
+                            viewBox="-81.92 -81.92 675.84 675.84" stroke-width="0.0">
+                            <g id="SVGRepo_iconCarrier">
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M163.575,120.725c-5.855,0-10.601,4.747-10.601,10.601c0,6.132-4.993,11.12-11.131,11.12 c-6.132,0-11.121-4.988-11.121-11.12c0-5.854-4.746-10.601-10.601-10.601s-10.601,4.747-10.601,10.601 c0,17.823,14.501,32.323,32.324,32.323c17.829,0,32.334-14.501,32.334-32.323C174.177,125.472,169.431,120.725,163.575,120.725z">
+                                        </path>
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M392.821,120.725c-5.855,0-10.601,4.747-10.601,10.601c0,6.132-4.993,11.12-11.131,11.12 c-6.132,0-11.121-4.988-11.121-11.12c0-5.854-4.746-10.601-10.601-10.601s-10.601,4.747-10.601,10.601 c0,17.823,14.501,32.323,32.324,32.323c17.829,0,32.334-14.501,32.334-32.323C403.422,125.472,398.676,120.725,392.821,120.725z">
+                                        </path>
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M228.785,149.518c-5.855,0-10.601,4.747-10.601,10.601v2.809c0,5.854,4.746,10.601,10.601,10.601 s10.601-4.747,10.601-10.601v-2.809C239.386,154.265,234.64,149.518,228.785,149.518z">
+                                        </path>
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M279.947,149.518c-5.855,0-10.601,4.747-10.601,10.601v2.809c0,5.854,4.746,10.601,10.601,10.601 s10.601-4.747,10.601-10.601v-2.809C290.549,154.265,285.802,149.518,279.947,149.518z">
+                                        </path>
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M502.444,261.1c-5.765-1.018-11.266,2.828-12.285,8.595c-0.229,1.295-0.482,2.606-0.76,3.931 c-1.199,5.73,2.474,11.349,8.206,12.548c0.733,0.154,1.462,0.227,2.182,0.227c4.912,0,9.32-3.434,10.366-8.432 c0.322-1.539,0.62-3.081,0.885-4.583C512.057,267.62,508.209,262.12,502.444,261.1z">
+                                        </path>
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path
+                                            d="M511.832,239.511c-2.985-16.696-11.316-24.532-17.782-28.165c-27.66-15.526-72.402,15.28-104.078,71.667 c-1.905,3.389-3.67,6.937-5.313,10.599v-17.982c18.413-21.235,21.407-47.102,21.878-67.569v-0.01 c0.112-5.056,0.077-9.851,0.043-14.49c-0.015-2.076-0.03-4.101-0.03-6.068c0-1.548-0.065-3.103-0.193-4.656 c14.773-11.051,23.696-28.556,23.696-47.248c0-32.514-26.452-58.965-58.965-58.965c-20.968,0-40.316,11.357-50.796,29.063 c-19.809-5.497-41.677-8.379-63.827-8.379c-22.143,0-44.009,2.884-63.816,8.379c-10.479-17.705-29.832-29.063-50.806-29.063 c-32.513,0-58.965,26.452-58.965,58.965c0,18.688,8.923,36.192,23.7,47.244c-0.131,1.561-0.197,3.115-0.197,4.66 c0,1.967-0.015,3.992-0.03,6.068c-0.034,4.639-0.069,9.434,0.043,14.5c0.472,20.473,3.468,46.35,21.889,67.582v17.968 c-1.643-3.655-3.398-7.208-5.302-10.596c-31.676-56.389-76.42-87.203-104.082-71.667c-14.383,8.08-20.904,26.603-18.362,52.154 c2.241,22.531,11.275,48.815,25.433,74.009c17.388,30.961,51.588,58.899,76.808,76.662H38.436 c-5.855,0-10.601,4.747-10.601,10.601c0,5.854,4.746,10.601,10.601,10.601h100.3c0.014,0,0.028-0.002,0.041-0.002 c0.011,0,0.022,0.002,0.033,0.002s0.022-0.002,0.033-0.002c0.014,0,0.028,0.002,0.041,0.002h235.171 c0.014,0,0.029-0.002,0.042-0.002s0.029,0.002,0.042,0.002h100.311c5.855,0,10.601-4.747,10.601-10.601 c0-5.854-4.746-10.601-10.601-10.601h-64.279c25.22-17.763,59.419-45.701,76.807-76.661c5.292-9.416,9.909-19.062,13.724-28.669 c2.159-5.443-0.5-11.605-5.942-13.766c-5.441-2.161-11.604,0.5-13.765,5.941c-3.466,8.73-7.671,17.515-12.501,26.11 c-18.463,32.873-60.484,63.401-83.603,78.512c0.88-27.607,5.094-79.374,23.565-112.242c27.992-49.831,62.672-70.606,75.209-63.566 c4.499,2.528,6.45,8.689,7.295,13.412c1.03,5.762,6.539,9.597,12.302,8.569C509.027,250.783,512.864,245.276,511.832,239.511z M44.456,327.125c-12.757-22.7-20.86-46.041-22.818-65.721c-1.609-16.174,1.25-27.976,7.647-31.569 c1.583-0.889,3.518-1.335,5.748-1.335c15.439,0,45.004,21.358,69.464,64.899c0,0.001,0,0.001,0,0.001 c18.55,33.01,22.722,85.017,23.581,112.261C104.971,390.569,62.955,360.063,44.456,327.125z M127.528,201.539 c-0.006-2.648,0.004-5.266,0.022-7.823c0.016-2.129,0.031-4.207,0.031-6.223c0-2.482,0.278-5.033,0.825-7.583 c0.971-4.528-1.109-9.162-5.137-11.445c-11.835-6.712-19.188-19.308-19.188-32.877c0-20.822,16.94-37.762,37.762-37.762 c15.589,0,29.78,9.798,35.313,24.381c2.011,5.299,7.832,8.079,13.219,6.311c19.944-6.549,42.798-10.009,66.09-10.009 c23.3,0,46.156,3.461,66.1,10.009c5.387,1.769,11.208-1.012,13.219-6.311c5.534-14.583,19.721-24.381,35.303-24.381 c20.822,0,37.762,16.94,37.762,37.762c0,13.572-7.349,26.17-19.18,32.876c-4.029,2.284-6.109,6.919-5.137,11.447 c0.54,2.516,0.814,5.066,0.814,7.581c0,2.016,0.015,4.094,0.031,6.223c0.019,2.558,0.029,5.178,0.022,7.828 c-15.306,8.113-62.131,30.187-96.601,17.069c-20.846-7.937-43.81-7.936-64.664-0.001 C189.651,231.733,142.813,209.643,127.528,201.539z M177.272,414.172h-27.786V293.263c8.109,4.908,17.383,9.014,27.786,12.279 V414.172z M316.416,414.172H198.475V310.756c16.864,3.162,36.293,4.77,57.99,4.77c22.542,0,42.629-1.733,59.951-5.146V414.172z M363.455,414.172h-25.836V304.918c9.612-3.156,18.234-7.055,25.836-11.659V414.172z M366.424,264.171 c-9.692,10.023-23.889,17.639-42.202,22.638c-18.237,4.986-41.034,7.513-67.757,7.513c-25.834,0-48.013-2.363-65.926-7.028 c-19.22-4.994-34.035-12.774-44.037-23.127c-10.859-11.221-15.504-24.765-17.496-38.204c23.62,10.92,66.786,26.119,102.668,12.463 c15.99-6.085,33.597-6.086,49.58,0.001c10.134,3.856,20.844,5.41,31.537,5.41c27.162,0,54.176-10.035,71.13-17.871 C381.929,239.407,377.284,252.95,366.424,264.171z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        <h3 class="text-lg font-semibold">Swamp</h3>
+                    </a>
+                    <a href="#" class="p-1 text-swamp-900 flex items-center space-x-2 hover:bg-swamp-50 rounded-lg">
+                        <svg class="w-8 h-8 " fill="currentColor" stroke="currentColor"
+                            viewBox="-43.32 -43.32 327.29 327.29">
+                            <g id="SVGRepo_iconCarrier">
+                                <g>
+                                    <path
+                                        d="m218.787,119.069c-7.552-18.233-23.021-35.615-43.56-48.944-5.611-3.642-11.369-6.826-17.027-9.48 0.001-0.074 0.005-0.148 0.005-0.222 0-15.537-9.405-28.913-22.818-34.749l12.87-12.87c2.929-2.929 2.929-7.678 0-10.606-2.93-2.929-7.678-2.929-10.607,0l-17.237,17.237-17.068-17.068c-2.93-2.929-7.678-2.929-10.607-8.88178e-16-2.929,2.929-2.929,7.678 0,10.606l12.644,12.644c-13.478,5.809-22.94,19.221-22.94,34.805 0,0.074 0.004,0.148 0.005,0.223-5.659,2.654-11.417,5.839-17.029,9.481-20.537,13.329-36.006,30.711-43.558,48.943-8.021,19.364 1.207,41.645 20.573,49.667 4.648,1.925 9.538,2.901 14.534,2.901 6.008-0.001 11.758-1.412 16.9-3.96 9.77,16.056 27.176,26.038 46.456,26.038 19.279,0 36.686-9.981 46.456-26.036 5.142,2.546 10.893,3.958 16.901,3.958 4.996,0 9.886-0.976 14.534-2.901 19.366-8.022 28.595-30.303 20.573-49.667zm-98.464-81.528c10.602,0 19.541,7.25 22.127,17.051-5.886-1.723-11.348-2.661-16.02-2.661l-12.216,.001c-4.672,0-10.133,0.938-16.019,2.661 2.586-9.802 11.526-17.052 22.128-17.052zm21.517,94.241h-43.034l21.518-52.555 21.516,52.555zm-84.875,24.855c-3.016,0-5.974-0.592-8.793-1.759-11.724-4.856-17.311-18.345-12.455-30.068 10.062-24.291 36.026-43.406 57.037-52.348 0.341-0.115 0.672-0.248 0.986-0.407 5.579-2.307 10.785-3.89 15.208-4.632l-28.217,68.921c-0.008,0.018-0.016,0.036-0.022,0.054l-2.468,6.027c-1.387,3.347-3.497,6.227-6.099,8.509-0.101,0.079-0.197,0.162-0.293,0.245-4.069,3.45-9.293,5.457-14.884,5.458zm63.358,22.078c-14.55,0-27.627-7.844-34.513-20.336 2.575-3.007 4.724-6.438 6.3-10.242l.555-1.355h55.316l.566,1.384c1.572,3.794 3.716,7.217 6.287,10.218-6.887,12.489-19.963,20.331-34.511,20.331zm72.152-23.838c-2.819,1.167-5.778,1.759-8.795,1.759-5.617,0-10.865-2.026-14.94-5.502-0.068-0.058-0.136-0.117-0.206-0.172-2.612-2.281-4.73-5.162-6.117-8.51l-2.477-6.049c-0.009-0.022-0.018-0.044-0.027-0.066l-28.218-68.923c4.429,0.74 9.648,2.328 15.245,4.645 0.289,0.145 0.593,0.266 0.904,0.373 21.006,8.931 47.013,28.06 57.085,52.377 4.856,11.724-0.731,25.212-12.454,30.068z">
+                                    </path>
+                                    <path
+                                        d="m175.408,183.757c-2.93-2.929-7.678-2.929-10.607,0-2.929,2.929-2.929,7.678 0,10.606l16.592,16.592c1.465,1.464 3.385,2.197 5.304,2.197 1.919,0 3.839-0.732 5.304-2.197 2.929-2.929 2.929-7.678 0-10.606l-16.593-16.592z">
+                                    </path>
+                                    <path
+                                        d="m120.323,202.182c-4.143,0-7.5,3.358-7.5,7.5v23.464c0,4.142 3.357,7.5 7.5,7.5s7.5-3.358 7.5-7.5v-23.464c0-4.142-3.357-7.5-7.5-7.5z">
+                                    </path>
+                                    <path
+                                        d="m65.239,183.758l-16.591,16.591c-2.929,2.929-2.929,7.678 0,10.606 1.465,1.464 3.385,2.197 5.304,2.197 1.919,0 3.839-0.732 5.304-2.197l16.591-16.591c2.929-2.929 2.929-7.678 0-10.606-2.93-2.929-7.678-2.929-10.608,0z">
+                                    </path>
+                                </g>
+                            </g>
+                        </svg>
+                        <h3 class="text-lg font-semibold">Events</h3>
+                    </a>
+                    <a href="#" class="p-1 text-swamp-900 flex items-center space-x-2 hover:bg-swamp-50 rounded-lg">
+                        <svg class="w-8 h-8 " fill="currentColor" viewBox="-122.88 -122.88 757.76 757.76"
+                            stroke-width="0.0">
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M452.09,335.122c62.386-69.965,60.006-177.603,59.867-182.309c-0.255-8.712-7.161-15.767-15.864-16.21 c-2.307-0.116-34.685-1.557-74.997,6.427c-7.934-39.686-21.397-68.089-22.046-69.442c-3.695-7.715-12.621-11.393-20.681-8.529 c-1.409,0.502-30.793,11.089-64.301,33.391c-22.136-33.013-45.055-53.88-46.902-55.536c-6.353-5.7-15.98-5.7-22.333,0 c-1.847,1.658-24.767,22.523-46.902,55.536c-33.507-22.302-62.891-32.891-64.3-33.392c-8.061-2.866-16.983,0.815-20.681,8.529 c-0.649,1.353-14.111,29.756-22.046,69.442c-40.312-7.986-72.689-6.543-74.996-6.426c-8.706,0.441-15.61,7.497-15.865,16.21 c-0.138,4.706-2.518,112.345,59.867,182.309c-25.548,10.116-54.712,27.242-54.712,54.639c0,26.751,27.147,48.071,80.688,63.368 c45.665,13.047,106.079,20.232,170.114,20.232c64.035,0,124.449-7.185,170.114-20.232c53.54-15.297,80.688-36.617,80.688-63.368 C506.802,362.378,477.675,345.252,452.09,335.122z M478.058,170.096c-1.946,31.969-11.425,103.617-56.537,148.728 c-36.2,36.199-89.566,48.414-125.646,52.438c39.064-48.084,66.363-107.116,59.272-168.736 C398.199,176.455,451.645,171.071,478.058,170.096z M374.92,102.738c4.236,11.349,9.815,28.472,13.716,48.559 c-13.576,4.293-27.37,9.806-40.69,16.88c-4.406-14.561-10.245-28.283-16.784-40.922 C348.028,115.898,363.966,107.764,374.92,102.738z M256.021,79.056c35.584,38.182,66.859,90.846,66.859,143.503 c0,63.89-45.323,120.279-66.902,143.503c-21.587-23.163-66.859-79.39-66.859-143.503C189.12,170.1,220.169,117.642,256.021,79.056 z M137.081,102.738c10.957,5.028,26.895,13.161,43.758,24.516c-6.539,12.639-12.377,26.362-16.784,40.922 c-13.319-7.074-27.113-12.587-40.689-16.88C127.267,131.207,132.847,114.083,137.081,102.738z M33.942,170.07 c26.377,0.94,79.734,6.278,122.913,32.453c-7.089,61.584,20.174,120.616,59.271,168.739 c-36.08-4.024-89.446-16.237-125.645-52.438C45.355,273.698,35.883,202.016,33.942,170.07z M416.928,420.976 c-42.759,12.217-99.912,18.946-160.927,18.946c-61.015,0-118.167-6.728-160.928-18.946 c-46.066-13.162-56.434-27.299-56.434-31.214c0-3.733,9.353-16.619,49.518-29.148c45.956,33.345,113.973,48.174,167.843,45.886 c53.029,2.254,121.345-12.148,167.843-45.886c40.165,12.529,49.518,25.415,49.518,29.148 C473.362,393.676,462.995,407.814,416.928,420.976z">
+                                </path>
+                            </g>
+                        </svg>
+                        <h3 class="text-lg font-semibold">Ponds</h3>
+                    </a>
+                    <ul class="p-1 space-y-3">
+                        <li class="p-1 hover:bg-swamp-50 rounded-lg">
+                            <a href="#" class="flex items-center space-x-2">
+                                <span class="w-2 h-2 bg-swamp-400 rounded-full"></span>
+                                <span class="text-swamp-700">#DiningHallChat</span>
+                            </a>
+                        </li>
+                        <li class="p-1 hover:bg-swamp-50 rounded-lg">
+                            <a href="#" class="flex items-center space-x-2">
+                                <span class="w-2 h-2"></span>
+                                <span class="text-swamp-700">#LibraryQuietZone</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Post & Replies -->
+            <div class="lg:col-span-2 divide-y">
+                <!-- Original Post (Highlighted) -->
+                <div class="bg-white p-6 border-l-4 border-l-swamp-500">
+                    <div class="flex items-start space-x-3">
+                        <img src="https://i.pravatar.cc/100?u=frogger_vig@pravatar.com" alt="User"
+                            class="w-16 h-16 rounded-full">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2">
+                                <h4 class="font-semibold text-swamp-900">Viggo The Frogger</h4>
+                                <a href="profile.html"
+                                    class="text-sm text-swamp-500 hover:text-swamp-700">@frogger_vig</a>
+                                <span class="text-swamp-500">·</span>
+                                <span class="text-sm text-swamp-500">2h ago</span>
+                            </div>
+                            <p class="mt-2 text-swamp-700">
+                                When the code compiles on the first try 🐸✨
+                                <span class="text-swamp-700 hover:text-swamp-500">#TechMagic</span>
+                                <span class="text-swamp-700 hover:text-swamp-500">#PixelFrog</span>
+                            </p>
+                            <div class="mt-4 rounded-lg overflow-hidden cyber-border hover:cyber-glow transition-all">
+                                <video class="w-full aspect-video object-cover bg-slate-900"
+                                    poster="https://via.placeholder.com/800x450" controls preload="metadata"
+                                    title="Digital painting of a neon frog piloting a cyberpunk airship">
+                                    <source src="Standard_Mode_a_looed_gif_of_a_pixel_frog_flyi.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+
+                            <div class="mt-4 flex items-center space-x-6 text-swamp-500">
+                                <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg>
+                                    <span>2 Answers</span>
+                                </button>
+                                <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                                        </path>
+                                    </svg>
+                                    <span>1 Reribb</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reply Form -->
+                <div class="bg-swamp-50 p-6 sticky top-0 z-0 border-b border-swamp-200">
+                    <div class="flex items-start space-x-3">
+                        <img src="https://i.pravatar.cc/100" alt="You"
+                            class="w-12 h-12 rounded-full">
+                        <div class="flex-1">
+                            <textarea
+                                class="w-full p-4 border border-swamp-200 rounded-xl focus:ring-2 focus:ring-swamp-400 focus:border-transparent placeholder-swamp-500"
+                                rows="2" placeholder="Croak your reply..."></textarea>
+                            <div class="mt-4 flex justify-between items-center">
+                                <div class="space-x-2">
+                                    <button class="p-2 text-swamp-500 hover:bg-swamp-100 rounded-full">
+                                        🐸 Add Frogmoji
+                                    </button>
+                                </div>
+                                <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">
+                                    Send Answer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Replies Thread -->
+                <div class="divide-y divide-swamp-100">
+                    <!-- Reply 1 -->
+                    <div class="bg-white pl-6 py-4 relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-swamp-500"></div>
+                        <div class="flex items-start space-x-3">
+                            <img src="https://i.pravatar.cc/100?u=biology_buff@pravatar.com" alt="User"
+                                class="w-12 h-12 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="font-semibold text-swamp-900">BioBuddy</h4>
+                                    <a href="profile.html" class="text-sm text-swamp-500 hover:text-swamp-700">@biology_buff</a>
+                                    <span class="text-swamp-500">·</span>
+                                    <a href="post.html" class="text-sm text-swamp-500 hover:text-swamp-700">22min</a>
+                                </div>
+                                <p class="mt-2 text-swamp-700">
+                                    All hail the #PixelFrog !
+                                </p>
+                                <div class="mt-3 flex items-center space-x-4 text-swamp-500">
+                                    <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                        </svg>
+                                        <span>1 Answer</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nested Reply -->
+                    <div class="pl-4 relative">
+                        <div class="bg-white p-4 pl-6 relative">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-swamp-300"></div>
+                            <div class="flex items-start space-x-3">
+                                <img src="https://i.pravatar.cc/100?u=chem_frog@pravatar.com" alt="User"
+                                    class="w-10 h-10 rounded-full">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2">
+                                        <h4 class="font-medium text-swamp-900">ChemFrog</h4>
+                                        <a href="profile.html" class="text-xs text-swamp-500 hover:text-swamp-700">@chem_frog</a>
+                                        <span class="text-swamp-500">·</span>
+                                        <a href="post.html" class="text-xs text-swamp-500 hover:text-swamp-700">15min</a>
+                                    </div>
+                                    <p class="mt-1 text-sm text-swamp-700">
+                                        Mind if I call? I need help with the biochemistry section!
+                                    </p>
+                                    <div class="mt-3 flex items-center space-x-4 text-swamp-500">
+                                        <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                            </svg>
+                                            <span>Answer</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reply 2 -->
+                    <div class="bg-white pl-6 py-4 relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-swamp-500"></div>
+                        <div class="flex items-start space-x-3">
+                            <img src="https://i.pravatar.cc/100?u=prcs_toad@pravatar.com" alt="User"
+                                class="w-12 h-12 rounded-full">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2">
+                                    <h4 class="font-semibold text-swamp-900">ToadPrincess</h4>
+                                    <a href="profile.html" class="text-sm text-swamp-500 hover:text-swamp-700">@prcs_toad</a>
+                                    <span class="text-swamp-500">·</span>
+                                    <a href="post.html" class="text-sm text-swamp-500 hover:text-swamp-700">20min</a>
+                                </div>
+                                <p class="mt-2 text-swamp-700">
+                                    All hail the #PixelFrog !!! 
+                                </p>
+                                <div class="mt-3 flex items-center space-x-4 text-swamp-500">
+                                    <button class="flex items-center space-x-2 hover:text-swamp-600">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                        </svg>
+                                        <span>Answer</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right Sidebar -->
+            <div class="lg:col-span-1 bg-white invisible lg:visible">
+                <!-- Search-->
+                <div class="p-6 pb-0">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-swamp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input type="text" placeholder="Search"
+                            class="w-full pl-10 pr-4 py-2 bg-swamp-100 dark:bg-swamp-900 rounded-full border-none focus:ring-2 focus:ring-swamp-400 focus-visible:ring-swamp-400 placeholder:text-swamp-400">
+                    </div>
+                </div>
+                <!-- Trending Ponds -->
+                <div class="p-6 pb-0">
+                    <h3 class="text-lg font-semibold text-swamp-900 mb-4">Trending Ponds</h3>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="#" class="flex items-center space-x-3 group">
+                                <div class="w-8 h-8 bg-swamp-100 rounded-lg flex items-center justify-center">
+                                    <svg class="text-swamp-600" fill="currentColor" height="48px" width="48px"
+                                        viewBox="-122.88 -122.88 757.76 757.76" xml:space="preserve"
+                                        stroke="currentColor" stroke-width="0.00512">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke="#CCCCCC" stroke-width="2.048"></g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <g>
+                                                <g>
+                                                    <path
+                                                        d="M452.09,335.122c62.386-69.965,60.006-177.603,59.867-182.309c-0.255-8.712-7.161-15.767-15.864-16.21 c-2.307-0.116-34.685-1.557-74.997,6.427c-7.934-39.686-21.397-68.089-22.046-69.442c-3.695-7.715-12.621-11.393-20.681-8.529 c-1.409,0.502-30.793,11.089-64.301,33.391c-22.136-33.013-45.055-53.88-46.902-55.536c-6.353-5.7-15.98-5.7-22.333,0 c-1.847,1.658-24.767,22.523-46.902,55.536c-33.507-22.302-62.891-32.891-64.3-33.392c-8.061-2.866-16.983,0.815-20.681,8.529 c-0.649,1.353-14.111,29.756-22.046,69.442c-40.312-7.986-72.689-6.543-74.996-6.426c-8.706,0.441-15.61,7.497-15.865,16.21 c-0.138,4.706-2.518,112.345,59.867,182.309c-25.548,10.116-54.712,27.242-54.712,54.639c0,26.751,27.147,48.071,80.688,63.368 c45.665,13.047,106.079,20.232,170.114,20.232c64.035,0,124.449-7.185,170.114-20.232c53.54-15.297,80.688-36.617,80.688-63.368 C506.802,362.378,477.675,345.252,452.09,335.122z M478.058,170.096c-1.946,31.969-11.425,103.617-56.537,148.728 c-36.2,36.199-89.566,48.414-125.646,52.438c39.064-48.084,66.363-107.116,59.272-168.736 C398.199,176.455,451.645,171.071,478.058,170.096z M374.92,102.738c4.236,11.349,9.815,28.472,13.716,48.559 c-13.576,4.293-27.37,9.806-40.69,16.88c-4.406-14.561-10.245-28.283-16.784-40.922 C348.028,115.898,363.966,107.764,374.92,102.738z M256.021,79.056c35.584,38.182,66.859,90.846,66.859,143.503 c0,63.89-45.323,120.279-66.902,143.503c-21.587-23.163-66.859-79.39-66.859-143.503C189.12,170.1,220.169,117.642,256.021,79.056 z M137.081,102.738c10.957,5.028,26.895,13.161,43.758,24.516c-6.539,12.639-12.377,26.362-16.784,40.922 c-13.319-7.074-27.113-12.587-40.689-16.88C127.267,131.207,132.847,114.083,137.081,102.738z M33.942,170.07 c26.377,0.94,79.734,6.278,122.913,32.453c-7.089,61.584,20.174,120.616,59.271,168.739 c-36.08-4.024-89.446-16.237-125.645-52.438C45.355,273.698,35.883,202.016,33.942,170.07z M416.928,420.976 c-42.759,12.217-99.912,18.946-160.927,18.946c-61.015,0-118.167-6.728-160.928-18.946 c-46.066-13.162-56.434-27.299-56.434-31.214c0-3.733,9.353-16.619,49.518-29.148c45.956,33.345,113.973,48.174,167.843,45.886 c53.029,2.254,121.345-12.148,167.843-45.886c40.165,12.529,49.518,25.415,49.518,29.148 C473.362,393.676,462.995,407.814,416.928,420.976z">
+                                                    </path>
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-medium text-swamp-900 group-hover:text-swamp-600">#MidtermStudyGroup
+                                    </h4>
+                                    <p class="text-sm text-swamp-500">1.2k posts</p>
+                                </div>
+                            </a>
+                        </li>
+                        <!-- Add more trending ponds -->
+                    </ul>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="p-6 pb-0">
+                    <h3 class="text-lg font-semibold text-swamp-900 mb-4">Upcoming Fireflies</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-12 flex-shrink-0 text-center">
+                                <div class="text-sm font-semibold text-swamp-600">MAR</div>
+                                <div class="text-2xl font-bold text-swamp-900">15</div>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-swamp-900">Career Fair Prep</h4>
+                                <p class="text-sm text-swamp-500">Career Center · 3PM</p>
+                            </div>
+                        </div>
+                        <!-- Add more events -->
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="flex items-start space-x-2 text-swamp-600">
+                        <a href="#" class="hover:text-swamp-800">Contact</a>
+                        <span>•</span>
+                        <a href="privacy.html" class="hover:text-swamp-800">Privacy</a>
+                        <span>•</span>
+                        <a href="tos.html" class="hover:text-swamp-800">Terms</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Post Modal (Hidden by default) -->
+    <div id="postModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">New Ribbit</h3>
+                <button onclick="closePostModal()" class="text-swamp-500 hover:text-swamp-700">
+                    ✕
+                </button>
+            </div>
+            <textarea
+                class="w-full p-4 border border-swamp-200 rounded-lg focus:ring-2 focus:ring-swamp-400 focus:border-transparent"
+                rows="4" placeholder="What's hopping?"></textarea>
+            <div class="mt-4 flex justify-between items-center">
+                <div class="space-x-2">
+                    <button class="p-2 text-swamp-500 hover:bg-swamp-100 rounded-full">
+                        🐸 Add Frogmoji
+                    </button>
+                </div>
+                <button class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600">
+                    Send Ribbit
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openPostModal() {
+            document.getElementById('postModal').classList.remove('hidden');
+        }
+
+        function closePostModal() {
+            document.getElementById('postModal').classList.add('hidden');
+        }
+    </script>
+
+    <script>
+        (function () {
+            // Elements
+            const btn = document.getElementById('settingsButton');
+            const dropdown = document.getElementById('settingsDropdown');
+            let isOpen = false;
+
+            // Toggle dropdown
+            function toggleDropdown() {
+                isOpen = !isOpen;
+                dropdown.classList.toggle('hidden', !isOpen);
+                btn.setAttribute('aria-expanded', isOpen);
+            }
+
+            // Close dropdown
+            function closeDropdown() {
+                isOpen = false;
+                dropdown.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+
+            // Event listeners
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleDropdown();
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+                    closeDropdown();
+                }
+            });
+
+            // Close on Esc key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeDropdown();
+            });
+        })();
+    </script>
+</body>
+
+</html>
