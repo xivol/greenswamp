@@ -1,0 +1,32 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2026-03-23T14:01:14+03:00",
+  "id": "greenswamp-1-ru",
+  "duration": 0,
+  "title": "Преобразование статического HTML-шаблона в ASP.NET Core Razor Pages",
+  "authors": "“На основе шаблона xivol/greenswamp”",
+  "summary": "“Пошаговое руководство по превращению статического шаблона Greenswamp в полноценное веб-приложение на ASP.NET Core Razor Pages с общим макетом, страницей 404 и логированием запросов.”",
+  "source": ".\\greenswamp-1.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "[“asp.netcore”",
+    "“razorpages”",
+    "“веб-разработка”]"
+  ],
+  "tags": [
+    "[“csharp”",
+    "[“web”]",
+    "“dotnet”",
+    "“razor”",
+    "“лендинг”",
+    "“логирование”]"
+  ],
+  "feedback": "“https://github.com/xivol/greenswamp/issues”",
+  "url": "greenswamp-1-ru"
+}

@@ -1,0 +1,804 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Преобразование статического HTML-шаблона в ASP.NET Core Razor Pages</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=Material+Icons&family=Material+Symbols+Outlined&display=block">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    /* modern-codelab.css – современная тема для Google Codelabs (светлая/тёмная) */
+/* Подключается после стандартного codelab-elements.css для переопределения */
+
+/* ===== Переменные ===== */
+:root {
+  /* Цветовая схема (светлая) */
+  --c-primary: #1a73e8;
+  --c-primary-dark: #0d47a1;
+  --c-primary-light: #e8f0fe;
+  --c-secondary: #34a853;
+  --c-secondary-dark: #0b5e2e;
+  --c-danger: #ea4335;
+  --c-text: #202124;
+  --c-text-secondary: #5f6368;
+  --c-border: #dadce0;
+  --c-bg: #ffffff;
+  --c-bg-alt: #f8f9fa;
+  --c-code-bg: #f1f3f4;
+  --c-card-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.05);
+  --c-transition: 0.2s ease-in-out;
+  --font-sans: 'Google Sans', 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Roboto Mono', 'SF Mono', 'Menlo', monospace;
+  --border-radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-primary: #8ab4f8;
+    --c-primary-dark: #c2e0ff;
+    --c-primary-light: #2a2a2e;
+    --c-secondary: #81c995;
+    --c-secondary-dark: #b9f6ca;
+    --c-danger: #f28b82;
+    --c-text: #e8eaed;
+    --c-text-secondary: #9aa0a6;
+    --c-border: #3c4043;
+    --c-bg: #202124;
+    --c-bg-alt: #2d2e31;
+    --c-code-bg: #2d2e31;
+    --c-card-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+}
+
+/* ===== Общие стили ===== */
+body {
+  font-family: var(--font-sans);
+  color: var(--c-text);
+  background: var(--c-bg);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Контейнер codelab */
+.google-codelab {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Заголовок codelab */
+.google-codelab h1 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: var(--c-text);
+  border-bottom: 2px solid var(--c-primary);
+  display: inline-block;
+  padding-bottom: 0.25rem;
+}
+
+/* Шаги */
+.google-codelab-step {
+  margin: 2rem 0;
+  background: var(--c-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--c-card-shadow);
+  transition: box-shadow var(--c-transition);
+}
+
+.google-codelab-step:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Заголовки шагов */
+.google-codelab-step h2 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-left: 4px solid var(--c-primary);
+  padding-left: 1rem;
+}
+
+/* Внутренние заголовки (h3 и т.д.) */
+.google-codelab-step h3 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin: 1.5rem 0 0.75rem;
+  color: var(--c-text);
+}
+
+.google-codelab-step h4 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 1rem 0 0.5rem;
+  color: var(--c-text-secondary);
+}
+
+/* Параграфы */
+.google-codelab-step p {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+/* Списки */
+.google-codelab-step ul, 
+.google-codelab-step ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.google-codelab-step li {
+  margin: 0.5rem 0;
+}
+
+/* Ссылки */
+.google-codelab-step a {
+  color: var(--c-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--c-transition);
+}
+
+.google-codelab-step a:hover {
+  border-bottom-color: var(--c-primary);
+}
+
+/* Код */
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--c-code-bg);
+  border-radius: 4px;
+}
+
+code {
+  padding: 0.2rem 0.4rem;
+  white-space: nowrap;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  border-left: 4px solid var(--c-primary);
+  border-radius: var(--border-radius);
+}
+
+pre code {
+  padding: 0;
+  white-space: pre;
+  background: none;
+}
+
+/* Таблицы (инфобоксы, таблицы команд) */
+.google-codelab-step table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--c-card-shadow);
+}
+
+.google-codelab-step td, 
+.google-codelab-step th {
+  border: 1px solid var(--c-border);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.google-codelab-step th {
+  background: var(--c-bg-alt);
+  font-weight: 500;
+}
+
+/* Инфобоксы (одноячеечные таблицы с фоном) */
+.google-codelab-step table[bgcolor] {
+  background: none !important;
+}
+
+/* Специфические инфобоксы: позитивные и негативные */
+.google-codelab-step table:has(> tbody > tr > td[bgcolor="#e8f5e9"]),
+.google-codelab-step table:has(> tr > td[bgcolor="#e8f5e9"]) {
+  background-color: rgba(52, 168, 83, 0.1);
+  border-left: 4px solid var(--c-secondary);
+}
+.google-codelab-step table:has(> tbody > tr > td[bgcolor="#ffebee"]),
+.google-codelab-step table:has(> tr > td[bgcolor="#ffebee"]) {
+  background-color: rgba(234, 67, 53, 0.1);
+  border-left: 4px solid var(--c-danger);
+}
+
+/* Кастомная стилизация для ячеек инфобоксов (если нужно) */
+.google-codelab-step td[bgcolor="#e8f5e9"],
+.google-codelab-step td[bgcolor="#ffebee"] {
+  background-color: transparent !important;
+  padding: 1rem;
+}
+
+/* Изображения */
+.google-codelab-step img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--c-card-shadow);
+  margin: 1rem 0;
+  display: block;
+}
+
+/* Видео-контейнер (если есть YouTube) */
+.google-codelab-step .video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  margin: 1rem 0;
+  border-radius: var(--border-radius);
+}
+
+.google-codelab-step .video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Навигационные кнопки (если есть) */
+.codelab-nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--c-border);
+}
+
+.codelab-nav-buttons button {
+  background: var(--c-primary);
+  border: none;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--c-transition);
+}
+
+.codelab-nav-buttons button:hover {
+  background: var(--c-primary-dark);
+}
+
+/* Счётчик времени в шаге */
+.duration {
+  display: inline-block;
+  background: var(--c-bg-alt);
+  color: var(--c-text-secondary);
+  font-size: 0.8rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  margin-left: 0.5rem;
+}
+
+/* Боковое оглавление (если используется) */
+.codelab-toc {
+  background: var(--c-bg-alt);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.codelab-toc a {
+  display: block;
+  padding: 0.3rem 0;
+  color: var(--c-text);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: 0.75rem;
+  transition: all var(--c-transition);
+}
+
+.codelab-toc a:hover,
+.codelab-toc a.active {
+  border-left-color: var(--c-primary);
+  color: var(--c-primary);
+  background: var(--c-primary-light);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .google-codelab {
+    padding: 1rem;
+  }
+  
+  .google-codelab h1 {
+    font-size: 2rem;
+  }
+  
+  .google-codelab-step h2 {
+    font-size: 1.5rem;
+  }
+  
+  pre {
+    font-size: 0.85rem;
+  }
+  
+  code {
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+/* Стили для подсветки синтаксиса (если используется prettify) */
+/* можно добавить свою тему для prettify или оставить стандартную */
+.prettyprint {
+  background: var(--c-code-bg) !important;
+  border: none !important;
+  padding: 1rem !important;
+  border-radius: var(--border-radius) !important;
+}
+
+/* Анимация появления шагов (опционально) */
+.google-codelab-step {
+  animation: fadeInUp 0.4s ease-out forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Интерактивные элементы (чекбоксы, кнопки) */
+.google-codelab-step input[type="checkbox"] {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+  </style>
+</head>
+<body codelabs-content-type="paginated">
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="greenswamp-1-ru"
+                  title="Преобразование статического HTML-шаблона в ASP.NET Core Razor Pages"
+                  environment="web"
+                  feedback-link="“https://github.com/xivol/greenswamp/issues”">
+    
+      <google-codelab-step label="Что вы изучите" duration="0">
+        <ul>
+<li>Создание проекта ASP.NET Core Razor Pages</li>
+<li>Организация статических файлов (CSS, изображения, видео) в папке <code>wwwroot</code></li>
+<li>Создание общего макета (<code>_Layout.cshtml</code>) для всех страниц</li>
+<li>Преобразование статических HTML‑страниц в Razor Pages</li>
+<li>Настройка собственной страницы ошибки 404</li>
+<li>Включение логирования HTTP‑запросов в ASP.NET Core</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 1: Создайте проект ASP.NET Core Razor Pages" duration="0">
+        <p><strong>Продолжительность: 3:00</strong></p>
+<p>Вы можете создать проект в <strong>Visual Studio</strong> (с графическим интерфейсом) или в <strong>Visual Studio Code</strong> (через терминал). Выберите подходящий вам способ.</p>
+<h2 is-upgraded>Способ 1: Visual Studio (Windows)</h2>
+<ol type="1">
+<li>Запустите Visual Studio.</li>
+<li>На стартовом экране выберите <strong>Создать проект</strong>.</li>
+<li>В окне выбора шаблона найдите <strong>ASP.NET Core Web App (Razor Pages)</strong>.<br><em>Если не видите, воспользуйтесь поиском.</em></li>
+<li>Нажмите <strong>Далее</strong>.</li>
+<li>Укажите имя проекта: <code>GreenswampSite</code>, выберите папку для решения и нажмите <strong>Далее</strong>.</li>
+<li>В разделе <strong>Дополнительные сведения</strong>: <ul>
+<li>Выберите целевую платформу (например, .NET 8.0).</li>
+<li>Убедитесь, что <strong>Проверка подлинности</strong> установлена как <strong>Без проверки подлинности</strong>.</li>
+<li>Снимите галочку <strong>Настроить для HTTPS</strong>, если не планируете использовать HTTPS локально.</li>
+</ul>
+</li>
+<li>Нажмите <strong>Создать</strong>.</li>
+</ol>
+<p>Visual Studio создаст проект и откроет его. Готово.</p>
+<h2 is-upgraded>Способ 2: Visual Studio Code (или любой терминал)</h2>
+<ol type="1">
+<li>Откройте терминал (в VS Code: <em>Терминал → Новый терминал</em>).</li>
+<li>Перейдите в папку, где вы хотите разместить проект.</li>
+<li>Выполните команду:<pre><code language="language-bash" class="language-bash">dotnet new webapp -n GreenswampSite
+</code></pre>
+</li>
+<li>Перейдите в созданную папку проекта:<pre><code language="language-bash" class="language-bash">cd GreenswampSite
+</code></pre>
+</li>
+<li>Откройте проект в VS Code (если используете его):<pre><code language="language-bash" class="language-bash">code .
+</code></pre>
+</li>
+</ol>
+<p>Проект готов. Вы можете сразу запустить его командой <code>dotnet run</code> или через меню отладки в VS Code.</p>
+<p><strong>Примечание:</strong> После создания убедитесь, что проект запускается и открывается страница по умолчанию (<code>https://localhost:5001</code> или <code>http://localhost:5000</code>). Для этого выполните <code>dotnet run</code> и откройте указанный в терминале адрес в браузере.</p>
+<p>Теперь приведу <strong>полный обновлённый файл codelab</strong> с учётом этого изменения. Он полностью готов к использованию.</p>
+<pre><code language="language-markdown" class="language-markdown">---
+title: &#34;Преобразование статического HTML-шаблона в ASP.NET Core Razor Pages&#34;
+summary: &#34;Пошаговое руководство по превращению статического шаблона Greenswamp в полноценное веб-приложение на ASP.NET Core Razor Pages с общим макетом, страницей 404 и логированием запросов.&#34;
+id: greenswamp-aspnetcore-ru
+categories: [&#34;ASP.NET Core&#34;, &#34;Razor Pages&#34;, &#34;Веб-разработка&#34;]
+tags: [&#34;csharp&#34;, &#34;dotnet&#34;, &#34;razor&#34;, &#34;лендинг&#34;, &#34;логирование&#34;]
+status: Published
+authors: &#34;На основе шаблона xivol/greenswamp&#34;
+feedback link: &#34;https://github.com/xivol/greenswamp/issues&#34;
+environments: [&#34;Web&#34;]
+duration: 30
+---
+
+# Преобразование статического HTML-шаблона в ASP.NET Core Razor Pages
+
+## Что вы изучите
+- Создание проекта ASP.NET Core Razor Pages
+- Организация статических файлов (CSS, изображения, видео) в папке `wwwroot`
+- Создание общего макета (`_Layout.cshtml`) для всех страниц
+- Преобразование статических HTML‑страниц в Razor Pages
+- Настройка собственной страницы ошибки 404
+- Включение логирования HTTP‑запросов в ASP.NET Core
+
+---
+
+## Шаг 1: Создайте проект ASP.NET Core Razor Pages
+**Продолжительность: 3:00**
+
+Вы можете создать проект в **Visual Studio** (с графическим интерфейсом) или в **Visual Studio Code** (через терминал). Выберите подходящий вам способ.
+
+### Способ 1: Visual Studio (Windows)
+
+1. Запустите Visual Studio.
+2. На стартовом экране выберите **Создать проект**.
+3. В окне выбора шаблона найдите **ASP.NET Core Web App (Razor Pages)**.  
+   *Если не видите, воспользуйтесь поиском.*
+4. Нажмите **Далее**.
+5. Укажите имя проекта: `GreenswampSite`, выберите папку для решения и нажмите **Далее**.
+6. В разделе **Дополнительные сведения**:
+   - Выберите целевую платформу (например, .NET 8.0).
+   - Убедитесь, что **Проверка подлинности** установлена как **Без проверки подлинности**.
+   - Снимите галочку **Настроить для HTTPS**, если не планируете использовать HTTPS локально.
+7. Нажмите **Создать**.
+
+Visual Studio создаст проект и откроет его. Готово.
+
+### Способ 2: Visual Studio Code (или любой терминал)
+
+1. Откройте терминал (в VS Code: *Терминал → Новый терминал*).
+2. Перейдите в папку, где вы хотите разместить проект.
+3. Выполните команду:
+
+   ```bash
+   dotnet new webapp -n GreenswampSite
+</code></pre>
+<ol type="1" start="4">
+<li>Перейдите в созданную папку проекта:<pre><code language="language-bash" class="language-bash">cd GreenswampSite
+</code></pre>
+</li>
+<li>Откройте проект в VS Code (если используете его):<pre><code language="language-bash" class="language-bash">code .
+</code></pre>
+</li>
+</ol>
+<p>Проект готов. Вы можете сразу запустить его командой <code>dotnet run</code> или через меню отладки в VS Code.</p>
+<p><strong>Примечание:</strong> После создания убедитесь, что проект запускается и открывается страница по умолчанию (<code>https://localhost:5001</code> или <code>http://localhost:5000</code>). Для этого выполните <code>dotnet run</code> и откройте указанный в терминале адрес в браузере.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 2: Склонируйте или скачайте статический шаблон" duration="0">
+        <p><strong>Продолжительность: 1:30</strong></p>
+<p>Нам понадобятся статические файлы и HTML‑структура из репозитория Greenswamp.</p>
+<pre><code language="language-bash" class="language-bash">git clone https://github.com/xivol/greenswamp.git
+</code></pre>
+<p>Или скачайте ZIP‑архив со страницы репозитория.</p>
+<p>В репозитории содержатся:</p>
+<ul>
+<li>Несколько HTML‑файлов (<code>index.html</code>, <code>about.html</code>, <code>contact.html</code>, ...)</li>
+<li>Изображения, SVG‑логотипы и видео</li>
+<li>CSS‑файлы отсутствуют (стили встроены или их нет; мы сохраним существующую структуру)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 3: Скопируйте статические ресурсы в 
+wwwroot" duration="0">
+        <p><strong>Продолжительность: 5:00</strong></p>
+<p>Скопируйте все <strong>не‑HTML</strong> файлы из клонированного репозитория в папку <code>wwwroot</code> вашего проекта.</p>
+<p>Структура <code>wwwroot</code> должна выглядеть примерно так:</p>
+<pre><code>wwwroot/
+├── green-toad-logo.svg
+├── green-toad-sad.svg
+├── green-toad-wink.svg
+├── istockphoto-1464399789-1024x1024.jpg
+├── istockphoto-831860650-1024x1024.jpg
+├── professor-about.png
+└── (другие изображения, видео или CSS, если есть)
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 4: Создайте общий макет (
+_Layout.cshtml)" duration="0">
+        <p><strong>Продолжительность: 8:00</strong></p>
+<p>В папке <code>Pages/Shared</code> создайте файл <code>_Layout.cshtml</code>. Этот файл будет содержать общую структуру HTML (шапку, навигацию, подвал), которую будут использовать все страницы.</p>
+<p>Откройте <code>index.html</code> из репозитория и извлеките всё между тегами <code><body></code>, удалив содержимое, специфичное для страницы. Сохраните навигацию и подвал.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 5: Преобразуйте каждую HTML‑страницу в Razor Page" duration="0">
+        <p><strong>Продолжительность: 10:00</strong></p>
+<p>Создайте Razor Page для каждой требуемой страницы. Замените специфическое содержимое каждого HTML‑файла и используйте общий макет.</p>
+<h2 is-upgraded>5.1 Index (Главная страница)</h2>
+<p>Переименуйте или замените <code>Pages/Index.cshtml</code> (созданный шаблоном) следующим кодом:</p>
+<pre><code language="language-html" class="language-html">@page
+@model IndexModel
+@{
+    ViewData[&#34;Title&#34;] = &#34;Greenswamp&#34;;
+    Layout = &#34;_Layout&#34;;
+}
+
+&lt;div class=&#34;hero&#34;&gt;
+    &lt;h1&gt;Добро пожаловать в Greenswamp&lt;/h1&gt;
+    &lt;p&gt;Социальное болото, в которое можно прыгнуть...&lt;/p&gt;
+    &lt;img src=&#34;/shrek.jpg&#34; alt=&#34;Шрек&#34; /&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Остальное содержимое из <code>index.html</code> (внутри <code><body></code>) скопируйте в этот файл.</p>
+<h2 is-upgraded>5.2 Страница About</h2>
+<p>Создайте <code>Pages/About.cshtml</code>:</p>
+<pre><code language="language-html" class="language-html">@page
+@model AboutModel
+@{
+    ViewData[&#34;Title&#34;] = &#34;О нас&#34;;
+    Layout = &#34;_Layout&#34;;
+}
+
+&lt;!-- Вставьте сюда содержимое about.html --&gt;
+</code></pre>
+<p>Также создайте пустой файл кода <code>About.cshtml.cs</code> (если не требуется логика):</p>
+<pre><code language="language-csharp" class="language-csharp">using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace GreenswampSite.Pages;
+
+public class AboutModel : PageModel
+{
+    public void OnGet()
+    {
+    }
+}
+</code></pre>
+<h2 is-upgraded>5.3 Страница Contact</h2>
+<p>Создайте <code>Pages/Contact.cshtml</code> и вставьте содержимое <code>contact.html</code> внутрь <code><div></code> или <code><main></code>. Повторите аналогичный шаблон с простой моделью.</p>
+<h2 is-upgraded>5.4 Страница Privacy</h2>
+<p>Создайте <code>Pages/Privacy.cshtml</code> на основе <code>privacy.html</code>.</p>
+<h2 is-upgraded>5.5 Страница Terms of Service (Tos)</h2>
+<p>Создайте <code>Pages/Tos.cshtml</code> на основе <code>tos.html</code>.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 6: Создайте кастомную страницу 404" duration="0">
+        <p><strong>Продолжительность: 3:00</strong></p>
+<p>Создайте <code>Pages/StatusCode404.cshtml</code>:</p>
+<pre><code language="language-html" class="language-html">@page
+@model StatusCode404Model
+@{
+    ViewData[&#34;Title&#34;] = &#34;404 - Страница не найдена&#34;;
+    Layout = &#34;_Layout&#34;;
+}
+
+&lt;div class=&#34;error-container&#34;&gt;
+    &lt;h1&gt;404&lt;/h1&gt;
+    &lt;p&gt;Упс! Запрошенная страница не существует.&lt;/p&gt;
+    &lt;a href=&#34;/&#34;&gt;Вернуться на главную&lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Вы можете взять визуальное оформление из оригинального <code>404.html</code> в репозитории.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 7: Настройте обработку ошибки 404" duration="0">
+        <p><strong>Продолжительность: 4:00</strong></p>
+<p>Отредактируйте <code>Program.cs</code>, чтобы ASP.NET Core показывал вашу кастомную страницу 404 для неизвестных маршрутов и кодов статуса.</p>
+<p>Найдите часть после <code>app.MapRazorPages();</code> и добавьте строки:</p>
+<pre><code language="language-csharp" class="language-csharp">app.UseStatusCodePagesWithReExecute(&#34;/StatusCode404&#34;);
+app.MapFallbackToPage(&#34;/StatusCode404&#34;);
+</code></pre>
+<p>Ваш <code>Program.cs</code> должен выглядеть примерно так:</p>
+<pre><code language="language-csharp" class="language-csharp">var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+
+var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler(&#34;/Error&#34;);
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+
+app.UseStatusCodePagesWithReExecute(&#34;/StatusCode404&#34;);
+app.MapRazorPages();
+app.MapFallbackToPage(&#34;/StatusCode404&#34;);
+
+app.Run();
+</code></pre>
+<p>Теперь любой запрос, который не соответствует ни одной странице (например, <code>/несуществующая</code>), будет показывать вашу страницу 404.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 8: Включите логирование HTTP‑запросов" duration="0">
+        <p>Обновлён <strong>Шаг 8</strong> — теперь логирование запросов записывается не только в консоль, но и в файл с помощью библиотеки <strong>Serilog</strong>. Это наиболее простой способ, который часто используется в реальных проектах. Остальные шаги остались без изменений.</p>
+<p>Ниже приведён исправленный текст <strong>Шага 8</strong>. Вставьте его вместо предыдущей версии, либо используйте полный обновлённый файл codelab (я приложу его целиком после изменений).</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 8: Настройте логирование HTTP‑запросов в консоль и файл" duration="0">
+        <p><strong>Продолжительность: 5:00</strong></p>
+<p>В ASP.NET Core есть встроенное промежуточное ПО для логирования HTTP‑запросов, но по умолчанию оно пишет только в консоль. Чтобы сохранять логи в файл, мы используем библиотеку <strong>Serilog</strong> — простой и мощный инструмент.</p>
+<h2 is-upgraded>8.1 Установите пакеты Serilog</h2>
+<p>Обновил <strong>Шаг 8</strong> — теперь установка пакетов описана как для <strong>терминала (dotnet CLI)</strong>, так и для <strong>Visual Studio (через NuGet Package Manager)</strong>. Также добавил краткое пояснение, как использовать графический интерфейс. Остальные шаги не изменились.</p>
+<p>Ниже приведён <strong>исправленный текст Шага 8</strong>. Вставьте его вместо предыдущей версии, либо используйте полный обновлённый файл codelab (я приложу его целиком после изменений).</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 8: Настройте логирование HTTP‑запросов в консоль и файл" duration="0">
+        <p><strong>Продолжительность: 5:00</strong></p>
+<p>В ASP.NET Core есть встроенное промежуточное ПО для логирования HTTP‑запросов, но по умолчанию оно пишет только в консоль. Чтобы сохранять логи в файл, мы используем библиотеку <strong>Serilog</strong> — простой и мощный инструмент.</p>
+<h2 is-upgraded>8.1 Установите пакеты Serilog</h2>
+<p>Выберите способ, который соответствует вашей среде разработки.</p>
+<h3 is-upgraded>Способ 1: через терминал (dotnet CLI)</h3>
+<p>Выполните в терминале (в папке проекта):</p>
+<pre><code language="language-bash" class="language-bash">dotnet add package Serilog.AspNetCore
+dotnet add package Serilog.Sinks.File
+</code></pre>
+<ul>
+<li><code>Serilog.AspNetCore</code> — интеграция с ASP.NET Core.</li>
+<li><code>Serilog.Sinks.File</code> — запись логов в файл.</li>
+</ul>
+<h3 is-upgraded>Способ 2: через Visual Studio (NuGet Package Manager)</h3>
+<ol type="1">
+<li>В <strong>Visual Studio</strong> откройте проект <code>GreenswampSite</code>.</li>
+<li>Нажмите правой кнопкой мыши на проект в <strong>Обозревателе решений</strong> и выберите <strong>Управление пакетами NuGet</strong>.</li>
+<li>Перейдите на вкладку <strong>Обзор</strong>.</li>
+<li>Найдите пакет <code>Serilog.AspNetCore</code> и установите его.</li>
+<li>Затем найдите пакет <code>Serilog.Sinks.File</code> и установите его.</li>
+</ol>
+<p>После установки пакетов убедитесь, что в файле проекта <code>GreenswampSite.csproj</code> появились соответствующие ссылки.</p>
+<h2 is-upgraded>8.2 Настройте Serilog в <code>Program.cs</code></h2>
+<p>Замените содержимое <code>Program.cs</code> на следующий код:</p>
+<pre><code language="language-csharp" class="language-csharp">using Serilog;
+
+// Настройка Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration) // читает настройки из appsettings.json
+    .Enrich.FromLogContext()
+    .WriteTo.Console() // вывод в консоль
+    .WriteTo.File(&#34;logs/log-.txt&#34;, 
+        rollingInterval: RollingInterval.Day, // новый файл каждый день
+        retainedFileCountLimit: 7)            // хранить 7 дней
+    .CreateLogger();
+
+/* ...  */
+builder.Host.UseSerilog(); // заменяем встроенный логгер на Serilog
+
+/* ... */
+
+// Добавляем логирование HTTP-запросов
+app.UseHttpLogging();
+
+</code></pre>
+<h2 is-upgraded>8.3 Добавьте конфигурацию логирования в <code>appsettings.json</code></h2>
+<p>Откройте файл <code>appsettings.json</code> и добавьте секцию <code>"Serilog"</code>:</p>
+<pre><code language="language-json" class="language-json">{
+  &#34;Serilog&#34;: {
+    &#34;MinimumLevel&#34;: {
+      &#34;Default&#34;: &#34;Information&#34;,
+      &#34;Override&#34;: {
+        &#34;Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware&#34;: &#34;Information&#34;,
+        &#34;Microsoft&#34;: &#34;Warning&#34;,
+        &#34;System&#34;: &#34;Warning&#34;
+      }
+    }
+  },
+  &#34;Logging&#34;: {
+    &#34;LogLevel&#34;: {
+      &#34;Default&#34;: &#34;Information&#34;,
+      &#34;Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware&#34;: &#34;Information&#34;
+    }
+  },
+  &#34;AllowedHosts&#34;: &#34;*&#34;
+}
+</code></pre>
+<p>Теперь логи будут:</p>
+<ul>
+<li>Выводиться в консоль (как раньше).</li>
+<li>Сохраняться в папке <code>logs</code> с именем файла <code>log-20250323.txt</code> (дата будет меняться).</li>
+</ul>
+<p>Каждый HTTP‑запрос будет записан с методом, путём, статус‑кодом и длительностью.</p>
+<p><strong>Важно:</strong> Папка <code>logs</code> создаётся автоматически в корне проекта. Убедитесь, что она не добавлена в систему контроля версий (например, добавьте <code>logs/</code> в <code>.gitignore</code>).</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Шаг 9: Запустите и протестируйте приложение" duration="0">
+        <p><strong>Продолжительность: 2:00</strong></p>
+<p>Запустите проект:</p>
+<pre><code language="language-bash" class="language-bash">dotnet run
+</code></pre>
+<p>Перейдите по всем страницам:</p>
+<ul>
+<li><code>/</code> – главная</li>
+<li><code>/About</code></li>
+<li><code>/Contact</code></li>
+<li><code>/Privacy</code></li>
+<li><code>/Tos</code></li>
+<li>Любой несуществующий URL – должна отобразиться кастомная страница 404</li>
+</ul>
+<p>Посмотрите в терминал – вы должны увидеть логи каждого запроса.</p>
+<p>Если некоторые изображения или CSS не загружаются, проверьте, что пути в <code>_Layout.cshtml</code> и на страницах соответствуют файлам в <code>wwwroot</code>.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Поздравляем!" duration="0">
+        <p><strong>Продолжительность: 0:00</strong></p>
+<p>Вы успешно преобразовали статический HTML‑шаблон в полноценное веб‑приложение на ASP.NET Core Razor Pages. Теперь у вас есть:</p>
+<ul>
+<li>Чистое разделение общего макета и содержимого страниц</li>
+<li>Все статические ресурсы обслуживаются из папки <code>wwwroot</code></li>
+<li>Собственная обработка ошибки 404</li>
+<li>Логирование запросов для отладки и мониторинга</li>
+</ul>
+<p>Отсюда вы можете расширять проект, добавляя базу данных, аутентификацию пользователей или обработку форм – используя всю мощь .NET.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Часто задаваемые вопросы" duration="0">
+        <ul>
+<li><strong>Почему я вижу пустую страницу?<br></strong> Убедитесь, что вы не удалили строку <code>@RenderBody()</code> в макете. Также проверьте, что содержимое каждой страницы вставлено правильно.</li>
+<li><strong>Мои изображения не отображаются.<br></strong> Проверьте пути – они должны начинаться с <code>/</code> (например, <code>/green-toad-logo.svg</code>). Убедитесь, что файлы действительно находятся в папке <code>wwwroot</code>.</li>
+<li><strong>Как добавить больше страниц?<br></strong> Просто создайте новый файл <code>.cshtml</code> в папке <code>Pages</code> с директивой <code>@page</code> и укажите <code>Layout = "_Layout"</code>.</li>
+<li><strong>Можно ли использовать отдельный CSS‑файл?<br></strong> Да! Поместите его в <code>wwwroot/css/</code> и подключите в <code><head></code> макета <code>_Layout.cshtml</code>.</li>
+<li><strong>Как изменить вывод логов в файл?<br></strong> Добавьте файловый логгер (например, Serilog или встроенное расширение <code>AddFile</code>). См. <a href="https://learn.microsoft.com/ru-ru/aspnet/core/fundamentals/logging/" target="_blank">документацию по логированию в ASP.NET Core</a>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
