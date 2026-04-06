@@ -1,3 +1,355 @@
+# Entity Framework Core with ASP.NET Core – Complete Slide Deck with Lecture Notes
+
+Below is a **ready‑to‑use slide deck** in Markdown format (compatible with [Marp](https://marp.app/) or easily copy‑pasted into PowerPoint/Google Slides).  
+Each slide includes:
+
+- Slide title & content (bullets, code, tables)
+- **🎤 Lecture Notes** – what the instructor says
+
+The final slide contains a **textual flowchart** describing the Entity Framework configuration decision process.
+
+---
+
+## Slide 1: Title Slide
+
+# Entity Framework Core with ASP.NET Core  
+## Data Access Made Easy
+
+**🎤 Notes:**  
+Welcome. Today we’ll learn how to connect an ASP.NET Core application to a database using Entity Framework Core. We’ll cover both theory and hands‑on demos, from choosing a workflow to advanced startup initialization.
+
+---
+
+## Slide 2: What is an ORM? Why EF Core?
+
+- **ORM** = Object‑Relational Mapper – maps database tables to C# objects  
+- EF Core: Microsoft’s lightweight, cross‑platform ORM  
+- **Benefits**  
+  - Write LINQ queries instead of SQL  
+  - Automatic change tracking  
+  - Migrations – version control for DB schema  
+  - Works with SQL Server, PostgreSQL, SQLite, MySQL, etc.
+
+**🎤 Notes:**  
+“An ORM reduces the impedance mismatch between relational databases and object‑oriented code. EF Core is the modern version of Entity Framework, designed for .NET Core/.NET 5+. We’ll use it in every data‑centric ASP.NET Core app.”
+
+---
+
+## Slide 3: Code First vs. Database First
+
+| **Code First** | **Database First** |
+|----------------|---------------------|
+| Write C# classes → EF creates DB | Existing DB → scaffold C# models |
+| Full control via code | Use `dotnet ef dbcontext scaffold` |
+| Best for new projects | Best for legacy or DBA‑driven schemas |
+| Version control friendly | Regenerate when schema changes |
+
+**🎤 Notes:**  
+“We’ll focus on **Code First** because it’s the recommended approach for most new applications. Database First is available via scaffolding for when you already have a database.”
+
+**Demo:** Create a simple `Product` class and an empty DbContext.
+
+---
+
+## Slide 4: DbContext and DbSets
+
+- **DbContext** – session with the database, manages connections and change tracking  
+- Register in `Program.cs`:
+
+```csharp
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+```
+
+- **DbSet<T>** – represents a table:
+
+```csharp
+public class AppDbContext : DbContext
+{
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Category> Categories { get; set; }
+}
+```
+
+**🎤 Notes:**  
+“The DbContext is the heart of EF Core. We register it in DI so controllers can request it. DbSet properties tell EF Core which entity classes map to which tables.”
+
+---
+
+## Slide 5: Connection Strings
+
+- Store in `appsettings.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "Default": "Server=(localdb)\\mssqllocaldb;Database=MyStoreDb;Trusted_Connection=True;"
+  }
+}
+```
+
+- **Security**  
+  - Dev: User Secrets  
+  - Prod: Environment variables, Azure Key Vault  
+- Test connection:
+
+```csharp
+await context.Database.CanConnectAsync();
+```
+
+**🎤 Notes:**  
+“Connection strings are read from configuration – that’s why we call `GetConnectionString`. Never hard‑code them. For local development, use `(localdb)` or SQLite.”
+
+---
+
+## Slide 6: Fluent API vs. Data Annotations
+
+**Data Annotations** (inside entity class)
+
+```csharp
+[Key]
+public int Id { get; set; }
+[Required, MaxLength(100)]
+public string Name { get; set; }
+```
+
+**Fluent API** (inside `OnModelCreating`)
+
+```csharp
+modelBuilder.Entity<Product>(e => {
+    e.HasKey(p => p.Id);
+    e.Property(p => p.Name).IsRequired().HasMaxLength(100);
+    e.Property(p => p.Price).HasPrecision(18,2);
+});
+```
+
+**🎤 Notes:**  
+“Fluent API is more powerful (composite keys, indexes, cascading deletes). I recommend keeping entities clean and putting all mapping in `OnModelCreating`.”
+
+---
+
+## Slide 7: Migrations with EF Tools
+
+- **What are migrations?** – version control for database schema  
+- Install tools:
+
+```bash
+dotnet tool install --global dotnet-ef
+dotnet add package Microsoft.EntityFrameworkCore.Design
+```
+
+- Basic commands:
+
+| Command | Purpose |
+|---------|---------|
+| `dotnet ef migrations add InitialCreate` | Create migration |
+| `dotnet ef database update` | Apply pending migrations |
+| `dotnet ef migrations remove` | Remove last (not applied) |
+| `dotnet ef database update 0` | Revert all migrations |
+
+**🎤 Notes:**  
+“Migrations are like Git for your database schema. You commit migration files; teammates run `database update`. Never manually alter the database.”
+
+**Demo:** Add migration, inspect `Up()`/`Down()`, apply, show `__EFMigrationsHistory`.
+
+---
+
+## Slide 8: Dropping and Seeding in Development
+
+- **Drop database**:
+
+```bash
+dotnet ef database drop --force
+```
+
+- **Recreate & reseed** (clean slate):
+
+```bash
+dotnet ef database update
+# then run seeding logic
+```
+
+- **Static seeding** (in `OnModelCreating`):
+
+```csharp
+modelBuilder.Entity<Product>().HasData(
+    new Product { Id = 1, Name = "Laptop", Price = 999.99m }
+);
+```
+
+- **Dynamic seeding** (custom initializer called in `Program.cs`)
+
+**🎤 Notes:**  
+“Dropping and recreating is safe only in development. `HasData` is great for reference data. For dynamic test data, write a custom seeder.”
+
+**Demo:** Drop DB, migrate, run seeder, verify data via API.
+
+---
+
+## Slide 9: Initializing Database from a Pure SQL Script (New!)
+
+**Why?** – DBA provides `.sql` schema, legacy system, full control.
+
+### ✅ Approach 1: `IHostedService` (Recommended)
+
+```csharp
+public class DatabaseInitializer : IHostedService
+{
+    public async Task StartAsync(CancellationToken ct)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<YourDbContext>();
+        var sql = await File.ReadAllTextAsync("Schema/database.sql", ct);
+        await context.Database.ExecuteSqlRawAsync(sql, ct);
+    }
+}
+```
+
+Register: `builder.Services.AddHostedService<DatabaseInitializer>();`
+
+### 🔁 Approach 2: Direct in `Program.cs` (Blocking)
+
+```csharp
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<YourDbContext>();
+    var sql = File.ReadAllText("Schema/database.sql");
+    context.Database.ExecuteSqlRaw(sql);
+}
+```
+
+**🎤 Notes:**  
+“`IHostedService` runs **before** the server accepts requests – async, non‑blocking, production‑ready. Use the blocking version only for development.”
+
+---
+
+## Slide 10: Handling `GO` Statements in SQL Scripts
+
+- EF Core’s `ExecuteSqlRaw` does **not** understand `GO` batch separators.  
+- Use a helper to split and execute:
+
+```csharp
+private async Task ExecuteBatchScriptAsync(DbContext context, string script)
+{
+    var batches = script.Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+    foreach (var batch in batches)
+    {
+        if (!string.IsNullOrWhiteSpace(batch))
+            await context.Database.ExecuteSqlRawAsync(batch);
+    }
+}
+```
+
+**🎤 Notes:**  
+“Many SQL Server scripts use `GO`. This helper splits the script on `GO` and runs each batch separately. Call this instead of `ExecuteSqlRawAsync` directly.”
+
+---
+
+## Slide 11: Basic CRUD Controller
+
+- Inject `AppDbContext`:
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+public class ProductsController : ControllerBase
+{
+    private readonly AppDbContext _context;
+    public ProductsController(AppDbContext context) => _context = context;
+}
+```
+
+- **GET** all:
+
+```csharp
+[HttpGet]
+public async Task<IActionResult> GetAll() =>
+    Ok(await _context.Products.ToListAsync());
+```
+
+- **POST**:
+
+```csharp
+[HttpPost]
+public async Task<IActionResult> Create(Product product)
+{
+    _context.Products.Add(product);
+    await _context.SaveChangesAsync();
+    return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+}
+```
+
+**🎤 Notes:**  
+“Always use `async/await`. For `PUT` we set entity state to `Modified`. Use DTOs in real apps to avoid over‑posting.”
+
+**Demo:** Build full CRUD, test with Swagger.
+
+---
+
+## Slide 12: Development Best Practices
+
+| Do | Don't |
+|----|-------|
+| Use `AsNoTracking()` for read‑only queries | Use `EnsureDeleted()` in production |
+| Batch `SaveChangesAsync` (one per many ops) | Call `SaveChanges` inside loops |
+| Enable sensitive logging only in dev | Log passwords or secrets |
+| Use connection resiliency (retries) | Ignore transient faults |
+
+**🎤 Notes:**  
+“`AsNoTracking()` dramatically improves performance. Always batch your changes. Turn off sensitive logging in production – it can leak data.”
+
+---
+
+## Slide 13: Final Flowchart – Entity Framework Configuration Decision Process
+
+Below is a **textual flowchart** describing the steps to configure EF Core in an ASP.NET Core project.
+
+```
+Start: New ASP.NET Core Project?
+ │
+ ▼
+Do you have an existing database?
+ │
+ ├── Yes ──► Use Database First: scaffold with `dotnet ef dbcontext scaffold`
+ │            (then go to "Configure DbContext and connection string")
+ │
+ └── No ───► Use Code First: write entity classes and DbContext
+              │
+              ▼
+         Configure connection string in appsettings.json
+              │
+              ▼
+         Register DbContext in Program.cs with AddDbContext<T>
+              │
+              ▼
+         Choose mapping style: Fluent API (OnModelCreating) or Data Annotations
+              │
+              ▼
+         Do you need to create/update database schema?
+              │
+              ├── Yes ──► Use migrations: `dotnet ef migrations add` then `database update`
+              │            (or run a raw SQL script via IHostedService)
+              │
+              └── No ───► Database already exists? EnsureCreated() or run script once
+              │
+              ▼
+         Seed data? (HasData in OnModelCreating or custom initializer)
+              │
+              ▼
+         Build CRUD controllers using injected DbContext
+              │
+              ▼
+         Apply best practices: AsNoTracking(), batching, resiliency
+              │
+              ▼
+         Done – ready for development/production
+```
+
+**🎤 Notes:**  
+“This flowchart summarises the entire decision process. Use it as a quick reference when starting a new project. Start with ‘Do you have an existing database?’ and follow the branches. It covers everything we discussed today.”
+
+---
+
 # Part 1: Development & Experimentation – Running SQL Scripts and Quick Prototyping
 
 **Goal:** Learn how to execute raw SQL scripts, initialize a database at startup, and reverse‑engineer an existing database – perfect for demos, prototypes, or when you have a DBA‑provided `.sql` file.
