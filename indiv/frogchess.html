@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Frog Chess 🐸 - Greenswamp</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
     <script>
         tailwind.config = {
@@ -32,7 +33,7 @@
         * { box-sizing: border-box; user-select: none; }
 
         .swamp-bg {
-            background-image: url('istockphoto-1464399789-1024x1024.jpg');
+            background-image: url('/istockphoto-1464399789-1024x1024.jpg');
             background-repeat: repeat-x;
             background-size: auto 100%;
             background-position: center top;
@@ -272,10 +273,14 @@
             <!-- Logo Header -->
             <div class="text-center mb-12">
                 <div class="flex items-center justify-center space-x-3 mb-4">
-                    <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-16 w-16">
-                    <span class="text-4xl font-bold text-swamp-900">Frog Chess</span>
-                </div>         
-				<p class="mt-4 flex items-center justify-center space-x-4"> <a href="" class="text-swamp-700 hover:text-swamp-900 hover:underline">Read the rules</a> </p>       
+                    <img src="/green-toad-logo.svg" alt="Greenswamp Logo" class="h-16 w-16">
+                    <span class="text-4xl font-bold text-swamp-900">Greenswamp</span>
+                </div>
+                <p class="text-lg text-swamp-800">Frog Chess — Jump to Victory!</p>
+				<p class="mt-4 flex items-center justify-center space-x-4">
+                    <a href="./rules-bgg434812.pdf" class="text-swamp-700 hover:text-swamp-900 hover:underline">Read the rules</a>
+                    <a href="./frogs_by_probzzzz.png" class="text-swamp-700 hover:text-swamp-900 hover:underline">Look at frogs</a>
+                </p>
             </div>
 
             <!-- Game Card -->
@@ -292,26 +297,46 @@
                 <div id="gameCanvasParent"></div>
 
                 <!-- Join Modal Overlay (shown before server connection) -->
-                <div class="join-modal-backdrop" id="joinModalBackdrop">
-                    <div class="join-modal">
-                        <div class="join-modal-title">🐸 Frog Chess — Jump to Victory!</div>
+                 <div class="join-modal-backdrop" id="joinModalBackdrop">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 sm:p-12 border border-swamp-100 w-full max-w-md">
 
-                        <div>
-                            <label for="playerNameInput">Your frog name</label>
-                            <input type="text" id="playerNameInput"
-                                   placeholder="Froggy5000"
-                                   maxlength="16"
-								   required="True">
-                        </div>
+                        <h2 class="text-2xl font-bold text-swamp-900 text-center mb-8">🐸 Jump into the Pond</h2>
 
-                        <div>
-                            <label for="gameIdInput">Game ID <span style="font-weight:400;text-transform:none;color:#16a34a">(leave blank to create a new game)</span></label>
-                            <input type="text" id="gameIdInput"
-                                   placeholder="Paste a Game ID here"
-                                   value="">
-                        </div>
+                        <form class="space-y-8">
+                            <!-- Player Name -->
+                            <div class="space-y-2">
+                                <label for="playerNameInput" class="block text-base font-semibold text-swamp-900">Your player name</label>
+                                <input type="text" id="playerNameInput"
+                                       maxlength="16"
+                                       placeholder="Frogger"
+                                       class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                                   border border-swamp-200 focus:border-swamp-400
+                                   focus:ring-2 focus:ring-swamp-200 placeholder-slate-400
+                                   text-slate-900 shadow-sm">
+                            </div>
 
-                        <button id="joinBtn">🐸 JOIN / CREATE</button>
+                            <!-- Game ID -->
+                            <div class="space-y-2">
+                                <label for="gameIdInput" class="block text-base font-semibold text-swamp-900">
+                                    Game ID <span class="font-normal text-swamp-600 text-sm">(leave blank to create)</span>
+                                </label>
+                                <input type="text" id="gameIdInput"
+                                       placeholder="Paste a Game ID here"
+                                       class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                                              border border-swamp-200 focus:border-swamp-400
+                                              focus:ring-2 focus:ring-swamp-200 placeholder-slate-400
+                                              text-slate-900 shadow-sm">
+                            </div>
+
+                            <!-- Join Button -->
+                            <button id="joinBtn"
+                                    class="w-full bg-gradient-to-br from-swamp-500 to-swamp-600 text-white
+                                           py-4 px-6 rounded-xl hover:from-swamp-600 hover:to-swamp-700
+                                           focus:ring-2 focus:ring-swamp-400 font-semibold
+                                           transition-all duration-200 shadow-lg">
+                                🐸 Join / Create Game
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div><!-- /Game Card -->
@@ -332,7 +357,8 @@
 
 <script>
     // ── Modal dismiss ──────────────────────────────────────────
-    document.getElementById('joinBtn').addEventListener('click', function () {
+    document.getElementById('joinBtn').addEventListener('click', function (e) {
+        e.preventDefault()
         document.getElementById('joinModalBackdrop').style.display = 'none';
         startCycling();
     });
