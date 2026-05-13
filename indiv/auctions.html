@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lily Market — Greenswamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                swamp: {
+                  50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
+                  400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
+                  800: '#166534', 900: '#14532d',
+                }
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        #mobile-menu { transition: all 0.3s ease-out; transform-origin: top; }
+        #mobile-menu.hidden { opacity: 0; transform: scaleY(0); }
+        #mobile-menu.block  { opacity: 1; transform: scaleY(1); }
+        .auction-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .auction-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(22,101,52,0.12); }
+        .chip { transition: all 0.15s ease; cursor: pointer; }
+        .chip.active { background: #16a34a; color: white; border-color: #16a34a; }
+        .countdown-urgent { color: #dc2626; animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        .badge-new { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .search-glow:focus { box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+        .auction-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .auction-card:hover .auction-image {
+            transform: scale(1.05);
+        }
+        .image-container {
+            height: 144px;
+            overflow: hidden;
+            position: relative;
+        }
+        @media (min-width: 640px) {
+            .image-container {
+                height: 176px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-swamp-50 min-h-screen">
+
+<!-- Navigation -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <a href="/index.html" class="flex items-center space-x-2">
+                <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Swamp</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Ponds</a>
+                <a href="auctions.html" class="text-swamp-700 font-bold border-b-2 border-swamp-500 pb-0.5">Market</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Fireflies</a>
+                <a href="/login.html"
+                   class="bg-swamp-500 text-white px-5 py-2 rounded-full hover:bg-swamp-600 font-bold text-sm transition-colors">Sign In</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-swamp-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
+        <div class="px-4 py-3 space-y-3">
+            <a href="#" class="block text-swamp-600 font-semibold">Swamp</a>
+            <a href="#" class="block text-swamp-600 font-semibold">Ponds</a>
+            <a href="auctions.html" class="block text-swamp-700 font-bold">Market</a>
+            <a href="#" class="block text-swamp-600 font-semibold">Fireflies</a>
+            <a href="/login.html" class="block w-full text-center bg-swamp-500 text-white px-5 py-2 rounded-full hover:bg-swamp-600 font-bold">Sign In</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Page Header -->
+<div class="bg-gradient-to-br from-swamp-800 to-swamp-600 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-8 sm:py-10">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl sm:text-4xl font-black">
+                    <svg class="text-swamp-200 inline" fill="currentColor" height="48px" width="48px" version="1.1"
+                         id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="-122.88 -122.88 757.76 757.76">
+                        <path d="M452.09,335.122c62.386-69.965,60.006-177.603,59.867-182.309c-0.255-8.712-7.161-15.767-15.864-16.21 c-2.307-0.116-34.685-1.557-74.997,6.427c-7.934-39.686-21.397-68.089-22.046-69.442c-3.695-7.715-12.621-11.393-20.681-8.529 c-1.409,0.502-30.793,11.089-64.301,33.391c-22.136-33.013-45.055-53.88-46.902-55.536c-6.353-5.7-15.98-5.7-22.333,0 c-1.847,1.658-24.767,22.523-46.902,55.536c-33.507-22.302-62.891-32.891-64.3-33.392c-8.061-2.866-16.983,0.815-20.681,8.529 c-0.649,1.353-14.111,29.756-22.046,69.442c-40.312-7.986-72.689-6.543-74.996-6.426c-8.706,0.441-15.61,7.497-15.865,16.21 c-0.138,4.706-2.518,112.345,59.867,182.309c-25.548,10.116-54.712,27.242-54.712,54.639c0,26.751,27.147,48.071,80.688,63.368 c45.665,13.047,106.079,20.232,170.114,20.232c64.035,0,124.449-7.185,170.114-20.232c53.54-15.297,80.688-36.617,80.688-63.368 C506.802,362.378,477.675,345.252,452.09,335.122z M478.058,170.096c-1.946,31.969-11.425,103.617-56.537,148.728 c-36.2,36.199-89.566,48.414-125.646,52.438c39.064-48.084,66.363-107.116,59.272-168.736 C398.199,176.455,451.645,171.071,478.058,170.096z M374.92,102.738c4.236,11.349,9.815,28.472,13.716,48.559 c-13.576,4.293-27.37,9.806-40.69,16.88c-4.406-14.561-10.245-28.283-16.784-40.922 C348.028,115.898,363.966,107.764,374.92,102.738z M256.021,79.056c35.584,38.182,66.859,90.846,66.859,143.503 c0,63.89-45.323,120.279-66.902,143.503c-21.587-23.163-66.859-79.39-66.859-143.503C189.12,170.1,220.169,117.642,256.021,79.056z M137.081,102.738c10.957,5.028,26.895,13.161,43.758,24.516c-6.539,12.639-12.377,26.362-16.784,40.922 c-13.319-7.074-27.113-12.587-40.689-16.88C127.267,131.207,132.847,114.083,137.081,102.738z M33.942,170.07 c26.377,0.94,79.734,6.278,122.913,32.453c-7.089,61.584,20.174,120.616,59.271,168.739 c-36.08-4.024-89.446-16.237-125.645-52.438C45.355,273.698,35.883,202.016,33.942,170.07z M416.928,420.976 c-42.759,12.217-99.912,18.946-160.927,18.946c-61.015,0-118.167-6.728-160.928-18.946 c-46.066-13.162-56.434-27.299-56.434-31.214c0-3.733,9.353-16.619,49.518-29.148c45.956,33.345,113.973,48.174,167.843,45.886 c53.029,2.254,121.345-12.148,167.843-45.886c40.165,12.529,49.518,25.415,49.518,29.148 C473.362,393.676,462.995,407.814,416.928,420.976z"></path>
+                    </svg>
+                    Lily Market
+                </h1>
+                <p class="mt-1 text-swamp-200 font-semibold">Campus-only auctions. Bid, win, meet up.</p>
+            </div>
+            <a href="auctions-create.html"
+               class="inline-flex items-center gap-2 bg-white text-swamp-700 px-6 py-3 rounded-full font-bold hover:bg-swamp-100 transition-colors shadow-md self-start sm:self-auto">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                </svg>
+                New Listing
+            </a>
+        </div>
+
+        <!-- Search -->
+        <div class="mt-5 relative max-w-xl">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-swamp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
+            </svg>
+            <input type="text" placeholder="Search listings…" id="search-input"
+                   class="search-glow w-full pl-11 pr-4 py-3 rounded-full bg-white/15 backdrop-blur border border-white/30 text-white placeholder-swamp-300 font-semibold focus:outline-none focus:bg-white/25 transition-all"/>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="bg-white border-b border-swamp-100 sticky top-16 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center gap-2 overflow-x-auto py-3 scrollbar-hide" style="scrollbar-width:none">
+            <span class="text-xs font-bold text-swamp-500 uppercase tracking-wide whitespace-nowrap mr-1">Filter:</span>
+            <button data-filter="all" class="chip active whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-bold transition-all">All</button>
+            <button data-filter="books" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">📚 Books</button>
+            <button data-filter="electronics" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">💻 Electronics</button>
+            <button data-filter="clothes" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">👕 Clothes</button>
+            <button data-filter="sports" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">⚽ Sports</button>
+            <button data-filter="furniture" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">🪑 Furniture</button>
+            <button data-filter="other" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">🎲 Other</button>
+
+            <div class="ml-auto pl-3 border-l border-swamp-100 flex-shrink-0">
+                <select id="sort-select" class="text-sm font-bold text-swamp-700 border border-swamp-200 rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-swamp-300 bg-white">
+                    <option value="endingSoon">Ending Soon</option>
+                    <option value="newest">Newest</option>
+                    <option value="price_asc">Price: Low–High</option>
+                    <option value="price_desc">Price: High–Low</option>
+                    <option value="mostBids">Most Bids</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Listings Grid -->
+<main class="max-w-7xl mx-auto px-4 py-6">
+    <p class="text-sm text-swamp-500 font-semibold mb-4" id="listings-count"></p>
+
+    <div id="auctions-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+        <!-- Cards will be injected here -->
+    </div>
+
+    <!-- Load More Button -->
+    <div class="mt-8 text-center">
+        <button id="load-more-btn"
+                class="bg-white border-2 border-swamp-200 text-swamp-700 font-bold px-8 py-3 rounded-full hover:bg-swamp-50 hover:border-swamp-400 transition-all">
+            Load more listings
+        </button>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-swamp-900 text-white">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <div class="flex items-center space-x-2">
+                    <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                    <span class="text-xl font-bold">Greenswamp</span>
+                </div>
+            </div>
+            <div>
+                <p class="text-sm text-swamp-300">Connecting people one ribbit at a time.</p>
+            </div>
+            <div class="text-center">
+                <a href="/contact.html" class="mt-4 bg-swamp-500 px-6 py-2 rounded-full hover:bg-swamp-600 transition-colors text-white">Technical Support</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // ------------------------------
+    // 1. DEMO DATA (extracted from your existing cards + added picsumId)
+    // ------------------------------
+    const allListings = [
+        { id: 1, title: "MacBook Pro 2021 — Minor Scuffs", category: "electronics", currentBid: 12400, startingBid: 10000, bidCount: 7, catEmoji: "💻", endTime: "2026-05-13T15:30:00Z", isNew: true, hasBuyNow: false, buyNowPrice: null, createdAt: "2026-05-12T10:00:00Z", picsumId: "0" },   // Alejandro Escamilla - landscape
+        { id: 2, title: "Calculus Textbook + Solutions Manual", category: "books", currentBid: 850, startingBid: 500, bidCount: 3, catEmoji: "📚", endTime: "2026-05-13T18:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-10T09:00:00Z", picsumId: "4" },    // close-up keyboard
+        { id: 3, title: "Sony WH-1000XM4 Headphones", category: "electronics", currentBid: 5200, startingBid: 4000, bidCount: 12, catEmoji: "💻", endTime: "2026-05-14T20:00:00Z", isNew: false, hasBuyNow: true, buyNowPrice: 7000, createdAt: "2026-05-09T14:30:00Z", picsumId: "10" },   // Paul Jarvis - nature
+        { id: 4, title: "University Hoodie — Size M, Never Worn", category: "clothes", currentBid: 600, startingBid: 300, bidCount: 1, catEmoji: "👕", endTime: "2026-05-15T23:59:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-11T18:20:00Z", picsumId: "15" },   // Paul Jarvis - landscape
+        { id: 5, title: "IKEA Desk Chair — Good Condition", category: "furniture", currentBid: 1000, startingBid: 1000, bidCount: 0, catEmoji: "🪑", endTime: "2026-05-16T12:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-08T11:00:00Z", picsumId: "20" },   // Aleks Dorohovich - architecture
+        { id: 6, title: "Adidas Football, Size 5 — Used Once", category: "sports", currentBid: 400, startingBid: 300, bidCount: 2, catEmoji: "⚽", endTime: "2026-05-13T22:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-12T08:15:00Z", picsumId: "25" },   // Alejandro Escamilla - landscape
+        { id: 7, title: "Nintendo Switch + 3 Games Bundle", category: "electronics", currentBid: 9500, startingBid: 8000, bidCount: 5, catEmoji: "💻", endTime: "2026-05-18T09:00:00Z", isNew: true, hasBuyNow: false, createdAt: "2026-05-13T07:00:00Z", picsumId: "30" },   // landscape
+        { id: 8, title: "Fjällräven Kånken Backpack — Black", category: "other", currentBid: 2100, startingBid: 1500, bidCount: 4, catEmoji: "🎲", endTime: "2026-05-13T19:30:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-11T16:45:00Z", picsumId: "35" }    // landscape
+    ];
+
+    // Additional mock items to demonstrate "Load More"
+    const extraListings = [
+        { id: 9, title: "Python Crash Course Book", category: "books", currentBid: 450, startingBid: 200, bidCount: 2, catEmoji: "📚", endTime: "2026-05-14T14:00:00Z", isNew: true, hasBuyNow: false, createdAt: "2026-05-13T09:00:00Z", picsumId: "40" },   // landscape
+        { id: 10, title: "Mechanical Keyboard (Blue Switches)", category: "electronics", currentBid: 3200, startingBid: 2500, bidCount: 8, catEmoji: "💻", endTime: "2026-05-15T18:00:00Z", isNew: false, hasBuyNow: true, buyNowPrice: 4500, createdAt: "2026-05-10T20:00:00Z", picsumId: "45" },   // landscape
+        { id: 11, title: "Winter Jacket — Size L", category: "clothes", currentBid: 1200, startingBid: 800, bidCount: 3, catEmoji: "👕", endTime: "2026-05-17T10:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-09T12:00:00Z", picsumId: "50" },   // landscape
+        { id: 12, title: "Yoga Mat — barely used", category: "sports", currentBid: 350, startingBid: 250, bidCount: 1, catEmoji: "🎲", endTime: "2026-05-14T20:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-12T08:00:00Z", picsumId: "55" }    // landscape
+    ];
+    // Merge all into one dataset
+    const fullListings = [...allListings, ...extraListings];
+
+    // ------------------------------
+    // 2. Global State
+    // ------------------------------
+    let currentFilter = "all";
+    let currentSort = "endingSoon";
+    const startCount = 4;
+    const incrementCount = 4;
+    let displayedCount = startCount;          // how many cards currently shown (starting batch)
+    let currentListings = [];         // filtered + sorted version of fullListings
+    let activeTimers = [];            // store intervals to clear on re-render
+
+    // ------------------------------
+    // 3. Helper Functions
+    // ------------------------------
+    function getRemainingSeconds(endTimeISO) {
+        const end = new Date(endTimeISO);
+        const now = new Date();
+        return Math.max(0, Math.floor((end - now) / 1000));
+    }
+
+    function formatTime(secs) {
+        if (secs <= 0) return 'Ended';
+        if (secs < 3600) {
+            const m = Math.floor(secs / 60), s = secs % 60;
+            return `${m}:${String(s).padStart(2,'0')}`;
+        }
+        if (secs < 86400) {
+            const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60);
+            return `${h}h ${m}m`;
+        }
+        const d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);
+        return `${d}d ${h}h`;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Filter & sort logic
+    function applyFilterAndSort() {
+        let filtered = [...fullListings];
+        if (currentFilter !== "all") {
+            filtered = filtered.filter(item => item.category === currentFilter);
+        }
+        // Sort
+        switch (currentSort) {
+            case "newest":
+                filtered.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+                break;
+            case "price_asc":
+                filtered.sort((a,b) => a.currentBid - b.currentBid);
+                break;
+            case "price_desc":
+                filtered.sort((a,b) => b.currentBid - a.currentBid);
+                break;
+            case "mostBids":
+                filtered.sort((a,b) => b.bidCount - a.bidCount);
+                break;
+            default: // endingSoon
+                filtered.sort((a,b) => new Date(a.endTime) - new Date(b.endTime));
+        }
+        return filtered;
+    }
+
+    // Create one card DOM element with Picsum image
+    function createCardElement(auction) {
+        const card = document.createElement('a');
+        card.href = `auctions-detail.html?id=${auction.id}`;
+        card.className = 'auction-card bg-white rounded-2xl shadow-sm overflow-hidden block';
+
+        const remainingSecs = getRemainingSeconds(auction.endTime);
+        const timeStr = formatTime(remainingSecs);
+        const isUrgent = remainingSecs < 300;
+
+        let leftBadges = '';
+        if (auction.isNew) leftBadges += '<span class="badge-new text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW</span>';
+        if (auction.hasBuyNow) leftBadges += '<span class="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full ml-1">BUY NOW</span>';
+
+        // Build image URL from Picsum
+        const imageUrl = `https://picsum.photos/id/${auction.picsumId}/400/300`;
+
+        card.innerHTML = `
+            <div class="relative">
+                <div class="image-container bg-gradient-to-br from-swamp-100 to-swamp-200">
+                    <img src="${imageUrl}"
+                         alt="${escapeHtml(auction.title)}"
+                         class="auction-image"
+                         onerror="this.onerror=null; this.src='https://picsum.photos/id/0/400/300'; this.parentElement.parentElement.querySelector('.image-fallback').style.display='flex'; this.style.display='none';">
+                    <div class="image-fallback" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; align-items: center; justify-content: center; font-size: 3rem; background: linear-gradient(to bottom right, #dcfce7, #bbf7d0);">
+                        ${auction.catEmoji}
+                    </div>
+                </div>
+                <div class="absolute top-2 left-2 flex gap-1">
+                    ${leftBadges}
+                </div>
+                <div class="absolute top-2 right-2 bg-black/60 backdrop-blur text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0A9 9 0 1 1 3 12a9 9 0 0 1 18 0z"/>
+                    </svg>
+                    <span class="${isUrgent ? 'countdown-urgent' : ''}" data-endtime="${auction.endTime}">${timeStr}</span>
+                </div>
+            </div>
+            <div class="p-3">
+                <p class="text-xs text-swamp-500 font-semibold capitalize">${auction.category}</p>
+                <h3 class="font-bold text-swamp-900 text-sm leading-tight mt-0.5 line-clamp-2">${escapeHtml(auction.title)}</h3>
+                <div class="mt-2 flex items-end justify-between">
+                    <div>
+                        <p class="text-xs text-swamp-400 font-semibold">Current bid</p>
+                        <p class="text-lg font-black text-swamp-700">₽${auction.currentBid.toLocaleString()}</p>
+                    </div>
+                    <p class="text-xs text-swamp-400 font-semibold">${auction.bidCount} ${auction.bidCount === 1 ? 'bid' : 'bids'}</p>
+                </div>
+            </div>
+        `;
+        return card;
+    }
+
+    // Re-render the grid: clear, show only first `displayedCount` items from currentListings
+    function renderGrid() {
+        const grid = document.getElementById('auctions-grid');
+        grid.innerHTML = '';
+        const itemsToShow = currentListings.slice(0, displayedCount);
+        itemsToShow.forEach(auction => {
+            grid.appendChild(createCardElement(auction));
+        });
+        // Update listings count text
+        const countSpan = document.getElementById('listings-count');
+        countSpan.textContent = `${currentListings.length} active listings`;
+        // Show/hide load more button
+        const loadBtn = document.getElementById('load-more-btn');
+        if (displayedCount >= currentListings.length) {
+            loadBtn.style.display = 'none';
+        } else {
+            loadBtn.style.display = 'inline-block';
+        }
+        // Re-attach countdown timers to new cards (clear old intervals first)
+        activeTimers.forEach(clearInterval);
+        activeTimers = [];
+        document.querySelectorAll('[data-endtime]').forEach(el => {
+            const endTimeISO = el.dataset.endtime;
+            const updateTimer = () => {
+                const secs = getRemainingSeconds(endTimeISO);
+                el.textContent = formatTime(secs);
+                if (secs < 300) el.classList.add('countdown-urgent');
+                if (secs <= 0) {
+                    clearInterval(interval);
+                    el.textContent = 'Ended';
+                }
+            };
+            updateTimer();
+            const interval = setInterval(updateTimer, 1000);
+            activeTimers.push(interval);
+        });
+    }
+
+    // Refresh everything when filter/sort changes
+    function refreshListings(resetDisplayed = true) {
+        currentListings = applyFilterAndSort();
+        if (resetDisplayed) {
+            displayedCount = startCount;  // reset to initial batch size
+        }
+        renderGrid();
+    }
+
+    function loadMore() {
+        const remaining = currentListings.length - displayedCount;
+        const increment = Math.min(incrementCount, remaining);
+        displayedCount += increment;
+        renderGrid();
+    }
+
+    // ------------------------------
+    // 4. Event Listeners
+    // ------------------------------
+    // Filter chips
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            currentFilter = chip.getAttribute('data-filter');
+            refreshListings(true);
+        });
+    });
+    // Sort dropdown
+    document.getElementById('sort-select').addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        refreshListings(true);
+    });
+    // Load more button
+    document.getElementById('load-more-btn').addEventListener('click', loadMore);
+
+    // Optional: simple search (basic text filter)
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            if (searchTerm === "") {
+                refreshListings(true);
+            } else {
+                // We re-filter fullListings temporarily (respecting current category filter)
+                let filtered = [...fullListings];
+                if (currentFilter !== "all") {
+                    filtered = filtered.filter(item => item.category === currentFilter);
+                }
+                filtered = filtered.filter(item => item.title.toLowerCase().includes(searchTerm));
+                // Apply current sort
+                switch (currentSort) {
+                    case "newest": filtered.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)); break;
+                    case "price_asc": filtered.sort((a,b) => a.currentBid - b.currentBid); break;
+                    case "price_desc": filtered.sort((a,b) => b.currentBid - a.currentBid); break;
+                    case "mostBids": filtered.sort((a,b) => b.bidCount - a.bidCount); break;
+                    default: filtered.sort((a,b) => new Date(a.endTime) - new Date(b.endTime));
+                }
+                currentListings = filtered;
+                displayedCount = startCount;
+                renderGrid();
+            }
+        });
+    }
+
+    // Initial load
+    refreshListings(true);
+
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', () => {
+        const m = document.getElementById('mobile-menu');
+        m.classList.toggle('hidden'); m.classList.toggle('block');
+    });
+</script>
+</body>
+</html>

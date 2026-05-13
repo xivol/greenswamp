@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Listing — Greenswamp Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                swamp: {
+                  50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
+                  400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
+                  800: '#166534', 900: '#14532d',
+                }
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        #mobile-menu { transition: all 0.3s ease-out; transform-origin: top; }
+        #mobile-menu.hidden { opacity: 0; transform: scaleY(0); }
+        #mobile-menu.block  { opacity: 1; transform: scaleY(1); }
+
+        .form-input {
+          width: 100%;
+          border: 2px solid #bbf7d0;
+          border-radius: 0.75rem;
+          padding: 0.6rem 0.875rem;
+          font-family: 'Nunito', sans-serif;
+          font-weight: 600;
+          font-size: 0.9rem;
+          color: #14532d;
+          background: white;
+          transition: border-color 0.15s, box-shadow 0.15s;
+          outline: none;
+        }
+        .form-input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.15); }
+        .form-input::placeholder { color: #86efac; font-weight: 600; }
+
+        .section-card { background: white; border-radius: 1.25rem; box-shadow: 0 1px 8px rgba(22,101,52,0.07); padding: 1.5rem; margin-bottom: 1rem; }
+        .section-title { font-size: 1rem; font-weight: 800; color: #14532d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+
+        .upload-zone {
+          border: 2px dashed #86efac;
+          border-radius: 1rem;
+          padding: 2rem 1rem;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.2s;
+          background: #f0fdf4;
+        }
+        .upload-zone:hover { border-color: #22c55e; background: #dcfce7; }
+
+        .photo-thumb {
+          width: 72px; height: 72px;
+          border-radius: 0.75rem;
+          background: linear-gradient(135deg, #bbf7d0, #4ade80);
+          display: flex; align-items: center; justify-content: center;
+          font-size: 1.75rem;
+          border: 2px solid #dcfce7;
+          position: relative;
+        }
+        .remove-btn {
+          position: absolute; top: -6px; right: -6px;
+          width: 18px; height: 18px;
+          background: #ef4444; color: white;
+          border-radius: 50%; font-size: 10px; font-weight: 900;
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer;
+        }
+
+        .condition-btn {
+          border: 2px solid #bbf7d0;
+          border-radius: 0.75rem;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.8rem;
+          font-weight: 700;
+          color: #15803d;
+          cursor: pointer;
+          transition: all 0.15s;
+          text-align: center;
+        }
+        .condition-btn.selected { background: #16a34a; color: white; border-color: #16a34a; }
+        .condition-btn:hover:not(.selected) { border-color: #22c55e; background: #f0fdf4; }
+
+        .step-dot {
+          width: 28px; height: 28px;
+          border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 0.75rem; font-weight: 800;
+        }
+        .step-dot.done { background: #16a34a; color: white; }
+        .step-dot.active { background: #22c55e; color: white; box-shadow: 0 0 0 4px rgba(34,197,94,0.2); }
+        .step-dot.pending { background: #dcfce7; color: #86efac; }
+
+        .sticky-bar {
+          position: fixed; bottom: 0; left: 0; right: 0;
+          background: white;
+          border-top: 2px solid #dcfce7;
+          padding: 0.875rem 1rem;
+          z-index: 100;
+          box-shadow: 0 -4px 20px rgba(22,101,52,0.1);
+        }
+
+        .toggle-switch {
+          position: relative; width: 44px; height: 24px;
+          background: #bbf7d0; border-radius: 12px; cursor: pointer;
+          transition: background 0.2s;
+          flex-shrink: 0;
+        }
+        .toggle-switch.on { background: #16a34a; }
+        .toggle-knob {
+          position: absolute; top: 3px; left: 3px;
+          width: 18px; height: 18px;
+          background: white; border-radius: 50%;
+          transition: left 0.2s;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        .toggle-switch.on .toggle-knob { left: 23px; }
+    </style>
+</head>
+<body class="bg-swamp-50" style="padding-bottom: 88px;">
+
+<!-- Navigation -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <a href="/index.html" class="flex items-center space-x-2">
+                <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Swamp</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Ponds</a>
+                <a href="auctions.html" class="text-swamp-600 hover:text-swamp-800 font-semibold">Market</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Fireflies</a>
+                <a href="/profile.html">
+                    <img src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
+                         class="w-14 h-14 rounded-full border-2 border-swamp-400">
+                </a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-swamp-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
+        <div class="px-4 py-3 space-y-3">
+            <a href="#" class="block text-swamp-600 font-semibold">Swamp</a>
+            <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Ponds</a>
+            <a href="auctions.html" class="block text-swamp-700 font-bold">Market</a>
+            <a href="#" class="block text-swamp-600 font-semibold">Fireflies</a>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-2xl mx-auto px-4 pt-6">
+
+    <!-- Back + Title -->
+    <div class="flex items-center gap-3 mb-5">
+        <a href="auctions.html"
+           class="w-9 h-9 bg-white rounded-full shadow-sm flex items-center justify-center text-swamp-600 hover:bg-swamp-50 transition-colors flex-shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </a>
+        <div>
+            <h1 class="text-xl font-black text-swamp-900">New Listing</h1>
+            <p class="text-xs text-swamp-500 font-semibold">Fill in the details below to start your auction</p>
+        </div>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="section-card mb-4 !py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="step-dot done">✓</div>
+                <span class="text-xs font-bold text-swamp-700 hidden sm:block">Photos</span>
+            </div>
+            <div class="flex-1 h-0.5 bg-swamp-200 mx-2"></div>
+            <div class="flex items-center gap-2">
+                <div class="step-dot active">2</div>
+                <span class="text-xs font-bold text-swamp-600 hidden sm:block">Details</span>
+            </div>
+            <div class="flex-1 h-0.5 bg-swamp-100 mx-2"></div>
+            <div class="flex items-center gap-2">
+                <div class="step-dot pending">3</div>
+                <span class="text-xs font-bold text-swamp-300 hidden sm:block">Pricing</span>
+            </div>
+            <div class="flex-1 h-0.5 bg-swamp-100 mx-2"></div>
+            <div class="flex items-center gap-2">
+                <div class="step-dot pending">4</div>
+                <span class="text-xs font-bold text-swamp-300 hidden sm:block">Logistics</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 1: Photos -->
+    <div class="section-card">
+        <div class="section-title">📸 Photos</div>
+
+        <!-- Uploaded thumbs -->
+        <div class="flex flex-wrap gap-2 mb-3">
+            <div class="photo-thumb">💻
+                <div class="remove-btn" onclick="removePhoto(this)">✕</div>
+            </div>
+            <div class="photo-thumb" style="background: linear-gradient(135deg,#fde68a,#fbbf24)">💻
+                <div class="remove-btn" onclick="removePhoto(this)">✕</div>
+            </div>
+
+            <!-- Upload more -->
+            <div class="upload-zone"
+                 style="width:72px;height:72px;padding:0;display:flex;align-items:center;justify-content:center;flex-direction:column;border-radius:0.75rem">
+                <span class="text-xl">+</span>
+                <span class="text-xs font-bold text-swamp-400">Add</span>
+            </div>
+        </div>
+
+        <!-- Drop zone -->
+        <div class="upload-zone" id="dropzone">
+            <svg class="w-8 h-8 text-swamp-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+            </svg>
+            <p class="text-sm font-bold text-swamp-500">Drag & drop or <span
+                    class="text-swamp-600 underline cursor-pointer">browse</span></p>
+            <p class="text-xs text-swamp-400 mt-1">Up to 6 photos · Max 5 MB each</p>
+        </div>
+    </div>
+
+    <!-- Section 2: Item Details -->
+    <div class="section-card">
+        <div class="section-title">📋 Item Details</div>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Title <span
+                        class="text-red-400">*</span></label>
+                <input type="text" class="form-input" placeholder="e.g. MacBook Pro 2021 — Minor Scuffs"
+                       maxlength="80"/>
+                <p class="text-xs text-swamp-400 font-semibold mt-1">0 / 80</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Description <span
+                        class="text-red-400">*</span></label>
+                <textarea class="form-input resize-none" rows="4"
+                          placeholder="Describe the item, any defects, what's included…"></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Category <span
+                            class="text-red-400">*</span></label>
+                    <select class="form-input">
+                        <option value="">Select…</option>
+                        <option>📚 Books</option>
+                        <option>💻 Electronics</option>
+                        <option>👕 Clothes</option>
+                        <option>⚽ Sports</option>
+                        <option>🪑 Furniture</option>
+                        <option>🎲 Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Campus <span
+                            class="text-red-400">*</span></label>
+                    <select class="form-input">
+                        <option>Main Campus</option>
+                        <option>North Campus</option>
+                        <option>South Campus</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-swamp-600 mb-2 uppercase tracking-wide">Condition <span
+                        class="text-red-400">*</span></label>
+                <div class="grid grid-cols-4 gap-2" id="condition-group">
+                    <div class="condition-btn" onclick="selectCondition(this)">🌟<br><span>New</span></div>
+                    <div class="condition-btn selected" onclick="selectCondition(this)">✅<br><span>Like New</span></div>
+                    <div class="condition-btn" onclick="selectCondition(this)">👍<br><span>Good</span></div>
+                    <div class="condition-btn" onclick="selectCondition(this)">🔧<br><span>Fair</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Pricing -->
+    <div class="section-card">
+        <div class="section-title">💰 Pricing</div>
+
+        <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Starting Bid
+                        <span class="text-red-400">*</span></label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-swamp-400 font-black text-sm">₽</span>
+                        <input type="number" class="form-input pl-7" placeholder="500" min="1"/>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Min. Increment
+                        <span class="text-red-400">*</span></label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-swamp-400 font-black text-sm">₽</span>
+                        <input type="number" class="form-input pl-7" placeholder="100" min="1"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buy Now toggle -->
+            <div class="bg-swamp-50 rounded-xl p-3">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-bold text-swamp-800">Buy Now Price</p>
+                        <p class="text-xs text-swamp-400 font-semibold">Allow instant purchase at a fixed price</p>
+                    </div>
+                    <div class="toggle-switch" id="buynow-toggle" onclick="toggleBuyNow()">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                <div id="buynow-input" class="hidden mt-3">
+                    <div class="relative">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-swamp-400 font-black text-sm">₽</span>
+                        <input type="number" class="form-input pl-7" placeholder="e.g. 15000" min="1"/>
+                    </div>
+                    <p class="text-xs text-swamp-400 font-semibold mt-1">Must be higher than the starting bid</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: Logistics -->
+    <div class="section-card">
+        <div class="section-title">📍 Logistics</div>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Auction Duration
+                    <span class="text-red-400">*</span></label>
+                <div class="grid grid-cols-4 gap-2" id="duration-group">
+                    <div class="condition-btn" onclick="selectDuration(this)">24h</div>
+                    <div class="condition-btn selected" onclick="selectDuration(this)">3 days</div>
+                    <div class="condition-btn" onclick="selectDuration(this)">7 days</div>
+                    <div class="condition-btn" onclick="selectDuration(this)">Custom</div>
+                </div>
+            </div>
+
+            <div id="custom-date" class="hidden">
+                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">End Date &
+                    Time</label>
+                <input type="datetime-local" class="form-input"/>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Pickup / Meetup
+                    Location <span class="text-red-400">*</span></label>
+                <input type="text" class="form-input" placeholder="e.g. Main Library entrance, Building A lobby…"/>
+                <p class="text-xs text-swamp-400 font-semibold mt-1">Winner will contact you to arrange the meetup</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spacer for sticky bar -->
+    <div class="h-4"></div>
+</div>
+
+<!-- Sticky Bottom Bar -->
+<div class="sticky-bar">
+    <div class="max-w-2xl mx-auto flex items-center gap-3">
+        <button onclick="saveDraft()"
+                class="flex-1 border-2 border-swamp-300 text-swamp-700 font-bold py-3 rounded-full hover:bg-swamp-50 transition-colors text-sm">
+            Save Draft
+        </button>
+        <button onclick="postListing()"
+                class="flex-2 bg-swamp-500 text-white font-bold py-3 px-8 rounded-full hover:bg-swamp-600 transition-colors text-sm shadow-md"
+                style="flex:2">
+            🐸 Post Listing
+        </button>
+    </div>
+</div>
+
+<!-- Success Toast -->
+<div id="toast"
+     class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-[200] bg-swamp-700 text-white px-5 py-3 rounded-full font-bold text-sm shadow-xl flex items-center gap-2">
+    ✅ Draft saved!
+</div>
+
+<script>
+    document.getElementById('mobile-menu-button').addEventListener('click', () => {
+      const m = document.getElementById('mobile-menu');
+      m.classList.toggle('hidden'); m.classList.toggle('block');
+    });
+
+    function selectCondition(el) {
+      document.querySelectorAll('#condition-group .condition-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function selectDuration(el) {
+      document.querySelectorAll('#duration-group .condition-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('custom-date').classList.toggle('hidden', el.textContent !== 'Custom');
+    }
+
+    function toggleBuyNow() {
+      const t = document.getElementById('buynow-toggle');
+      const inp = document.getElementById('buynow-input');
+      t.classList.toggle('on');
+      inp.classList.toggle('hidden');
+    }
+
+    function removePhoto(btn) { btn.parentElement.remove(); }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.querySelector('span') && (t.querySelector('span').textContent = msg);
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 2000);
+    }
+
+    function saveDraft() { showToast('✅ Draft saved!'); }
+    function postListing() { showToast('🐸 Listing posted!'); }
+
+    // Drag-drop highlight
+    const dz = document.getElementById('dropzone');
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = '#22c55e'; dz.style.background = '#dcfce7'; });
+    dz.addEventListener('dragleave', () => { dz.style.borderColor = ''; dz.style.background = ''; });
+    dz.addEventListener('drop', e => { e.preventDefault(); dz.style.borderColor = ''; dz.style.background = ''; });
+</script>
+</body>
+</html>
