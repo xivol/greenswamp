@@ -157,6 +157,10 @@
             <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Ponds</a>
             <a href="auctions.html" class="block text-swamp-700 font-bold">Market</a>
             <a href="#" class="block text-swamp-600 font-semibold">Fireflies</a>
+            <a href="/profile.html" class="block text-swamp-600 font-semibold">Profile
+                    <img src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
+                         class="inline mx-2 w-10 h-10 rounded-full border-2 border-swamp-400">
+                </a>
         </div>
     </div>
 </nav>
@@ -177,7 +181,7 @@
         </div>
     </div>
 
-    <!-- Progress Steps -->
+    <!-- Progress Steps
     <div class="section-card mb-4 !py-4">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -200,7 +204,7 @@
                 <span class="text-xs font-bold text-swamp-300 hidden sm:block">Logistics</span>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Section 1: Photos -->
     <div class="section-card">
@@ -377,9 +381,13 @@
 <!-- Sticky Bottom Bar -->
 <div class="sticky-bar">
     <div class="max-w-2xl mx-auto flex items-center gap-3">
-        <button onclick="saveDraft()"
-                class="flex-1 border-2 border-swamp-300 text-swamp-700 font-bold py-3 rounded-full hover:bg-swamp-50 transition-colors text-sm">
-            Save Draft
+<!--        <button onclick="saveDraft()"-->
+<!--                class="flex-1 border-2 border-swamp-300 text-swamp-700 font-bold py-3 rounded-full hover:bg-swamp-50 transition-colors text-sm">-->
+<!--            Save Draft-->
+<!--        </button>-->
+        <button onclick="dropDraft()"
+                class="flex-1 border-2 border-red-300 bg-red-50 text-red-700 font-bold py-3 rounded-full hover:bg-red-200 transition-colors text-sm">
+            🗑️ Delete
         </button>
         <button onclick="postListing()"
                 class="flex-2 bg-swamp-500 text-white font-bold py-3 px-8 rounded-full hover:bg-swamp-600 transition-colors text-sm shadow-md"
@@ -430,13 +438,34 @@
     }
 
     function saveDraft() { showToast('✅ Draft saved!'); }
+    function dropDraft() { showToast('❎ Listing removed!'); }
     function postListing() { showToast('🐸 Listing posted!'); }
 
+    async function openFile() {
+      try {
+        const [fileHandle] = await window.showOpenFilePicker({
+          types: [
+            {
+              description: 'Images',
+              accept: { 'image/*': ['.png', '.gif', '.jpeg', '.jpg'] }
+            },
+          ],
+          excludeAcceptAllOption: true,
+          multiple: false
+        });
+
+        const file = await fileHandle.getFile();
+        console.log('File selected:', file.name);
+      } catch (err) {
+        console.error('User cancelled or error:', err);
+      }
+}
     // Drag-drop highlight
     const dz = document.getElementById('dropzone');
     dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = '#22c55e'; dz.style.background = '#dcfce7'; });
     dz.addEventListener('dragleave', () => { dz.style.borderColor = ''; dz.style.background = ''; });
     dz.addEventListener('drop', e => { e.preventDefault(); dz.style.borderColor = ''; dz.style.background = ''; });
+    dz.addEventListener('click', async e => { e.preventDefault(); await openFile(); });
 </script>
 </body>
 </html>
