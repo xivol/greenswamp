@@ -160,7 +160,6 @@
             z-index: 20;
         }
 
-
         /* ── Responsive ── */
         @media (max-width: 640px) {
             .status-panel {
@@ -216,6 +215,18 @@
 
                 <!-- Phaser Canvas Mount Point -->
                 <div id="gameCanvasParent"></div>
+
+                <!-- Pass Button — shown when player has no valid moves -->
+                <div class="flex justify-center mt-4">
+                    <button id="passBtn"
+                            class="px-10 py-3 rounded-xl font-semibold text-sm transition-all duration-200
+                                   border-2 border-swamp-200 text-swamp-400 bg-white
+                                   border-swamp-500 text-swamp-700
+                                   hover:bg-swamp-50 hover:border-swamp-600
+                                   shadow-sm">
+                        ⏭ Pass Turn
+                    </button>
+                </div>
 
                 <!-- Join Modal Overlay (shown before server connection) -->
                  <div class="join-modal-backdrop" id="joinModalBackdrop">
@@ -283,91 +294,133 @@
         document.getElementById('joinModalBackdrop').style.display = 'none';
         startCycling();
     });
-
-    // ── Status panel state definitions ────────────────────────
+// ── Status panel state definitions ────────────────────────
     const STATES = [
         {
-            cls:     '',
+            state:   'waiting',
             turn:    '🐸 LOBBY',
-            players: '<span class="player-badge active">FrogMaster</span> is awaiting players',
+            players: [{ name: 'FrogMaster', active: true }],
             msg:     '🎲 Game: a3f9b2c1',
         },
         {
-            cls:     '',
+            state:   'your-turn',
             turn:    '🐸 YOUR TURN',
-            players: '<span class="player-badge active">FrogMaster</span>'
-                   + '<span class="player-badge">SwampKing</span>',
+            players: [{ name: 'FrogMaster', active: true }, { name: 'SwampKing', active: false }],
             msg:     '✅ Pick a frog to move',
         },
         {
-            cls:     '',
+            state:   'their-turn',
             turn:    '⏳ THEIR TURN',
-            players: '<span class="player-badge">FrogMaster</span>'
-                   + '<span class="player-badge active">SwampKing</span>',
+            players: [{ name: 'FrogMaster', active: false }, { name: 'SwampKing', active: true }],
             msg:     '⏳ SwampKing is thinking…',
         },
         {
-            cls:     'state-error',
+            state:   'error',
             turn:    '⚠️ ERROR',
-            players: '<span class="player-badge">FrogMaster</span>'
-                   + '<span class="player-badge active">SwampKing</span>',
+            players: [{ name: 'FrogMaster', active: true }, { name: 'SwampKing', active: false }],
             msg:     '🔴 500 Internal server error…',
         },
     ];
+    const STATE_CLASSES = ['state-error'];
 
-    const STATE_CLASSES = STATES.map(s => s.cls).filter(Boolean);
-    const panel      = document.querySelector('.status-panel');
-    const turnText   = document.getElementById('turnText');
-    const playersList = document.getElementById('playersList');
-    const gameMsg    = document.getElementById('gameMsg');
+    const panel         = document.querySelector('.status-panel');
+    const turnEl        = document.getElementById('turnText');
+    const playersEl     = document.getElementById('playersList');
+    const msgEl         = document.getElementById('gameMsg');
+    const passBtn       = document.getElementById('passBtn');
 
-    let stateIndex = 0;
-
-    function applyState(s) {
-        // swap class
+    function updateStatus({ state = '', turn = '', players = [], msg = '', passEnabled = false } = {}) {
         panel.classList.remove(...STATE_CLASSES);
-        if (s.cls) panel.classList.add(s.cls);
-        // update content
-        turnText.textContent   = s.turn;
-        playersList.innerHTML  = s.players;
-        gameMsg.textContent    = s.msg;
+        if (state) panel.classList.add('state-' + state);
+
+        turnEl.textContent   = turn;
+        playersEl.innerHTML  = Array.isArray(players)
+            ? players.map(p =>
+                `<span class="player-badge${p.active ? ' active' : ''}">${p.name}</span>`
+              ).join('')
+            : players;   // fallback: accept a raw string too
+        msgEl.textContent    = msg;
+        passBtn.disabled     = !passEnabled;
     }
 
-    applyState(STATES[0]);
+    let demoIndex = 0;
+    updateStatus(STATES[0]);
 
     function startCycling() {
         setInterval(() => {
-            stateIndex = (stateIndex + 1) % STATES.length;
-            applyState(STATES[stateIndex]);
+            demoIndex = (demoIndex + 1) % STATES.length;
+            updateStatus(STATES[demoIndex]);
         }, 2500);
     }
 
-    // ── Phaser: 8×8 grid scene ─────────────────────────────────
     class GridScene extends Phaser.Scene {
         constructor() { super({ key: 'GridScene' }); }
 
-        create() {
-            const BOARD   = 8;
-            const CELL    = 65;
-            const BOARD_PX = BOARD * CELL;
-            const OX = (520 - BOARD_PX) / 2;
-            const OY = (520 - BOARD_PX) / 2;
+        preload() {
+            this.load.image('frogs', 'frogs_by_probzzzz.png');
+            this.load.once('filecomplete-image-frogs', () => {
+                this.textures.get('frogs').add('frog1', 0, 18, 18, 80, 80);
+                this.textures.get('frogs').add('frog2', 0, 102, 18, 80, 80);
+            });
+        }
 
-            // Tiles
-            for (let row = 0; row < BOARD; row++) {
-                for (let col = 0; col < BOARD; col++) {
+        create() {
+            const CELL     = 65;
+            const TOTAL    = 8;                           // 6 playable + 1 swamp each side
+            const BOARD_PX = TOTAL * CELL;                // 448
+            const OX       = (520 - BOARD_PX) / 2;       // 36
+            const OY       = (520 - BOARD_PX) / 2;       // 36
+
+            // ── Draw tiles ────────────────────────────────────────────────
+            for (let row = 0; row < TOTAL; row++) {
+                for (let col = 0; col < TOTAL; col++) {
                     const light = (row + col) % 2 === 0;
                     var fill  = light ? 0x88bb55 : 0x5a9e36;
-					if (row > 0 && row < BOARD-1 && col > 0 && col < BOARD-1) {
+					if (row > 0 && row < TOTAL-1 && col > 0 && col < TOTAL-1) {
 						fill  = 0xe0f2fe;
 					}
                     this.add.rectangle(
                         OX + col * CELL + CELL / 2,
                         OY + row * CELL + CELL / 2,
                         CELL, CELL, fill
-                    ).setStrokeStyle(1, 0x3d6b20, 0.5);
+                    ).setStrokeStyle(1, 0x2d5a14, 0.4);
                 }
-            }            
+            }
+
+
+            // ── Frog layer ────────────────────────────────────────────────
+            this._frogs = {};  // key: 'col_row' → Phaser.GameObjects.Container
+
+            window.setBoardState = (cells = []) => {
+                // Clear previous sprites
+                Object.values(this._frogs).forEach(c => c.destroy());
+                this._frogs = {};
+
+                cells.forEach(({ col, row, color }) => {
+                    if (!color || col < 0 || col > 5 || row < 0 || row > 5) return;
+
+                    // +1 offset skips the swamp border column/row
+                    const x = OX + (col + 1) * CELL + CELL / 2;
+                    const y = OY + (row + 1) * CELL + CELL / 2;
+
+                    const frog = color === 'green' ? 'frog2' : 'frog1';
+                    const sprite   = this.add.image(x, y, 'frogs', frog)
+                                         .setDisplaySize(CELL * 0.75, CELL * 0.75);
+
+                    this._frogs[`${col}_${row}`] = sprite;
+                });
+            };
+
+            // ── Demo: random starting board ───────────────────────────────
+            const positions = [];
+            for (let r = 0; r < 6; r++)
+                for (let c = 0; c < 6; c++)
+                    positions.push({ col: c, row: r });
+            positions.sort(() => Math.random() - 0.5);
+            setBoardState([
+                ...positions.slice(0,  18).map(p => ({ ...p, color: 'green'  })),
+                ...positions.slice(18, 36).map(p => ({ ...p, color: 'orange' })),
+            ]);
         }
     }
 
@@ -383,6 +436,7 @@
             autoCenter: Phaser.Scale.CENTER_BOTH,
         },
     });
+
 </script>
 </body>
 </html>
