@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Listing — Greenswamp Market</title>
+    <title>New Listing — Lily Market</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,9 +11,9 @@
             extend: {
               colors: {
                 swamp: {
-                  50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
-                  400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
-                  800: '#166534', 900: '#14532d',
+                  50:'#f0fdf4',100:'#dcfce7',200:'#bbf7d0',300:'#86efac',
+                  400:'#4ade80',500:'#22c55e',600:'#16a34a',700:'#15803d',
+                  800:'#166534',900:'#14532d'
                 }
               }
             }
@@ -21,323 +21,294 @@
         }
     </script>
     <style>
-        #mobile-menu { transition: all 0.3s ease-out; transform-origin: top; }
-        #mobile-menu.hidden { opacity: 0; transform: scaleY(0); }
-        #mobile-menu.block  { opacity: 1; transform: scaleY(1); }
+        .section-card { background: white; border-radius: 1rem; padding: 1.25rem; margin-bottom: 1rem; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
 
-        .form-input {
+        input[type=text], input[type=number], input[type=datetime-local], textarea, select {
           width: 100%;
-          border: 2px solid #bbf7d0;
+          border: 1.5px solid #bbf7d0;
           border-radius: 0.75rem;
           padding: 0.6rem 0.875rem;
-          font-family: 'Nunito', sans-serif;
-          font-weight: 600;
           font-size: 0.9rem;
-          color: #14532d;
-          background: white;
-          transition: border-color 0.15s, box-shadow 0.15s;
           outline: none;
+          transition: border-color 0.15s, box-shadow 0.15s;
+          font-family: 'DM Sans', sans-serif;
+          color: #14532d;
         }
-        .form-input:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.15); }
-        .form-input::placeholder { color: #86efac; font-weight: 600; }
-
-        .section-card { background: white; border-radius: 1.25rem; box-shadow: 0 1px 8px rgba(22,101,52,0.07); padding: 1.5rem; margin-bottom: 1rem; }
-        .section-title { font-size: 1rem; font-weight: 800; color: #14532d; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-
-        .upload-zone {
-          border: 2px dashed #86efac;
-          border-radius: 1rem;
-          padding: 2rem 1rem;
-          text-align: center;
-          cursor: pointer;
-          transition: all 0.2s;
-          background: #f0fdf4;
+        input:focus, textarea:focus, select:focus {
+          border-color: #16a34a;
+          box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
         }
-        .upload-zone:hover { border-color: #22c55e; background: #dcfce7; }
-
-        .photo-thumb {
-          width: 72px; height: 72px;
-          border-radius: 0.75rem;
-          background: linear-gradient(135deg, #bbf7d0, #4ade80);
-          display: flex; align-items: center; justify-content: center;
-          font-size: 1.75rem;
-          border: 2px solid #dcfce7;
-          position: relative;
-        }
-        .remove-btn {
-          position: absolute; top: -6px; right: -6px;
-          width: 18px; height: 18px;
-          background: #ef4444; color: white;
-          border-radius: 50%; font-size: 10px; font-weight: 900;
-          display: flex; align-items: center; justify-content: center;
-          cursor: pointer;
-        }
+        label { display: block; font-size: 0.82rem; font-weight: 600; color: #166534; margin-bottom: 0.35rem; }
 
         .condition-btn {
-          border: 2px solid #bbf7d0;
-          border-radius: 0.75rem;
-          padding: 0.5rem 0.75rem;
-          font-size: 0.8rem;
-          font-weight: 700;
-          color: #15803d;
-          cursor: pointer;
-          transition: all 0.15s;
-          text-align: center;
+          flex: 1; padding: 0.5rem; border-radius: 0.75rem; border: 1.5px solid #bbf7d0;
+          font-size: 0.8rem; font-weight: 600; color: #15803d; cursor: pointer;
+          transition: all 0.15s; text-align: center; background: white;
         }
-        .condition-btn.selected { background: #16a34a; color: white; border-color: #16a34a; }
-        .condition-btn:hover:not(.selected) { border-color: #22c55e; background: #f0fdf4; }
+        .condition-btn.active { background: #15803d; color: white; border-color: #15803d; }
+        .condition-btn:hover:not(.active) { background: #f0fdf4; }
 
-        .step-dot {
-          width: 28px; height: 28px;
-          border-radius: 50%;
+        .photo-remove {
+          position: absolute; top: 4px; right: 4px;
+          background: rgba(255,255,255,0.9); border-radius: 50%;
+          width: 1.4rem; height: 1.4rem;
           display: flex; align-items: center; justify-content: center;
-          font-size: 0.75rem; font-weight: 800;
+          font-size: 0.75rem; cursor: pointer; line-height: 1;
+          border: none; padding: 0;
+          transition: background 0.15s, transform 0.15s;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         }
-        .step-dot.done { background: #16a34a; color: white; }
-        .step-dot.active { background: #22c55e; color: white; box-shadow: 0 0 0 4px rgba(34,197,94,0.2); }
-        .step-dot.pending { background: #dcfce7; color: #86efac; }
+        .photo-remove:hover { background: #fee2e2; transform: scale(1.1); }
+
+        .validation-error { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important; }
+        .field-error { color: #ef4444; font-size: 0.75rem; margin-top: 0.25rem; display: none; }
+
+        .photo-slot {
+          aspect-ratio: 1; border-radius: 0.75rem; border: 1.5px dashed #86efac;
+          display: flex; flex-direction: column; align-items: center; justify-content: center;
+          cursor: pointer; background: #f0fdf4; transition: background 0.15s;
+          font-size: 0.7rem; color: #16a34a; font-weight: 600; gap: 0.25rem;
+        }
+        .photo-slot:hover { background: #dcfce7; }
+        .photo-slot.filled { border-style: solid; border-color: #22c55e; background: #dcfce7; }
+
+        .toggle-switch {
+          width: 2.5rem; height: 1.4rem; background: #bbf7d0; border-radius: 9999px;
+          position: relative; cursor: pointer; transition: background 0.2s;
+        }
+        .toggle-switch.on { background: #22c55e; }
+        .toggle-switch::after {
+          content: ''; position: absolute; width: 1rem; height: 1rem;
+          background: white; border-radius: 50%; top: 0.2rem; left: 0.2rem;
+          transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .toggle-switch.on::after { transform: translateX(1.1rem); }
 
         .sticky-bar {
           position: fixed; bottom: 0; left: 0; right: 0;
-          background: white;
-          border-top: 2px solid #dcfce7;
-          padding: 0.875rem 1rem;
-          z-index: 100;
-          box-shadow: 0 -4px 20px rgba(22,101,52,0.1);
+          background: white; border-top: 1px solid #dcfce7;
+          padding: 0.75rem 1rem; z-index: 50;
+          box-shadow: 0 -4px 16px rgba(21,128,61,0.08);
         }
 
-        .toggle-switch {
-          position: relative; width: 44px; height: 24px;
-          background: #bbf7d0; border-radius: 12px; cursor: pointer;
-          transition: background 0.2s;
-          flex-shrink: 0;
+        .step-dot {
+          width: 0.5rem; height: 0.5rem; border-radius: 50%;
+          background: #bbf7d0; transition: background 0.2s;
         }
-        .toggle-switch.on { background: #16a34a; }
-        .toggle-knob {
-          position: absolute; top: 3px; left: 3px;
-          width: 18px; height: 18px;
-          background: white; border-radius: 50%;
-          transition: left 0.2s;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-        }
-        .toggle-switch.on .toggle-knob { left: 23px; }
+        .step-dot.active { background: #16a34a; }
     </style>
 </head>
-<body class="bg-swamp-50" style="padding-bottom: 88px;">
+<body class="bg-swamp-50" style="padding-bottom: 5rem;">
 
 <!-- Navigation -->
 <nav class="bg-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
-            <!-- Logo -->
-            <a href="/index.html" class="flex items-center space-x-2">
-                <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
-                <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
-            </a>
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Swamp</a>
-                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Ponds</a>
-                <a href="auctions.html" class="text-swamp-600 hover:text-swamp-800 font-semibold">Market</a>
-                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Fireflies</a>
-                <a href="/profile.html">
-                    <img src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
-                         class="w-14 h-14 rounded-full border-2 border-swamp-400">
-                </a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden text-swamp-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+    <div class="max-w-2xl mx-auto px-4">
+        <div class="flex justify-between items-center h-14">
+            <a href="auctions.html" class="flex items-center gap-2 text-swamp-600 hover:text-swamp-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
-            </button>
-        </div>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
-        <div class="px-4 py-3 space-y-3">
-            <a href="#" class="block text-swamp-600 font-semibold">Swamp</a>
-            <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Ponds</a>
-            <a href="auctions.html" class="block text-swamp-700 font-bold">Market</a>
-            <a href="#" class="block text-swamp-600 font-semibold">Fireflies</a>
-            <a href="/profile.html" class="block text-swamp-600 font-semibold">Profile
-                    <img src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
-                         class="inline mx-2 w-10 h-10 rounded-full border-2 border-swamp-400">
+                <span class="text-sm font-medium">Market</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <svg class="h-8 w-8 text-swamp-600 inline" fill="currentColor" version="1.1"
+                     id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="-122.88 -122.88 757.76 757.76">
+                    <path d="M452.09,335.122c62.386-69.965,60.006-177.603,59.867-182.309c-0.255-8.712-7.161-15.767-15.864-16.21 c-2.307-0.116-34.685-1.557-74.997,6.427c-7.934-39.686-21.397-68.089-22.046-69.442c-3.695-7.715-12.621-11.393-20.681-8.529 c-1.409,0.502-30.793,11.089-64.301,33.391c-22.136-33.013-45.055-53.88-46.902-55.536c-6.353-5.7-15.98-5.7-22.333,0 c-1.847,1.658-24.767,22.523-46.902,55.536c-33.507-22.302-62.891-32.891-64.3-33.392c-8.061-2.866-16.983,0.815-20.681,8.529 c-0.649,1.353-14.111,29.756-22.046,69.442c-40.312-7.986-72.689-6.543-74.996-6.426c-8.706,0.441-15.61,7.497-15.865,16.21 c-0.138,4.706-2.518,112.345,59.867,182.309c-25.548,10.116-54.712,27.242-54.712,54.639c0,26.751,27.147,48.071,80.688,63.368 c45.665,13.047,106.079,20.232,170.114,20.232c64.035,0,124.449-7.185,170.114-20.232c53.54-15.297,80.688-36.617,80.688-63.368 C506.802,362.378,477.675,345.252,452.09,335.122z M478.058,170.096c-1.946,31.969-11.425,103.617-56.537,148.728 c-36.2,36.199-89.566,48.414-125.646,52.438c39.064-48.084,66.363-107.116,59.272-168.736 C398.199,176.455,451.645,171.071,478.058,170.096z M374.92,102.738c4.236,11.349,9.815,28.472,13.716,48.559 c-13.576,4.293-27.37,9.806-40.69,16.88c-4.406-14.561-10.245-28.283-16.784-40.922 C348.028,115.898,363.966,107.764,374.92,102.738z M256.021,79.056c35.584,38.182,66.859,90.846,66.859,143.503 c0,63.89-45.323,120.279-66.902,143.503c-21.587-23.163-66.859-79.39-66.859-143.503C189.12,170.1,220.169,117.642,256.021,79.056z M137.081,102.738c10.957,5.028,26.895,13.161,43.758,24.516c-6.539,12.639-12.377,26.362-16.784,40.922 c-13.319-7.074-27.113-12.587-40.689-16.88C127.267,131.207,132.847,114.083,137.081,102.738z M33.942,170.07 c26.377,0.94,79.734,6.278,122.913,32.453c-7.089,61.584,20.174,120.616,59.271,168.739 c-36.08-4.024-89.446-16.237-125.645-52.438C45.355,273.698,35.883,202.016,33.942,170.07z M416.928,420.976 c-42.759,12.217-99.912,18.946-160.927,18.946c-61.015,0-118.167-6.728-160.928-18.946 c-46.066-13.162-56.434-27.299-56.434-31.214c0-3.733,9.353-16.619,49.518-29.148c45.956,33.345,113.973,48.174,167.843,45.886 c53.029,2.254,121.345-12.148,167.843-45.886c40.165,12.529,49.518,25.415,49.518,29.148 C473.362,393.676,462.995,407.814,416.928,420.976z"></path>
+                </svg>
+                <span class="text-lg font-bold text-swamp-600">New Listing</span>
+            </div>
+            <!-- Auth -->
+            <div class="relative" id="profile-widget-desktop">
+                <!-- Logged out (for consistensy) -->
+                <a href="#" id="signin-btn-desktop" onclick="signIn()"
+                   class="hidden flex items-center gap-1.5 text-swamp-600 hover:text-swamp-800 font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    Sign in
                 </a>
+                <!-- Logged in by default -->
+                <button id="avatar-btn-desktop" class="flex items-center gap-2 focus:outline-none"
+                        onclick="toggleProfileMenu()">
+                    <img id="avatar-desktop" src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
+                         class="w-10 h-10 rounded-full border-2 border-swamp-400">
+                    <svg class="w-3 h-3 text-swamp-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                </button>
+                <!-- Dropdown -->
+                <div id="profile-dropdown"
+                     class="hidden absolute right-0 top-10 w-44 bg-white rounded-2xl shadow-lg border border-swamp-100 py-1 z-50">
+                    <a href="/profile.html"
+                       class="flex items-center gap-2 px-4 py-2 text-sm text-swamp-700 hover:bg-swamp-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        Profile
+                    </a>
+                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-swamp-700 hover:bg-swamp-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Settings
+                    </a>
+                    <div class="border-t border-swamp-50 mt-1">
+                        <button onclick="signOut()"
+                                class="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Sign out
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </nav>
 
-<div class="max-w-2xl mx-auto px-4 pt-6">
+<!-- Progress dots -->
+<div class="flex justify-center gap-2 py-3 bg-white border-b border-swamp-50">
+    <div class="step-dot active" id="dot1"></div>
+    <div class="step-dot active" id="dot2"></div>
+    <div class="step-dot" id="dot3"></div>
+    <div class="step-dot" id="dot4"></div>
+</div>
 
-    <!-- Back + Title -->
-    <div class="flex items-center gap-3 mb-5">
-        <a href="auctions.html"
-           class="w-9 h-9 bg-white rounded-full shadow-sm flex items-center justify-center text-swamp-600 hover:bg-swamp-50 transition-colors flex-shrink-0">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
-            </svg>
-        </a>
-        <div>
-            <h1 class="text-xl font-black text-swamp-900">New Listing</h1>
-            <p class="text-xs text-swamp-500 font-semibold">Fill in the details below to start your auction</p>
+<div class="max-w-2xl mx-auto px-4 pt-4">
+    <!-- Section 1: Item Details -->
+    <div class="section-card">
+        <h2 class="text-base font-bold text-swamp-900 mb-3 flex items-center gap-2">
+            <span class="w-6 h-6 bg-swamp-500 text-white rounded-full text-xs flex items-center justify-center font-bold">1</span>
+            Item Details
+        </h2>
+
+        <div class="space-y-3">
+            <div>
+                <label>Title <span class="text-red-400">*</span></label>
+                <input id="input-title" type="text" placeholder="e.g. MacBook Pro 13-inch 2021"
+                       value="MacBook Pro 13&quot; 2021 — M1 chip">
+                <p class="field-error" id="err-title">Title is required.</p>
+            </div>
+
+            <div>
+                <label>Description <span class="text-red-400">*</span></label>
+                <textarea id="input-description" rows="4" class="p-2"
+                          placeholder="Describe the item — condition, what's included, why you're selling…">Selling my M1 MacBook Pro. Battery cycle count under 100. Comes with original charger. Minor scratches on the bottom lid. Perfect for CS students.</textarea>
+                <p class="field-error" id="err-description">Description is required.</p>
+            </div>
+
+            <div class="">
+                <label>Category <span class="text-red-400">*</span></label>
+                <select id="input-category" class="p-2">
+                    <option value="">Select...</option>
+                    <option value="Tech">💻 Tech</option>
+                    <option value="Books">📚 Books</option>
+                    <option value="Furniture">🪑 Furniture</option>
+                    <option value="Clothing">👕 Clothing</option>
+                    <option value="Art">🎨 Art</option>
+                    <option value="Sports">🏋️ Sports</option>
+                    <option value="Other">🎲 Other</option>
+                </select>
+                <p class="field-error" id="err-category">Please select a category.</p>
+            </div>
+
+            <div class="">
+                <label>Condition <span class="text-red-400">*</span></label>
+                <div class="grid grid-cols-4 gap-2" id="condition-picker">
+                    <div class="condition-btn" data-value="New" onclick="selectCondition(this)">🌟<br><span>New</span>
+                    </div>
+                    <div class="condition-btn active" data-value="Like New" onclick="selectCondition(this)">✅<br><span>Like New</span>
+                    </div>
+                    <div class="condition-btn" data-value="Good" onclick="selectCondition(this)">👍<br><span>Good</span>
+                    </div>
+                    <div class="condition-btn" data-value="Fair" onclick="selectCondition(this)">🔧<br><span>Fair</span>
+                    </div>
+                </div>
+                <p class="field-error" id="err-condition">Please select a condition.</p>
+            </div>
         </div>
     </div>
 
-    <!-- Progress Steps
-    <div class="section-card mb-4 !py-4">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="step-dot done">✓</div>
-                <span class="text-xs font-bold text-swamp-700 hidden sm:block">Photos</span>
-            </div>
-            <div class="flex-1 h-0.5 bg-swamp-200 mx-2"></div>
-            <div class="flex items-center gap-2">
-                <div class="step-dot active">2</div>
-                <span class="text-xs font-bold text-swamp-600 hidden sm:block">Details</span>
-            </div>
-            <div class="flex-1 h-0.5 bg-swamp-100 mx-2"></div>
-            <div class="flex items-center gap-2">
-                <div class="step-dot pending">3</div>
-                <span class="text-xs font-bold text-swamp-300 hidden sm:block">Pricing</span>
-            </div>
-            <div class="flex-1 h-0.5 bg-swamp-100 mx-2"></div>
-            <div class="flex items-center gap-2">
-                <div class="step-dot pending">4</div>
-                <span class="text-xs font-bold text-swamp-300 hidden sm:block">Logistics</span>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Section 1: Photos -->
+    <!-- Section 2: Photos -->
     <div class="section-card">
-        <div class="section-title">📸 Photos</div>
+        <h2 class="text-base font-bold text-swamp-900 mb-1 flex items-center gap-2">
+            <span class="w-6 h-6 bg-swamp-500 text-white rounded-full text-xs flex items-center justify-center font-bold">2</span>
+            Photos
+            <span class="text-red-400">*</span>
+        </h2>
+        <p class="text-xs text-swamp-500 mb-3">Add up to 6 photos. First photo is the cover. Tap to reorder.</p>
 
-        <!-- Uploaded thumbs -->
-        <div class="flex flex-wrap gap-2 mb-3">
-            <div class="photo-thumb">💻
-                <div class="remove-btn" onclick="removePhoto(this)">✕</div>
+        <!-- Hidden file input — triggered by clicking any empty slot -->
+        <input type="file" id="photo-file-input" accept="image/*" class="hidden" onchange="onPhotoSelected(event)">
+
+        <div class="grid grid-cols-3 gap-2" id="photo-grid">
+            <!-- Slot 0 — pre-filled with seed image (demo) -->
+            <div class="photo-slot filled" data-slot="0" style="position:relative; overflow:hidden;">
+                <img src="https://picsum.photos/seed/macbook21/300/300"
+                     class="w-full h-full object-cover absolute inset-0" alt="Photo 1">
+                <span class="absolute top-1.5 left-2 bg-white/90 rounded-full text-swamp-700 font-bold"
+                      style="font-size:0.6rem;padding:1px 6px;">Cover</span>
+                <button class="photo-remove" onclick="removePhoto(0)" title="Remove photo">✕</button>
             </div>
-            <div class="photo-thumb" style="background: linear-gradient(135deg,#fde68a,#fbbf24)">💻
-                <div class="remove-btn" onclick="removePhoto(this)">✕</div>
-            </div>
-
-            <!-- Upload more -->
-            <div class="upload-zone"
-                 style="width:72px;height:72px;padding:0;display:flex;align-items:center;justify-content:center;flex-direction:column;border-radius:0.75rem">
-                <span class="text-xl">+</span>
-                <span class="text-xs font-bold text-swamp-400">Add</span>
-            </div>
-        </div>
-
-        <!-- Drop zone -->
-        <div class="upload-zone" id="dropzone">
-            <svg class="w-8 h-8 text-swamp-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-            </svg>
-            <p class="text-sm font-bold text-swamp-500">Drag & drop or <span
-                    class="text-swamp-600 underline cursor-pointer">browse</span></p>
-            <p class="text-xs text-swamp-400 mt-1">Up to 6 photos · Max 5 MB each</p>
-        </div>
-    </div>
-
-    <!-- Section 2: Item Details -->
-    <div class="section-card">
-        <div class="section-title">📋 Item Details</div>
-
-        <div class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Title <span
-                        class="text-red-400">*</span></label>
-                <input type="text" class="form-input" placeholder="e.g. MacBook Pro 2021 — Minor Scuffs"
-                       maxlength="80"/>
-                <p class="text-xs text-swamp-400 font-semibold mt-1">0 / 80</p>
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Description <span
-                        class="text-red-400">*</span></label>
-                <textarea class="form-input resize-none" rows="4"
-                          placeholder="Describe the item, any defects, what's included…"></textarea>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Category <span
-                            class="text-red-400">*</span></label>
-                    <select class="form-input">
-                        <option value="">Select…</option>
-                        <option>📚 Books</option>
-                        <option>💻 Electronics</option>
-                        <option>👕 Clothes</option>
-                        <option>⚽ Sports</option>
-                        <option>🪑 Furniture</option>
-                        <option>🎲 Other</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Campus <span
-                            class="text-red-400">*</span></label>
-                    <select class="form-input">
-                        <option>Main Campus</option>
-                        <option>North Campus</option>
-                        <option>South Campus</option>
-                    </select>
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold text-swamp-600 mb-2 uppercase tracking-wide">Condition <span
-                        class="text-red-400">*</span></label>
-                <div class="grid grid-cols-4 gap-2" id="condition-group">
-                    <div class="condition-btn" onclick="selectCondition(this)">🌟<br><span>New</span></div>
-                    <div class="condition-btn selected" onclick="selectCondition(this)">✅<br><span>Like New</span></div>
-                    <div class="condition-btn" onclick="selectCondition(this)">👍<br><span>Good</span></div>
-                    <div class="condition-btn" onclick="selectCondition(this)">🔧<br><span>Fair</span></div>
-                </div>
+            <!-- Slots 1–5 — empty, clicking opens file picker -->
+            <div class="photo-slot" data-slot="1" onclick="openPhotoPicker(1)">
+                <svg class="w-6 h-6 text-swamp-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
             </div>
         </div>
+        <p class="field-error" id="err-photos" style="margin-top:0.5rem;">At least one photo is required.</p>
     </div>
 
     <!-- Section 3: Pricing -->
     <div class="section-card">
-        <div class="section-title">💰 Pricing</div>
-
-        <div class="space-y-4">
+        <h2 class="text-base font-bold text-swamp-900 mb-3 flex items-center gap-2">
+            <span class="w-6 h-6 bg-swamp-500 text-white rounded-full text-xs flex items-center justify-center font-bold">3</span>
+            Pricing
+        </h2>
+        <div class="space-y-3">
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Starting Bid
-                        <span class="text-red-400">*</span></label>
+                    <label>Starting bid ($) <span class="text-red-400">*</span></label>
                     <div class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-swamp-400 font-black text-sm">₽</span>
-                        <input type="number" class="form-input pl-7" placeholder="500" min="1"/>
+                        <input id="input-starting-bid" type="number" placeholder="500" min="1"/>
                     </div>
+                    <p class="field-error" id="err-starting-bid">Enter a starting bid greater than 0.</p>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Min. Increment
-                        <span class="text-red-400">*</span></label>
+                    <label>Min. increment ($) <span class="text-red-400">*</span></label>
                     <div class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-swamp-400 font-black text-sm">₽</span>
-                        <input type="number" class="form-input pl-7" placeholder="100" min="1"/>
+                        <input id="input-min-increment" type="number" placeholder="10" min="1"/>
                     </div>
+                    <p class="field-error" id="err-min-increment">Enter a minimum increment greater than 0.</p>
                 </div>
             </div>
 
-            <!-- Buy Now toggle -->
+            <!-- Buy-now toggle -->
             <div class="bg-swamp-50 rounded-xl p-3">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-bold text-swamp-800">Buy Now Price</p>
-                        <p class="text-xs text-swamp-400 font-semibold">Allow instant purchase at a fixed price</p>
+                        <p class="text-sm font-semibold text-swamp-800">Buy Now price</p>
+                        <p class="text-xs text-swamp-500">Let buyers skip the auction entirely</p>
                     </div>
-                    <div class="toggle-switch" id="buynow-toggle" onclick="toggleBuyNow()">
-                        <div class="toggle-knob"></div>
-                    </div>
+                    <div class="toggle-switch on" id="buyNowToggle" onclick="toggleBuyNow()"></div>
                 </div>
-                <div id="buynow-input" class="hidden mt-3">
+                <div class="mt-2" id="buyNowField">
+                    <label>Buy Now price ($)</label>
                     <div class="relative">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-swamp-400 font-black text-sm">₽</span>
-                        <input type="number" class="form-input pl-7" placeholder="e.g. 15000" min="1"/>
+                        <input id="input-buy-now-price" type="number" placeholder="500" min="1"/>
                     </div>
-                    <p class="text-xs text-swamp-400 font-semibold mt-1">Must be higher than the starting bid</p>
+                    <p class="text-xs text-swamp-500 mt-1">Must be higher than starting bid. Auction closes instantly
+                        when met.</p>
                 </div>
             </div>
         </div>
@@ -345,127 +316,248 @@
 
     <!-- Section 4: Logistics -->
     <div class="section-card">
-        <div class="section-title">📍 Logistics</div>
-
-        <div class="space-y-4">
+        <h2 class="text-base font-bold text-swamp-900 mb-3 flex items-center gap-2">
+            <span class="w-6 h-6 bg-swamp-500 text-white rounded-full text-xs flex items-center justify-center font-bold">4</span>
+            Logistics
+        </h2>
+        <div class="space-y-3">
             <div>
-                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Auction Duration
-                    <span class="text-red-400">*</span></label>
-                <div class="grid grid-cols-4 gap-2" id="duration-group">
-                    <div class="condition-btn" onclick="selectDuration(this)">24h</div>
-                    <div class="condition-btn selected" onclick="selectDuration(this)">3 days</div>
-                    <div class="condition-btn" onclick="selectDuration(this)">7 days</div>
-                    <div class="condition-btn" onclick="selectDuration(this)">Custom</div>
-                </div>
+                <label>Auction ends at <span class="text-red-400">*</span></label>
+                <input id="input-end-time" type="datetime-local" value="2025-05-20T18:00">
+                <p class="text-xs text-swamp-500 mt-1">Minimum 1 hour from now. Maximum 7 days.</p>
+                <p class="field-error" id="err-end-time">Please set a valid end time.</p>
             </div>
-
-            <div id="custom-date" class="hidden">
-                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">End Date &
-                    Time</label>
-                <input type="datetime-local" class="form-input"/>
-            </div>
-
             <div>
-                <label class="block text-xs font-bold text-swamp-600 mb-1.5 uppercase tracking-wide">Pickup / Meetup
-                    Location <span class="text-red-400">*</span></label>
-                <input type="text" class="form-input" placeholder="e.g. Main Library entrance, Building A lobby…"/>
-                <p class="text-xs text-swamp-400 font-semibold mt-1">Winner will contact you to arrange the meetup</p>
+                <label>Pickup / meetup location <span class="text-red-400">*</span></label>
+                <input id="input-location" type="text" placeholder="e.g. Main Library entrance, Dorm B lobby…"
+                       value="Main Library entrance, Building C">
+                <p class="text-xs text-swamp-500 mt-1">Cash on pickup only for MVP. Be specific enough for the winner to
+                    find you.</p>
+                <p class="field-error" id="err-location">Please enter a pickup location.</p>
             </div>
         </div>
     </div>
 
-    <!-- Spacer for sticky bar -->
-    <div class="h-4"></div>
+    <!-- Rules reminder -->
+    <div class="bg-swamp-50 border border-swamp-200 rounded-xl p-3 mb-4">
+        <p class="text-xs text-swamp-700 leading-relaxed">
+            <span class="font-bold">📋 Quick reminder:</span> Once a bid is placed you can't cancel this listing. By
+            posting you agree to meet the winner and complete the sale in good faith. Violations may lead to account
+            suspension.
+        </p>
+    </div>
+
 </div>
 
-<!-- Sticky Bottom Bar -->
+<!-- Sticky bottom bar -->
 <div class="sticky-bar">
-    <div class="max-w-2xl mx-auto flex items-center gap-3">
-<!--        <button onclick="saveDraft()"-->
-<!--                class="flex-1 border-2 border-swamp-300 text-swamp-700 font-bold py-3 rounded-full hover:bg-swamp-50 transition-colors text-sm">-->
-<!--            Save Draft-->
-<!--        </button>-->
-        <button onclick="dropDraft()"
-                class="flex-1 border-2 border-red-300 bg-red-50 text-red-700 font-bold py-3 rounded-full hover:bg-red-200 transition-colors text-sm">
-            🗑️ Delete
-        </button>
-        <button onclick="postListing()"
-                class="flex-2 bg-swamp-500 text-white font-bold py-3 px-8 rounded-full hover:bg-swamp-600 transition-colors text-sm shadow-md"
-                style="flex:2">
-            🐸 Post Listing
+    <div class="max-w-2xl mx-auto flex justify-end gap-3">
+
+        <button onclick="handlePost()"
+                class="bg-swamp-500 hover:bg-swamp-600 text-white font-semibold px-6 py-2.5 rounded-full transition-colors shadow-sm whitespace-nowrap">
+            Post Listing 🐸
         </button>
     </div>
 </div>
 
-<!-- Success Toast -->
-<div id="toast"
-     class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-[200] bg-swamp-700 text-white px-5 py-3 rounded-full font-bold text-sm shadow-xl flex items-center gap-2">
-    ✅ Draft saved!
+<!-- Success toast (hidden by default) -->
+<div id="successToast"
+     class="hidden fixed top-20 left-1/2 -translate-x-1/2 bg-swamp-800 text-white text-sm px-5 py-3 rounded-full shadow-lg z-50 font-medium">
+    ✅ Listing posted! Redirecting…
 </div>
 
 <script>
-    document.getElementById('mobile-menu-button').addEventListener('click', () => {
-      const m = document.getElementById('mobile-menu');
-      m.classList.toggle('hidden'); m.classList.toggle('block');
-    });
-
-    function selectCondition(el) {
-      document.querySelectorAll('#condition-group .condition-btn').forEach(b => b.classList.remove('selected'));
-      el.classList.add('selected');
+    // ── Condition picker ──────────────────────────────────────────────────────
+    function selectCondition(btn) {
+      document.querySelectorAll('.condition-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // clear any validation error
+      showError('err-condition', false);
     }
 
-    function selectDuration(el) {
-      document.querySelectorAll('#duration-group .condition-btn').forEach(b => b.classList.remove('selected'));
-      el.classList.add('selected');
-      document.getElementById('custom-date').classList.toggle('hidden', el.textContent !== 'Custom');
-    }
-
+    // ── Buy-now toggle ────────────────────────────────────────────────────────
     function toggleBuyNow() {
-      const t = document.getElementById('buynow-toggle');
-      const inp = document.getElementById('buynow-input');
-      t.classList.toggle('on');
-      inp.classList.toggle('hidden');
+      const toggle = document.getElementById('buyNowToggle');
+      const field  = document.getElementById('buyNowField');
+      toggle.classList.toggle('on');
+      const isOn = toggle.classList.contains('on');
+      field.style.display = isOn ? 'block' : 'none';
+      if (!isOn) document.getElementById('input-buy-now-price').value = '';
     }
 
-    function removePhoto(btn) { btn.parentElement.remove(); }
+    // ── Photo management ──────────────────────────────────────────────────────
+    // Tracks which slot the user clicked so onPhotoSelected knows where to put the image
+    let targetSlotIndex = null;
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      t.querySelector('span') && (t.querySelector('span').textContent = msg);
-      t.textContent = msg;
-      t.classList.remove('hidden');
-      setTimeout(() => t.classList.add('hidden'), 2000);
+    // photoFiles[slotIndex] = File object (or null for demo seed images)
+    const photoFiles = { 0: null };   // slot 0 pre-filled with the demo picsum image
+
+    function openPhotoPicker(slotIndex) {
+      targetSlotIndex = slotIndex;
+      document.getElementById('photo-file-input').value = '';  // reset so same file re-triggers change
+      document.getElementById('photo-file-input').click();
     }
 
-    function saveDraft() { showToast('✅ Draft saved!'); }
-    function dropDraft() { showToast('❎ Listing removed!'); }
-    function postListing() { showToast('🐸 Listing posted!'); }
+    function onPhotoSelected(event) {
+      const file = event.target.files[0];
+      if (!file || targetSlotIndex === null) return;
 
-    async function openFile() {
-      try {
-        const [fileHandle] = await window.showOpenFilePicker({
-          types: [
-            {
-              description: 'Images',
-              accept: { 'image/*': ['.png', '.gif', '.jpeg', '.jpg'] }
-            },
-          ],
-          excludeAcceptAllOption: true,
-          multiple: false
-        });
+      const objectUrl = URL.createObjectURL(file);
+      photoFiles[targetSlotIndex] = file;
+      fillSlot(targetSlotIndex, objectUrl);
+      targetSlotIndex = null;
+      showError('err-photos', false);
+    }
 
-        const file = await fileHandle.getFile();
-        console.log('File selected:', file.name);
-      } catch (err) {
-        console.error('User cancelled or error:', err);
+    function fillSlot(slotIndex, imageUrl) {
+      const slot = document.querySelector(`[data-slot="${slotIndex}"]`);
+      if (!slot) return;
+
+      const isCover = slotIndex === 0;
+      slot.classList.add('filled');
+      slot.onclick = null;   // disable the "open picker" click while filled
+
+      slot.innerHTML = `
+        <img src="${imageUrl}" class="w-full h-full object-cover absolute inset-0" alt="Photo ${slotIndex + 1}">
+        ${isCover ? '<span class="absolute top-1.5 left-2 bg-white/90 rounded-full text-swamp-700 font-bold" style="font-size:0.6rem;padding:1px 6px;">Cover</span>' : ''}
+        <button class="photo-remove" onclick="removePhoto(${slotIndex})" title="Remove photo">✕</button>
+      `;
+    }
+
+    function removePhoto(slotIndex) {
+      // Release the object URL to free memory (skip for seed demo images)
+      if (photoFiles[slotIndex]) {
+        URL.revokeObjectURL(document.querySelector(`[data-slot="${slotIndex}"] img`)?.src ?? '');
       }
-}
-    // Drag-drop highlight
-    const dz = document.getElementById('dropzone');
-    dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = '#22c55e'; dz.style.background = '#dcfce7'; });
-    dz.addEventListener('dragleave', () => { dz.style.borderColor = ''; dz.style.background = ''; });
-    dz.addEventListener('drop', e => { e.preventDefault(); dz.style.borderColor = ''; dz.style.background = ''; });
-    dz.addEventListener('click', async e => { e.preventDefault(); await openFile(); });
+      delete photoFiles[slotIndex];
+
+      const slot = document.querySelector(`[data-slot="${slotIndex}"]`);
+      if (!slot) return;
+
+      const isCover  = slotIndex === 0;
+      const iconSize = isCover ? 'w-6 h-6 text-swamp-400' : 'w-5 h-5 text-swamp-300';
+      slot.classList.remove('filled');
+      slot.onclick = () => openPhotoPicker(slotIndex);
+      slot.innerHTML = `
+        <svg class="${iconSize}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        ${isCover ? '<span>Add photo</span>' : ''}
+      `;
+    }
+
+    // ── Validation helpers ────────────────────────────────────────────────────
+    function showError(id, show) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = show ? 'block' : 'none';
+    }
+
+    function markField(inputId, errId, invalid) {
+      const el = document.getElementById(inputId);
+      if (el) el.classList.toggle('validation-error', invalid);
+      showError(errId, invalid);
+      return invalid;
+    }
+
+    // ── handlePost — collect, validate, then send to API ─────────────────────
+    function handlePost() {
+      // Collect all values
+      const title         = document.getElementById('input-title').value.trim();
+      const description   = document.getElementById('input-description').value.trim();
+      const category      = document.getElementById('input-category').value;
+      const conditionBtn  = document.querySelector('#condition-picker .condition-btn.active');
+      const condition     = conditionBtn?.dataset.value ?? '';
+      const startingBid   = parseFloat(document.getElementById('input-starting-bid').value);
+      const minIncrement  = parseFloat(document.getElementById('input-min-increment').value);
+      const buyNowEnabled = document.getElementById('buyNowToggle').classList.contains('on');
+      const buyNowPrice   = buyNowEnabled
+                            ? parseFloat(document.getElementById('input-buy-now-price').value)
+                            : null;
+      const endTime       = document.getElementById('input-end-time').value;
+      const location      = document.getElementById('input-location').value.trim();
+      const hasPhotos     = Object.keys(photoFiles).length > 0;
+
+      // Validate
+      let hasError = false;
+      hasError = markField('input-title',        'err-title',        !title)         || hasError;
+      hasError = markField('input-description',  'err-description',  !description)   || hasError;
+      hasError = markField('input-category',     'err-category',     !category)      || hasError;
+      hasError = markField('input-starting-bid', 'err-starting-bid', !(startingBid > 0)) || hasError;
+      hasError = markField('input-min-increment','err-min-increment',!(minIncrement > 0)) || hasError;
+      hasError = markField('input-end-time',     'err-end-time',     !endTime)       || hasError;
+      hasError = markField('input-location',     'err-location',     !location)      || hasError;
+      showError('err-condition', !condition);
+      showError('err-photos',    !hasPhotos);
+      if (!condition || !hasPhotos) hasError = true;
+
+      if (buyNowEnabled && buyNowPrice <= startingBid) {
+        markField('input-buy-now-price', null, true);
+        alert('Buy Now price must be greater than the starting bid.');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      // Build the request body matching POST /api/auctions
+      const listing = {
+        title,
+        description,
+        category,
+        condition,
+        startingBid,
+        minimumIncrement: minIncrement,
+        buyNowPrice,
+        endTime: new Date(endTime).toISOString(),
+        pickupLocation: location,
+        // photos are sent as FormData, not JSON — see below
+      };
+
+      console.log('POST /api/auctions', listing);
+
+      // ── Sending to the real API ─────────────────────────────────────────────
+      // Uncomment this block when your ASP.NET backend is running.
+      //
+      // const token = sessionStorage.getItem('gsToken');
+      // const form  = new FormData();
+      // form.append('data', JSON.stringify(listing));
+      // Object.values(photoFiles).forEach((file, i) => {
+      //   if (file) form.append(`photos`, file);
+      // });
+      // const res = await fetch('/api/auctions', {
+      //   method:  'POST',
+      //   headers: { 'Authorization': `Bearer ${token}` },
+      //   body:    form,
+      // });
+      // if (!res.ok) { const err = await res.json(); alert(err.message); return; }
+      // const created = await res.json();
+      // window.location.href = `auctions-detail.html?id=${created.id}`;
+      // ───────────────────────────────────────────────────────────────────────
+
+      // Mock success — remove once real fetch is wired up
+      const toast = document.getElementById('successToast');
+      toast.classList.remove('hidden');
+      setTimeout(() => { window.location.href = 'auctions-detail.html'; }, 1800);
+    }
+
+    // ── Auth ──────────────────────────────────────────────────────────────────
+    const MOCK_USER = { name: "Viggo The Frogger", email: "viggo.f@greens.edu" };
+
+    function applyAuthState() {
+      const user = JSON.parse(sessionStorage.getItem('gsUser') || 'null');
+      const loggedIn = !!user;
+      document.getElementById('signin-btn-desktop').classList.toggle('hidden', loggedIn);
+      const btn = document.getElementById('avatar-btn-desktop');
+      btn.classList.toggle('hidden', !loggedIn);
+      btn.classList.toggle('flex', loggedIn);
+    }
+    function toggleProfileMenu() { document.getElementById('profile-dropdown').classList.toggle('hidden'); }
+    document.addEventListener('click', e => {
+      if (!document.getElementById('profile-widget-desktop').contains(e.target))
+        document.getElementById('profile-dropdown').classList.add('hidden');
+    });
+    function signOut() { sessionStorage.removeItem('gsUser'); applyAuthState(); toggleProfileMenu(); }
+    function signIn(user = MOCK_USER) { sessionStorage.setItem('gsUser', JSON.stringify(user)); applyAuthState(); }
+    signIn();
 </script>
 </body>
 </html>

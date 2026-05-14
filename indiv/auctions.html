@@ -145,7 +145,7 @@
             <a href="#" class="block text-swamp-600 font-medium py-1">Ponds</a>
             <a href="auctions.html" class="block text-swamp-700 font-semibold py-1">Market</a>
             <a href="#" class="block text-swamp-600 font-medium py-1">Fireflies</a>
-            <a href="auction-create.html"
+            <a href="auctions-create.html"
                class="block w-full bg-swamp-500 text-white px-6 py-2 rounded-full text-center font-medium">+ New
                 Listing</a>
             <!-- Logged out -->
@@ -377,7 +377,7 @@
 </div>
 
 <!-- FAB for mobile -->
-<a href="auction-create.html"
+<a href="auctions-create.html"
    class="md:hidden fixed bottom-6 right-6 bg-swamp-500 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-swamp-600 z-40"
    style="box-shadow:0 4px 20px rgba(21,128,61,0.4)">
     +
@@ -598,7 +598,7 @@
         : `<p class="text-xs text-swamp-500 font-medium">${formatTimeRemaining(secsLeft)}</p>`;
 
       return `
-        <a href="auction-detail.html?id=${auction.id}" class="card-hover bg-white rounded-2xl shadow-sm overflow-hidden block">
+        <a href="auctions-detail.html?id=${auction.id}" class="card-hover bg-white rounded-2xl shadow-sm overflow-hidden block">
           <div class="relative">
             <img src="${auction.coverImageUrl}" alt="${escapeHtml(auction.title)}" class="h-36 md:h-44 w-full object-cover">
             ${topBadge}
