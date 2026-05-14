@@ -11,9 +11,9 @@
             extend: {
               colors: {
                 swamp: {
-                  50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
-                  400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
-                  800: '#166534', 900: '#14532d',
+                  50:'#f0fdf4',100:'#dcfce7',200:'#bbf7d0',300:'#86efac',
+                  400:'#4ade80',500:'#22c55e',600:'#16a34a',700:'#15803d',
+                  800:'#166534',900:'#14532d'
                 }
               }
             }
@@ -22,35 +22,23 @@
     </script>
     <style>
         #mobile-menu { transition: all 0.3s ease-out; transform-origin: top; }
-        #mobile-menu.hidden { opacity: 0; transform: scaleY(0); }
-        #mobile-menu.block  { opacity: 1; transform: scaleY(1); }
-        .auction-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .auction-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(22,101,52,0.12); }
-        .chip { transition: all 0.15s ease; cursor: pointer; }
-        .chip.active { background: #16a34a; color: white; border-color: #16a34a; }
-        .countdown-urgent { color: #dc2626; animation: pulse 1s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
-        .badge-new { background: linear-gradient(135deg, #22c55e, #16a34a); }
-        .search-glow:focus { box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
-        .auction-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        .auction-card:hover .auction-image {
-            transform: scale(1.05);
-        }
-        .image-container {
-            height: 144px;
-            overflow: hidden;
-            position: relative;
-        }
-        @media (min-width: 640px) {
-            .image-container {
-                height: 176px;
-            }
-        }
+        #mobile-menu.hidden { opacity:0; transform:scaleY(0); }
+        #mobile-menu.open { opacity:1; transform:scaleY(1); }
+
+        .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -6px rgba(21,128,61,0.15); }
+
+        .countdown { font-variant-numeric: tabular-nums; }
+
+        .filter-chip { transition: all 0.15s ease; cursor: pointer; }
+        .filter-chip.active { background: #15803d; color: white; border-color: #15803d; }
+
+        .badge-new { background: linear-gradient(135deg,#22c55e,#15803d); }
+
+        @keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+        .live-dot { animation: pulse-dot 1.5s infinite; }
+
+
     </style>
 </head>
 <body class="bg-swamp-50 min-h-screen">
@@ -59,33 +47,116 @@
 <nav class="bg-white shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-16">
-            <!-- Logo -->
             <a href="/index.html" class="flex items-center space-x-2">
-                <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
+                <img src="/green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
                 <span class="text-2xl font-bold text-swamp-600">Greenswamp</span>
             </a>
             <div class="hidden md:flex space-x-8 items-center">
-                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Swamp</a>
-                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Ponds</a>
-                <a href="auctions.html" class="text-swamp-700 font-bold border-b-2 border-swamp-500 pb-0.5">Market</a>
-                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-semibold">Fireflies</a>
-                <a href="/login.html"
-                   class="bg-swamp-500 text-white px-5 py-2 rounded-full hover:bg-swamp-600 font-bold text-sm transition-colors">Sign In</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Swamp</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Ponds</a>
+                <a href="auctions.html"
+                   class="text-swamp-700 font-semibold border-b-2 border-swamp-500 pb-0.5">Market</a>
+                <a href="#" class="text-swamp-600 hover:text-swamp-800 font-medium">Fireflies</a>
+                <a href="auctions-create.html"
+                   class="bg-swamp-500 text-white px-6 py-2 rounded-full hover:bg-swamp-600 font-medium">+ New
+                    Listing</a>
+
+                <!-- Desktop: Sign in / Profile -->
+                <div class="relative" id="profile-widget-desktop">
+                    <!-- Logged out -->
+                    <a href="#" id="signin-btn-desktop" onclick="signIn()"
+                       class="flex items-center gap-1.5 text-swamp-600 hover:text-swamp-800 font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        Sign in
+                    </a>
+                    <!-- Logged in (hidden by default) -->
+                    <button id="avatar-btn-desktop" class="hidden items-center gap-2 focus:outline-none"
+                            onclick="toggleProfileMenu()">
+                        <img id="avatar-desktop" src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
+                             class="w-10 h-10 rounded-full border-2 border-swamp-400">
+                        <svg class="w-3 h-3 text-swamp-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                    <!-- Dropdown -->
+                    <div id="profile-dropdown"
+                         class="hidden absolute right-0 top-10 w-44 bg-white rounded-2xl shadow-lg border border-swamp-100 py-1 z-50">
+                        <a href="/profile.html"
+                           class="flex items-center gap-2 px-4 py-2 text-sm text-swamp-700 hover:bg-swamp-50">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                            Profile
+                        </a>
+                        <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-swamp-700 hover:bg-swamp-50">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Settings
+                        </a>
+                        <div class="border-t border-swamp-50 mt-1">
+                            <button onclick="signOut()"
+                                    class="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                </svg>
+                                Sign out
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button id="mobile-menu-button" class="md:hidden text-swamp-600">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
+
+            <!-- Mobile: hamburger + avatar -->
+            <div class="md:hidden flex items-center gap-2">
+                <button id="mobile-menu-button" class="text-swamp-600 flex gap-2">
+                    <img id="avatar-mobile" src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
+                         class="w-8 h-8 rounded-full border-2 border-swamp-400">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
     <div id="mobile-menu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
         <div class="px-4 py-3 space-y-3">
-            <a href="#" class="block text-swamp-600 font-semibold">Swamp</a>
-            <a href="#" class="block text-swamp-600 font-semibold">Ponds</a>
-            <a href="auctions.html" class="block text-swamp-700 font-bold">Market</a>
-            <a href="#" class="block text-swamp-600 font-semibold">Fireflies</a>
-            <a href="/login.html" class="block w-full text-center bg-swamp-500 text-white px-5 py-2 rounded-full hover:bg-swamp-600 font-bold">Sign In</a>
+            <!-- Logged-in profile strip -->
+            <div id="mobile-profile-strip" class="hidden flex items-center gap-3 pb-3 border-b border-swamp-100">
+                <img id="avatar-mobile-menu" src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
+                         class="w-8 h-8 rounded-full border-2 border-swamp-400">
+                <div>
+                    <p id="mobile-profile-name" class="text-sm font-semibold text-swamp-900"></p>
+                    <p id="mobile-profile-email" class="text-xs text-swamp-400"></p>
+                </div>
+            </div>
+            <a href="#" class="block text-swamp-600 font-medium py-1">Swamp</a>
+            <a href="#" class="block text-swamp-600 font-medium py-1">Ponds</a>
+            <a href="auctions.html" class="block text-swamp-700 font-semibold py-1">Market</a>
+            <a href="#" class="block text-swamp-600 font-medium py-1">Fireflies</a>
+            <a href="auction-create.html"
+               class="block w-full bg-swamp-500 text-white px-6 py-2 rounded-full text-center font-medium">+ New
+                Listing</a>
+            <!-- Logged out -->
+            <a id="mobile-signin-link" href="#" onclick="signIn()"
+               class="block w-full border border-swamp-300 text-swamp-700 px-6 py-2 rounded-full text-center font-medium hover:bg-swamp-50">Sign
+                in</a>
+            <!-- Logged in -->
+            <button id="mobile-signout-btn" onclick="signOut()"
+                    class="hidden w-full border border-red-200 text-red-500 px-6 py-2 rounded-full text-center font-medium hover:bg-red-50">
+                Sign out
+            </button>
         </div>
     </div>
 </nav>
@@ -104,348 +175,615 @@
                 </h1>
                 <p class="mt-1 text-swamp-200 font-semibold">Campus-only auctions. Bid, win, meet up.</p>
             </div>
-            <a href="auctions-create.html"
-               class="inline-flex items-center gap-2 bg-white text-swamp-700 px-6 py-3 rounded-full font-bold hover:bg-swamp-100 transition-colors shadow-md self-start sm:self-auto">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+            <!-- Search -->
+            <div class="mt-5 relative max-w-xl flex-1">
+                <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-swamp-300" fill="none"
+                     stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
                 </svg>
-                New Listing
-            </a>
+                <input type="text" placeholder="Search listings…" id="search-input"
+                       class="search-glow w-full pl-11 pr-4 py-3 rounded-full bg-white/15 border border-white/30 text-white placeholder-swamp-300 font-semibold focus:outline-none focus:bg-white/25 transition-all"/>
+            </div>
         </div>
 
-        <!-- Search -->
-        <div class="mt-5 relative max-w-xl">
-            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-swamp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"/>
-            </svg>
-            <input type="text" placeholder="Search listings…" id="search-input"
-                   class="search-glow w-full pl-11 pr-4 py-3 rounded-full bg-white/15 backdrop-blur border border-white/30 text-white placeholder-swamp-300 font-semibold focus:outline-none focus:bg-white/25 transition-all"/>
-        </div>
     </div>
 </div>
 
-<!-- Filters -->
-<div class="bg-white border-b border-swamp-100 sticky top-16 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex items-center gap-2 overflow-x-auto py-3 scrollbar-hide" style="scrollbar-width:none">
-            <span class="text-xs font-bold text-swamp-500 uppercase tracking-wide whitespace-nowrap mr-1">Filter:</span>
-            <button data-filter="all" class="chip active whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-bold transition-all">All</button>
-            <button data-filter="books" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">📚 Books</button>
-            <button data-filter="electronics" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">💻 Electronics</button>
-            <button data-filter="clothes" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">👕 Clothes</button>
-            <button data-filter="sports" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">⚽ Sports</button>
-            <button data-filter="furniture" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">🪑 Furniture</button>
-            <button data-filter="other" class="chip whitespace-nowrap px-4 py-1.5 rounded-full border border-swamp-200 text-swamp-700 text-sm font-bold">🎲 Other</button>
+<!-- Category Filters -->
+<div class="bg-white border-b border-swamp-100 ">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            <button class="filter-chip active flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium">
+                All
+            </button>
+            <button class="filter-chip flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium text-swamp-600">
+                📚 Books
+            </button>
+            <button class="filter-chip flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium text-swamp-600">
+                💻 Tech
+            </button>
+            <button class="filter-chip flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium text-swamp-600">
+                🪑 Furniture
+            </button>
+            <button class="filter-chip flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium text-swamp-600">
+                👕 Clothing
+            </button>
+            <button class="filter-chip flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium text-swamp-600">
+                🎮 Gaming
+            </button>
+            <button class="filter-chip flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium text-swamp-600">
+                🎨 Art
+            </button>
+            <button class="filter-chip flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium text-swamp-600">
+                🏋️ Sports
+            </button>
+            <button class="filter-chip flex-shrink-0 px-4 py-1.5 rounded-full border border-swamp-200 text-sm font-medium text-swamp-600">
+                🛋️ Dorm
+            </button>
+        </div>
 
-            <div class="ml-auto pl-3 border-l border-swamp-100 flex-shrink-0">
-                <select id="sort-select" class="text-sm font-bold text-swamp-700 border border-swamp-200 rounded-full px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-swamp-300 bg-white">
-                    <option value="endingSoon">Ending Soon</option>
-                    <option value="newest">Newest</option>
-                    <option value="price_asc">Price: Low–High</option>
-                    <option value="price_desc">Price: High–Low</option>
-                    <option value="mostBids">Most Bids</option>
+        <!-- Sort Row -->
+        <div class="flex items-center justify-between mt-3">
+            <p class="text-sm text-swamp-500"><span class="font-semibold text-swamp-700">24</span> active auctions</p>
+            <div class="flex gap-2">
+                <select class="text-sm border border-swamp-200 rounded-full px-3 py-1.5 bg-white text-swamp-700 focus:outline-none focus:ring-2 focus:ring-swamp-400">
+                    <option>Ending soon</option>
+                    <option>Newest first</option>
+                    <option>Price: low to high</option>
+                    <option>Price: high to low</option>
+                    <option>Most bids</option>
                 </select>
             </div>
         </div>
     </div>
 </div>
+<!-- Auction Grid -->
+<div class="max-w-7xl mx-auto px-4 py-6">
 
-<!-- Listings Grid -->
-<main class="max-w-7xl mx-auto px-4 py-6">
-    <p class="text-sm text-swamp-500 font-semibold mb-4" id="listings-count"></p>
-
-    <div id="auctions-grid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
-        <!-- Cards will be injected here -->
+    <!-- Live indicator -->
+    <div class="flex items-center gap-2 mb-4">
+        <span class="live-dot w-2 h-2 rounded-full bg-swamp-500 inline-block"></span>
+        <span class="text-xs font-medium text-swamp-600">Live bids updating</span>
     </div>
 
-    <!-- Load More Button -->
-    <div class="mt-8 text-center">
-        <button id="load-more-btn"
-                class="bg-white border-2 border-swamp-200 text-swamp-700 font-bold px-8 py-3 rounded-full hover:bg-swamp-50 hover:border-swamp-400 transition-all">
-            Load more listings
-        </button>
-    </div>
-</main>
+    <!--
+      STUDENT TASK — Auction Card Grid
+      =================================
+      This grid is populated by fetchAuctions() below.
+      The container starts empty; cards are injected by renderCards(auctions).
 
-<!-- Footer -->
-<footer class="bg-swamp-900 text-white">
-    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <div class="flex items-center space-x-2">
-                    <img src="green-toad-logo.svg" alt="Greenswamp Logo" class="h-8 w-8">
-                    <span class="text-xl font-bold">Greenswamp</span>
-                </div>
+      Your API should respond to:
+        GET /api/auctions?sort=ending_soon&category=&search=&page=1
+
+      Expected response shape (see MOCK_DATA below for a full example):
+      {
+        "total": 24,
+        "page": 1,
+        "pageSize": 12,
+        "items": [ AuctionSummary, ... ]
+      }
+
+      AuctionSummary fields used by this page:
+        id            string    — used to build the detail page link
+        title         string
+        category      string    — e.g. "Tech", "Books"
+        condition     string    — "New" | "Like new" | "Good" | "Fair" | "Acceptable"
+        coverImageUrl string    — first photo URL
+        currentBid    number    — 0 if no bids yet
+        startingBid   number    — shown instead of currentBid when bidCount === 0
+        buyNowPrice   number?   — null if not set
+        bidCount      number
+        endTime       string    — ISO 8601 UTC, e.g. "2025-05-15T14:30:00Z"
+        status        string    — always "Active" for this endpoint
+    -->
+    <div id="auction-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+        <!-- Cards injected here by renderCards() -->
+    </div>
+
+    <!-- Skeleton loader — shown while fetch is in progress -->
+    <div id="skeleton-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 hidden">
+        <!-- 8 skeleton cards -->
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse" style="animation-delay:0ms">
+            <div class="h-36 md:h-44 bg-swamp-100"></div>
+            <div class="p-3 space-y-2">
+                <div class="h-3 bg-swamp-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-swamp-50 rounded-full w-1/2"></div>
+                <div class="h-5 bg-swamp-100 rounded-full w-1/3 mt-3"></div>
             </div>
-            <div>
-                <p class="text-sm text-swamp-300">Connecting people one ribbit at a time.</p>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse" style="animation-delay:60ms">
+            <div class="h-36 md:h-44 bg-swamp-100"></div>
+            <div class="p-3 space-y-2">
+                <div class="h-3 bg-swamp-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-swamp-50 rounded-full w-1/2"></div>
+                <div class="h-5 bg-swamp-100 rounded-full w-1/3 mt-3"></div>
             </div>
-            <div class="text-center">
-                <a href="/contact.html" class="mt-4 bg-swamp-500 px-6 py-2 rounded-full hover:bg-swamp-600 transition-colors text-white">Technical Support</a>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse" style="animation-delay:120ms">
+            <div class="h-36 md:h-44 bg-swamp-100"></div>
+            <div class="p-3 space-y-2">
+                <div class="h-3 bg-swamp-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-swamp-50 rounded-full w-1/2"></div>
+                <div class="h-5 bg-swamp-100 rounded-full w-1/3 mt-3"></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse" style="animation-delay:180ms">
+            <div class="h-36 md:h-44 bg-swamp-100"></div>
+            <div class="p-3 space-y-2">
+                <div class="h-3 bg-swamp-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-swamp-50 rounded-full w-1/2"></div>
+                <div class="h-5 bg-swamp-100 rounded-full w-1/3 mt-3"></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse" style="animation-delay:240ms">
+            <div class="h-36 md:h-44 bg-swamp-100"></div>
+            <div class="p-3 space-y-2">
+                <div class="h-3 bg-swamp-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-swamp-50 rounded-full w-1/2"></div>
+                <div class="h-5 bg-swamp-100 rounded-full w-1/3 mt-3"></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse" style="animation-delay:300ms">
+            <div class="h-36 md:h-44 bg-swamp-100"></div>
+            <div class="p-3 space-y-2">
+                <div class="h-3 bg-swamp-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-swamp-50 rounded-full w-1/2"></div>
+                <div class="h-5 bg-swamp-100 rounded-full w-1/3 mt-3"></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse" style="animation-delay:360ms">
+            <div class="h-36 md:h-44 bg-swamp-100"></div>
+            <div class="p-3 space-y-2">
+                <div class="h-3 bg-swamp-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-swamp-50 rounded-full w-1/2"></div>
+                <div class="h-5 bg-swamp-100 rounded-full w-1/3 mt-3"></div>
+            </div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse" style="animation-delay:420ms">
+            <div class="h-36 md:h-44 bg-swamp-100"></div>
+            <div class="p-3 space-y-2">
+                <div class="h-3 bg-swamp-100 rounded-full w-3/4"></div>
+                <div class="h-2 bg-swamp-50 rounded-full w-1/2"></div>
+                <div class="h-5 bg-swamp-100 rounded-full w-1/3 mt-3"></div>
             </div>
         </div>
     </div>
-</footer>
+
+    <!-- Error state -->
+    <div id="error-state" class="hidden text-center py-16">
+        <p class="text-4xl mb-3">🐸</p>
+        <p class="font-semibold text-swamp-800">Couldn't load listings</p>
+        <p class="text-sm text-swamp-500 mt-1 mb-4">The swamp is temporarily unavailable.</p>
+        <button onclick="fetchAuctions()"
+                class="bg-swamp-500 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-swamp-600">Try again
+        </button>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden text-center py-16">
+        <p class="text-4xl mb-3">🪷</p>
+        <p class="font-semibold text-swamp-800">No listings found</p>
+        <p class="text-sm text-swamp-500 mt-1">Try a different category or search term.</p>
+    </div>
+
+    <!-- Load more -->
+    <div id="load-more-wrap" class="text-center mt-8 hidden">
+        <button id="load-more-btn" onclick="loadMore()"
+                class="bg-white border border-swamp-200 text-swamp-700 px-8 py-2.5 rounded-full font-medium hover:bg-swamp-50 hover:border-swamp-400 transition-colors shadow-sm">
+            Load more listings
+        </button>
+    </div>
+</div>
+
+<!-- FAB for mobile -->
+<a href="auction-create.html"
+   class="md:hidden fixed bottom-6 right-6 bg-swamp-500 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-swamp-600 z-40"
+   style="box-shadow:0 4px 20px rgba(21,128,61,0.4)">
+    +
+</a>
 
 <script>
-    // ------------------------------
-    // 1. DEMO DATA (extracted from your existing cards + added picsumId)
-    // ------------------------------
-    const allListings = [
-        { id: 1, title: "MacBook Pro 2021 — Minor Scuffs", category: "electronics", currentBid: 12400, startingBid: 10000, bidCount: 7, catEmoji: "💻", endTime: "2026-05-13T15:30:00Z", isNew: true, hasBuyNow: false, buyNowPrice: null, createdAt: "2026-05-12T10:00:00Z", picsumId: "0" },   // Alejandro Escamilla - landscape
-        { id: 2, title: "Calculus Textbook + Solutions Manual", category: "books", currentBid: 850, startingBid: 500, bidCount: 3, catEmoji: "📚", endTime: "2026-05-13T18:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-10T09:00:00Z", picsumId: "4" },    // close-up keyboard
-        { id: 3, title: "Sony WH-1000XM4 Headphones", category: "electronics", currentBid: 5200, startingBid: 4000, bidCount: 12, catEmoji: "💻", endTime: "2026-05-14T20:00:00Z", isNew: false, hasBuyNow: true, buyNowPrice: 7000, createdAt: "2026-05-09T14:30:00Z", picsumId: "10" },   // Paul Jarvis - nature
-        { id: 4, title: "University Hoodie — Size M, Never Worn", category: "clothes", currentBid: 600, startingBid: 300, bidCount: 1, catEmoji: "👕", endTime: "2026-05-15T23:59:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-11T18:20:00Z", picsumId: "15" },   // Paul Jarvis - landscape
-        { id: 5, title: "IKEA Desk Chair — Good Condition", category: "furniture", currentBid: 1000, startingBid: 1000, bidCount: 0, catEmoji: "🪑", endTime: "2026-05-16T12:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-08T11:00:00Z", picsumId: "20" },   // Aleks Dorohovich - architecture
-        { id: 6, title: "Adidas Football, Size 5 — Used Once", category: "sports", currentBid: 400, startingBid: 300, bidCount: 2, catEmoji: "⚽", endTime: "2026-05-13T22:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-12T08:15:00Z", picsumId: "25" },   // Alejandro Escamilla - landscape
-        { id: 7, title: "Nintendo Switch + 3 Games Bundle", category: "electronics", currentBid: 9500, startingBid: 8000, bidCount: 5, catEmoji: "💻", endTime: "2026-05-18T09:00:00Z", isNew: true, hasBuyNow: false, createdAt: "2026-05-13T07:00:00Z", picsumId: "30" },   // landscape
-        { id: 8, title: "Fjällräven Kånken Backpack — Black", category: "other", currentBid: 2100, startingBid: 1500, bidCount: 4, catEmoji: "🎲", endTime: "2026-05-13T19:30:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-11T16:45:00Z", picsumId: "35" }    // landscape
-    ];
+    // ─────────────────────────────────────────────────────────────────────────────
+    // MOCK DATA
+    // Mirrors the exact JSON shape returned by GET /api/auctions.
+    // Remove this block and uncomment the real fetch() call once your API is running.
+    // ─────────────────────────────────────────────────────────────────────────────
+    const MOCK_DATA = {
+      total: 24,
+      page: 1,
+      pageSize: 8,
+      items: [
+        {
+          id: "a1b2c3d4",
+          title: 'MacBook Pro 13" 2021 — M1',
+          category: "Tech",
+          condition: "Good",
+          coverImageUrl: "https://picsum.photos/seed/macbook21/400/300",
+          currentBid: 740,
+          startingBid: 500,
+          buyNowPrice: 850,
+          bidCount: 12,
+          endTime: new Date(Date.now() + 47 * 60 * 1000).toISOString()  // 47 min from now
+        },
+        {
+          id: "b2c3d4e5",
+          title: "CS Algorithms Textbook Bundle (×4)",
+          category: "Books",
+          condition: "Like new",
+          coverImageUrl: "https://picsum.photos/seed/textbooks42/400/300",
+          currentBid: 38,
+          startingBid: 20,
+          buyNowPrice: null,
+          bidCount: 4,
+          endTime: new Date(Date.now() + 134 * 60 * 1000).toISOString()  // 2h 14m
+        },
+        {
+          id: "c3d4e5f6",
+          title: "IKEA Desk Chair — barely used",
+          category: "Furniture",
+          condition: "Good",
+          coverImageUrl: "https://picsum.photos/seed/ikeachair/400/300",
+          currentBid: 22,
+          startingBid: 10,
+          buyNowPrice: 45,
+          bidCount: 2,
+          endTime: new Date(Date.now() + 333 * 60 * 1000).toISOString()
+        },
+        {
+          id: "d4e5f6g7",
+          title: "Nintendo Switch + 3 games",
+          category: "Gaming",
+          condition: "Fair",
+          coverImageUrl: "https://picsum.photos/seed/nintendo77/400/300",
+          currentBid: 0,
+          startingBid: 120,
+          buyNowPrice: null,
+          bidCount: 0,
+          endTime: new Date(Date.now() + 26 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: "e5f6g7h8",
+          title: "Acoustic Guitar — Yamaha F310",
+          category: "Art",
+          condition: "Good",
+          coverImageUrl: "https://picsum.photos/seed/guitar55/400/300",
+          currentBid: 85,
+          startingBid: 50,
+          buyNowPrice: null,
+          bidCount: 7,
+          endTime: new Date(Date.now() + 380 * 60 * 1000).toISOString()
+        },
+        {
+          id: "f6g7h8i9",
+          title: "HP LaserJet Printer — works great",
+          category: "Tech",
+          condition: "Acceptable",
+          coverImageUrl: "https://picsum.photos/seed/printer63/400/300",
+          currentBid: 30,
+          startingBid: 15,
+          buyNowPrice: null,
+          bidCount: 3,
+          endTime: new Date(Date.now() + 605 * 60 * 1000).toISOString()
+        },
+        {
+          id: "g7h8i9j0",
+          title: "Resistance Band Set — full kit",
+          category: "Sports",
+          condition: "Like new",
+          coverImageUrl: "https://picsum.photos/seed/resistband/400/300",
+          currentBid: 14,
+          startingBid: 10,
+          buyNowPrice: 25,
+          bidCount: 1,
+          endTime: new Date(Date.now() + 30 * 60 * 60 * 1000).toISOString()
+        },
+        {
+          id: "h8i9j0k1",
+          title: "Vintage Denim Jacket — size M",
+          category: "Clothing",
+          condition: "Good",
+          coverImageUrl: "https://picsum.photos/seed/denimjacket/400/300",
+          currentBid: 27,
+          startingBid: 15,
+          buyNowPrice: null,
+          bidCount: 5,
+          endTime: new Date(Date.now() + 221 * 60 * 1000).toISOString()
+        }
+      ]
+    };
 
-    // Additional mock items to demonstrate "Load More"
-    const extraListings = [
-        { id: 9, title: "Python Crash Course Book", category: "books", currentBid: 450, startingBid: 200, bidCount: 2, catEmoji: "📚", endTime: "2026-05-14T14:00:00Z", isNew: true, hasBuyNow: false, createdAt: "2026-05-13T09:00:00Z", picsumId: "40" },   // landscape
-        { id: 10, title: "Mechanical Keyboard (Blue Switches)", category: "electronics", currentBid: 3200, startingBid: 2500, bidCount: 8, catEmoji: "💻", endTime: "2026-05-15T18:00:00Z", isNew: false, hasBuyNow: true, buyNowPrice: 4500, createdAt: "2026-05-10T20:00:00Z", picsumId: "45" },   // landscape
-        { id: 11, title: "Winter Jacket — Size L", category: "clothes", currentBid: 1200, startingBid: 800, bidCount: 3, catEmoji: "👕", endTime: "2026-05-17T10:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-09T12:00:00Z", picsumId: "50" },   // landscape
-        { id: 12, title: "Yoga Mat — barely used", category: "sports", currentBid: 350, startingBid: 250, bidCount: 1, catEmoji: "🎲", endTime: "2026-05-14T20:00:00Z", isNew: false, hasBuyNow: false, createdAt: "2026-05-12T08:00:00Z", picsumId: "55" }    // landscape
-    ];
-    // Merge all into one dataset
-    const fullListings = [...allListings, ...extraListings];
+    // Category → emoji map (kept client-side; not part of the API response)
+    const CATEGORY_EMOJI = {
+      Tech: "💻", Books: "📚", Furniture: "🪑", Clothing: "👕",
+      Gaming: "🎮", Art: "🎨", Sports: "🏋️", Dorm: "🛋️", Other: "📦"
+    };
 
-    // ------------------------------
-    // 2. Global State
-    // ------------------------------
-    let currentFilter = "all";
-    let currentSort = "endingSoon";
-    const startCount = 4;
-    const incrementCount = 4;
-    let displayedCount = startCount;          // how many cards currently shown (starting batch)
-    let currentListings = [];         // filtered + sorted version of fullListings
-    let activeTimers = [];            // store intervals to clear on re-render
+    // ─────────────────────────────────────────────────────────────────────────────
+    // fetchAuctions(params)
+    // Calls GET /api/auctions with the current filter/sort state.
+    // Falls back to MOCK_DATA when the API is unreachable (for development).
+    // ─────────────────────────────────────────────────────────────────────────────
+    let currentParams = { sort: "ending_soon", category: "", search: "", page: 1 };
 
-    // ------------------------------
-    // 3. Helper Functions
-    // ------------------------------
-    function getRemainingSeconds(endTimeISO) {
-        const end = new Date(endTimeISO);
-        const now = new Date();
-        return Math.max(0, Math.floor((end - now) / 1000));
+    async function fetchAuctions(params = currentParams) {
+      currentParams = params;
+      setLoadingState(true);
+
+      // --- REAL FETCH (uncomment when your API is running) ---
+      // const query = new URLSearchParams({
+      //   sort:     params.sort,
+      //   category: params.category,
+      //   search:   params.search,
+      //   page:     params.page
+      // });
+      // try {
+      //   const res = await fetch(`/api/auctions?${query}`, {
+      //     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      //   });
+      //   if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      //   const data = await res.json();
+      //   renderCards(data.items, params.page > 1);
+      //   updateMeta(data.total);
+      //   document.getElementById('load-more-wrap').classList.toggle('hidden',
+      //     data.page * data.pageSize >= data.total);
+      // } catch (err) {
+      //   console.error('fetchAuctions failed:', err);
+      //   showErrorState();
+      // }
+
+      // --- MOCK (remove once real API is wired up) ---
+      await new Promise(r => setTimeout(r, 600));   // simulate network delay
+      renderCards(MOCK_DATA.items, params.page > 1);
+      updateMeta(MOCK_DATA.total);
+      document.getElementById('load-more-wrap').classList.remove('hidden');
+      setLoadingState(false);
     }
 
-    function formatTime(secs) {
-        if (secs <= 0) return 'Ended';
-        if (secs < 3600) {
-            const m = Math.floor(secs / 60), s = secs % 60;
-            return `${m}:${String(s).padStart(2,'0')}`;
-        }
-        if (secs < 86400) {
-            const h = Math.floor(secs / 3600), m = Math.floor((secs % 3600) / 60);
-            return `${h}h ${m}m`;
-        }
-        const d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);
-        return `${d}d ${h}h`;
+    // ─────────────────────────────────────────────────────────────────────────────
+    // renderCards(auctions, append)
+    // Converts an array of AuctionSummary objects into card HTML and injects them.
+    // If append=true the new cards are added below existing ones (pagination).
+    // ─────────────────────────────────────────────────────────────────────────────
+    function renderCards(auctions, append = false) {
+      const grid = document.getElementById('auction-grid');
+
+      if (!append) grid.innerHTML = '';
+
+      if (auctions.length === 0 && !append) {
+        document.getElementById('empty-state').classList.remove('hidden');
+        return;
+      }
+      document.getElementById('empty-state').classList.add('hidden');
+
+      const fragment = auctions.map(buildCardHTML).join('');
+      grid.insertAdjacentHTML('beforeend', fragment);
+
+      // Start countdown tickers for any newly added cards
+      startCountdowns();
     }
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
+    // ─────────────────────────────────────────────────────────────────────────────
+    // buildCardHTML(auction)
+    // Pure function: AuctionSummary → HTML string for one card.
+    // All display logic lives here — the API never sends pre-formatted strings.
+    // ─────────────────────────────────────────────────────────────────────────────
+    function buildCardHTML(auction) {
+      const emoji       = CATEGORY_EMOJI[auction.category] ?? "📦";
+      const hasBids     = auction.bidCount > 0;
+      const displayBid  = hasBids ? auction.currentBid : auction.startingBid;
+      const bidLabel    = hasBids ? "Current bid" : "Starting bid";
+      const bidCountTxt = hasBids ? `${auction.bidCount} bid${auction.bidCount > 1 ? 's' : ''}` : "No bids yet";
+      const secsLeft    = Math.floor((new Date(auction.endTime) - Date.now()) / 1000);
+      const endingSoon  = secsLeft > 0 && secsLeft < 60 * 60;  // under 1 hour
 
-    // Filter & sort logic
-    function applyFilterAndSort() {
-        let filtered = [...fullListings];
-        if (currentFilter !== "all") {
-            filtered = filtered.filter(item => item.category === currentFilter);
-        }
-        // Sort
-        switch (currentSort) {
-            case "newest":
-                filtered.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
-                break;
-            case "price_asc":
-                filtered.sort((a,b) => a.currentBid - b.currentBid);
-                break;
-            case "price_desc":
-                filtered.sort((a,b) => b.currentBid - a.currentBid);
-                break;
-            case "mostBids":
-                filtered.sort((a,b) => b.bidCount - a.bidCount);
-                break;
-            default: // endingSoon
-                filtered.sort((a,b) => new Date(a.endTime) - new Date(b.endTime));
-        }
-        return filtered;
-    }
+      // Top-left badge: 🔥 if ending soon, Buy now if applicable, New if no bids
+      let topBadge = '';
+      if (endingSoon) {
+        topBadge = `<span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">🔥 Ending soon</span>`;
+      } else if (auction.buyNowPrice) {
+        topBadge = `<span class="absolute top-2 left-2 bg-swamp-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">Buy now</span>`;
+      } else if (!hasBids) {
+        topBadge = `<span class="absolute top-2 left-2 text-white text-xs font-bold px-2 py-0.5 rounded-full badge-new">New</span>`;
+      }
 
-    // Create one card DOM element with Picsum image
-    function createCardElement(auction) {
-        const card = document.createElement('a');
-        card.href = `auctions-detail.html?id=${auction.id}`;
-        card.className = 'auction-card bg-white rounded-2xl shadow-sm overflow-hidden block';
+      // Buy-now line shown below the bid row
+      const buyNowLine = auction.buyNowPrice
+        ? `<p class="text-xs text-swamp-600 font-medium mt-1">Buy now: $${auction.buyNowPrice}</p>`
+        : '';
 
-        const remainingSecs = getRemainingSeconds(auction.endTime);
-        const timeStr = formatTime(remainingSecs);
-        const isUrgent = remainingSecs < 300;
+      // Countdown: red + live ticker if ending soon, otherwise a static human label
+      const timeDisplay = endingSoon
+        ? `<p class="text-xs text-red-500 font-semibold" data-endtime="${auction.endTime}" data-cardid="${auction.id}">…</p>`
+        : `<p class="text-xs text-swamp-500 font-medium">${formatTimeRemaining(secsLeft)}</p>`;
 
-        let leftBadges = '';
-        if (auction.isNew) leftBadges += '<span class="badge-new text-white text-xs font-bold px-2 py-0.5 rounded-full">NEW</span>';
-        if (auction.hasBuyNow) leftBadges += '<span class="bg-amber-400 text-white text-xs font-bold px-2 py-0.5 rounded-full ml-1">BUY NOW</span>';
-
-        // Build image URL from Picsum
-        const imageUrl = `https://picsum.photos/id/${auction.picsumId}/400/300`;
-
-        card.innerHTML = `
-            <div class="relative">
-                <div class="image-container bg-gradient-to-br from-swamp-100 to-swamp-200">
-                    <img src="${imageUrl}"
-                         alt="${escapeHtml(auction.title)}"
-                         class="auction-image"
-                         onerror="this.onerror=null; this.src='https://picsum.photos/id/0/400/300'; this.parentElement.parentElement.querySelector('.image-fallback').style.display='flex'; this.style.display='none';">
-                    <div class="image-fallback" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; align-items: center; justify-content: center; font-size: 3rem; background: linear-gradient(to bottom right, #dcfce7, #bbf7d0);">
-                        ${auction.catEmoji}
-                    </div>
-                </div>
-                <div class="absolute top-2 left-2 flex gap-1">
-                    ${leftBadges}
-                </div>
-                <div class="absolute top-2 right-2 bg-black/60 backdrop-blur text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0A9 9 0 1 1 3 12a9 9 0 0 1 18 0z"/>
-                    </svg>
-                    <span class="${isUrgent ? 'countdown-urgent' : ''}" data-endtime="${auction.endTime}">${timeStr}</span>
-                </div>
+      return `
+        <a href="auction-detail.html?id=${auction.id}" class="card-hover bg-white rounded-2xl shadow-sm overflow-hidden block">
+          <div class="relative">
+            <img src="${auction.coverImageUrl}" alt="${escapeHtml(auction.title)}" class="h-36 md:h-44 w-full object-cover">
+            ${topBadge}
+            <span class="absolute top-2 right-2 bg-white/90 backdrop-blur text-swamp-700 text-xs font-semibold px-2 py-0.5 rounded-full shadow">
+              ${emoji} ${auction.category}
+            </span>
+          </div>
+          <div class="p-3">
+            <h3 class="font-semibold text-swamp-900 text-sm leading-snug truncate">${escapeHtml(auction.title)}</h3>
+            <p class="text-xs text-swamp-500 mt-0.5">${auction.condition}</p>
+            <div class="mt-2 flex items-end justify-between">
+              <div>
+                <p class="text-xs text-swamp-500">${bidLabel}</p>
+                <p class="text-lg font-bold text-swamp-700">$${displayBid}</p>
+              </div>
+              <div class="text-right">
+                ${timeDisplay}
+                <p class="text-xs text-swamp-400">${bidCountTxt}</p>
+              </div>
             </div>
-            <div class="p-3">
-                <p class="text-xs text-swamp-500 font-semibold capitalize">${auction.category}</p>
-                <h3 class="font-bold text-swamp-900 text-sm leading-tight mt-0.5 line-clamp-2">${escapeHtml(auction.title)}</h3>
-                <div class="mt-2 flex items-end justify-between">
-                    <div>
-                        <p class="text-xs text-swamp-400 font-semibold">Current bid</p>
-                        <p class="text-lg font-black text-swamp-700">₽${auction.currentBid.toLocaleString()}</p>
-                    </div>
-                    <p class="text-xs text-swamp-400 font-semibold">${auction.bidCount} ${auction.bidCount === 1 ? 'bid' : 'bids'}</p>
-                </div>
-            </div>
-        `;
-        return card;
+            ${buyNowLine}
+          </div>
+        </a>`;
     }
 
-    // Re-render the grid: clear, show only first `displayedCount` items from currentListings
-    function renderGrid() {
-        const grid = document.getElementById('auctions-grid');
-        grid.innerHTML = '';
-        const itemsToShow = currentListings.slice(0, displayedCount);
-        itemsToShow.forEach(auction => {
-            grid.appendChild(createCardElement(auction));
-        });
-        // Update listings count text
-        const countSpan = document.getElementById('listings-count');
-        countSpan.textContent = `${currentListings.length} active listings`;
-        // Show/hide load more button
-        const loadBtn = document.getElementById('load-more-btn');
-        if (displayedCount >= currentListings.length) {
-            loadBtn.style.display = 'none';
-        } else {
-            loadBtn.style.display = 'inline-block';
-        }
-        // Re-attach countdown timers to new cards (clear old intervals first)
-        activeTimers.forEach(clearInterval);
-        activeTimers = [];
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Helpers
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    // Convert seconds to "47m", "2h 14m", "1d 6h" etc.
+    function formatTimeRemaining(secs) {
+      if (secs <= 0) return "Ended";
+      const d = Math.floor(secs / 86400);
+      const h = Math.floor((secs % 86400) / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      if (d > 0) return `${d}d ${h}h`;
+      if (h > 0) return `${h}h ${m}m`;
+      return `${m}m`;
+    }
+
+    // Tick down all "ending soon" countdowns in the current grid
+    function startCountdowns() {
+      clearInterval(window._countdownInterval);
+      window._countdownInterval = setInterval(() => {
         document.querySelectorAll('[data-endtime]').forEach(el => {
-            const endTimeISO = el.dataset.endtime;
-            const updateTimer = () => {
-                const secs = getRemainingSeconds(endTimeISO);
-                el.textContent = formatTime(secs);
-                if (secs < 300) el.classList.add('countdown-urgent');
-                if (secs <= 0) {
-                    clearInterval(interval);
-                    el.textContent = 'Ended';
-                }
-            };
-            updateTimer();
-            const interval = setInterval(updateTimer, 1000);
-            activeTimers.push(interval);
+          const secsLeft = Math.floor((new Date(el.dataset.endtime) - Date.now()) / 1000);
+          if (secsLeft <= 0) {
+            el.textContent = "Ended";
+            return;
+          }
+          const m = String(Math.floor(secsLeft / 60)).padStart(2, '0');
+          const s = String(secsLeft % 60).padStart(2, '0');
+          el.textContent = `00:${m}:${s}`;
         });
+      }, 1000);
     }
 
-    // Refresh everything when filter/sort changes
-    function refreshListings(resetDisplayed = true) {
-        currentListings = applyFilterAndSort();
-        if (resetDisplayed) {
-            displayedCount = startCount;  // reset to initial batch size
-        }
-        renderGrid();
+    function updateMeta(total) {
+      const el = document.querySelector('#auction-count');
+      if (el) el.textContent = total;
     }
 
+    function setLoadingState(loading) {
+      document.getElementById('skeleton-grid').classList.toggle('hidden', !loading);
+      document.getElementById('auction-grid').classList.toggle('hidden', loading);
+      document.getElementById('error-state').classList.add('hidden');
+    }
+
+    function showErrorState() {
+      setLoadingState(false);
+      document.getElementById('error-state').classList.remove('hidden');
+    }
+
+    // Prevent XSS when injecting user-supplied strings into innerHTML
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Pagination
+    // ─────────────────────────────────────────────────────────────────────────────
     function loadMore() {
-        const remaining = currentListings.length - displayedCount;
-        const increment = Math.min(incrementCount, remaining);
-        displayedCount += increment;
-        renderGrid();
+      fetchAuctions({ ...currentParams, page: currentParams.page + 1 });
     }
 
-    // ------------------------------
-    // 4. Event Listeners
-    // ------------------------------
-    // Filter chips
-    document.querySelectorAll('.chip').forEach(chip => {
-        chip.addEventListener('click', (e) => {
-            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
-            currentFilter = chip.getAttribute('data-filter');
-            refreshListings(true);
-        });
-    });
-    // Sort dropdown
-    document.getElementById('sort-select').addEventListener('change', (e) => {
-        currentSort = e.target.value;
-        refreshListings(true);
-    });
-    // Load more button
-    document.getElementById('load-more-btn').addEventListener('click', loadMore);
-
-    // Optional: simple search (basic text filter)
-    const searchInput = document.getElementById('search-input');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            if (searchTerm === "") {
-                refreshListings(true);
-            } else {
-                // We re-filter fullListings temporarily (respecting current category filter)
-                let filtered = [...fullListings];
-                if (currentFilter !== "all") {
-                    filtered = filtered.filter(item => item.category === currentFilter);
-                }
-                filtered = filtered.filter(item => item.title.toLowerCase().includes(searchTerm));
-                // Apply current sort
-                switch (currentSort) {
-                    case "newest": filtered.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)); break;
-                    case "price_asc": filtered.sort((a,b) => a.currentBid - b.currentBid); break;
-                    case "price_desc": filtered.sort((a,b) => b.currentBid - a.currentBid); break;
-                    case "mostBids": filtered.sort((a,b) => b.bidCount - a.bidCount); break;
-                    default: filtered.sort((a,b) => new Date(a.endTime) - new Date(b.endTime));
-                }
-                currentListings = filtered;
-                displayedCount = startCount;
-                renderGrid();
-            }
-        });
-    }
-
-    // Initial load
-    refreshListings(true);
-
-    // Mobile menu toggle
+    // ─────────────────────────────────────────────────────────────────────────────
+    // UI wiring — mobile menu, filter chips, sort select, search
+    // ─────────────────────────────────────────────────────────────────────────────
     document.getElementById('mobile-menu-button').addEventListener('click', () => {
-        const m = document.getElementById('mobile-menu');
-        m.classList.toggle('hidden'); m.classList.toggle('block');
+      const m = document.getElementById('mobile-menu');
+      m.classList.toggle('hidden');
+      m.classList.toggle('open');
     });
+
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const category = chip.dataset.category ?? '';
+        fetchAuctions({ ...currentParams, category, page: 1 });
+      });
+    });
+
+    document.querySelector('select').addEventListener('change', e => {
+      const sortMap = {
+        'Ending soon':        'ending_soon',
+        'Newest first':       'newest',
+        'Price: low to high': 'price_asc',
+        'Price: high to low': 'price_desc',
+        'Most bids':          'most_bids'
+      };
+      fetchAuctions({ ...currentParams, sort: sortMap[e.target.value] ?? 'ending_soon', page: 1 });
+    });
+
+    // Debounced search
+    let searchTimer;
+    document.querySelector('input[type=text]').addEventListener('input', e => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        fetchAuctions({ ...currentParams, search: e.target.value.trim(), page: 1 });
+      }, 350);
+    });
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Boot — load auctions on page open
+    // ─────────────────────────────────────────────────────────────────────────────
+    fetchAuctions();
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Auth state
+    // In production: read the JWT from localStorage, decode the payload,
+    // call GET /api/auth/me, and use the response to populate the UI.
+    //
+    // Mock: toggle by calling signIn() / signOut() in the browser console.
+    // ─────────────────────────────────────────────────────────────────────────────
+    const MOCK_USER = { name: "Viggo The Frogger", email: "viggo.f@greens.edu"};
+
+    function applyAuthState() {
+      // Replace this block with: const user = getUserFromToken();
+      const user = JSON.parse(sessionStorage.getItem('gsUser') || 'null');
+
+      const loggedIn = !!user;
+
+      // Desktop
+      document.getElementById('signin-btn-desktop').classList.toggle('hidden', loggedIn);
+      const avatarBtnD = document.getElementById('avatar-btn-desktop');
+      avatarBtnD.classList.toggle('hidden', !loggedIn);
+      avatarBtnD.classList.toggle('flex', loggedIn);
+
+
+      // Mobile
+      const strip = document.getElementById('mobile-profile-strip');
+      strip.classList.toggle('hidden', !loggedIn);
+      strip.classList.toggle('flex', loggedIn);
+      document.getElementById('mobile-profile-name').textContent   = user?.name  ?? '';
+      document.getElementById('mobile-profile-email').textContent  = user?.email ?? '';
+      document.getElementById('mobile-signin-link').classList.toggle('hidden', loggedIn);
+      document.getElementById('mobile-signout-btn').classList.toggle('hidden', !loggedIn);
+      const avatarBtnM = document.getElementById('avatar-mobile');
+      avatarBtnM.classList.toggle('hidden', !loggedIn);
+      avatarBtnM.classList.toggle('flex', loggedIn);
+
+    }
+
+    function toggleProfileMenu() {
+      document.getElementById('profile-dropdown').classList.toggle('hidden');
+    }
+    // Close dropdown when clicking elsewhere
+    document.addEventListener('click', e => {
+      if (!document.getElementById('profile-widget-desktop').contains(e.target))
+        document.getElementById('profile-dropdown').classList.add('hidden');
+    });
+
+    // Demo helpers — call from console or wire to a real auth flow
+    function signIn(user = MOCK_USER) {
+      sessionStorage.setItem('gsUser', JSON.stringify(user));
+      applyAuthState();
+    }
+    function signOut() {
+      sessionStorage.removeItem('gsUser');
+      applyAuthState();
+      document.getElementById('profile-dropdown').classList.add('hidden');
+    }
+
+    applyAuthState();
 </script>
 </body>
 </html>
