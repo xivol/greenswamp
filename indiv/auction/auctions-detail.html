@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MacBook Pro M1 — Lily Market</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            swamp: {
+              50:'#f0fdf4',100:'#dcfce7',200:'#bbf7d0',300:'#86efac',
+              400:'#4ade80',500:'#22c55e',600:'#16a34a',700:'#15803d',
+              800:'#166534',900:'#14532d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Photo carousel */
+    .carousel-track { display: flex; transition: transform 0.35s cubic-bezier(.4,0,.2,1); }
+    .carousel-slide { min-width: 100%; }
+
+    /* Countdown digits */
+    .countdown-block {
+      background: white; border-radius: 0.75rem; padding: 0.4rem 0.6rem;
+      text-align: center; min-width: 3rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .countdown-block .digit {
+      font-size: 1.5rem; font-weight: 700; color: #15803d;
+      font-variant-numeric: tabular-nums; line-height: 1;
+    }
+    .countdown-block .label { font-size: 0.6rem; color: #16a34a; font-weight: 600; text-transform: uppercase; }
+
+    /* Live bid feed */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .bid-entry { animation: slideIn 0.3s ease; }
+
+    @keyframes pulse-dot { 0%,100%{opacity:1;} 50%{opacity:.3;} }
+    .live-dot { animation: pulse-dot 1.4s infinite; }
+
+    /* Bid input ring on focus */
+    .bid-input:focus { box-shadow: 0 0 0 3px rgba(34,197,94,0.2); outline: none; border-color: #16a34a; }
+
+    /* Sticky bid bar */
+    .bid-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: white; border-top: 1px solid #dcfce7;
+      padding: 0.75rem 1rem;
+      box-shadow: 0 -4px 20px rgba(21,128,61,0.1);
+      z-index: 50;
+    }
+
+    /* Tab underline */
+    .tab-btn { border-bottom: 2px solid transparent; transition: all 0.15s; }
+    .tab-btn.active { border-bottom-color: #16a34a; color: #15803d; font-weight: 600; }
+
+    /* Outbid flash */
+    @keyframes flashRed { 0%,100%{background:transparent;} 50%{background:#fee2e2;} }
+    .outbid-flash { animation: flashRed 0.6s ease; }
+
+    /* Confetti for winning */
+    @keyframes confetti-fall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti-piece { position: fixed; width: 8px; height: 8px; border-radius: 2px; animation: confetti-fall 2.5s ease forwards; z-index: 999; pointer-events: none; }
+  </style>
+</head>
+<body class="bg-swamp-50" style="padding-bottom: 6rem;">
+<!-- Navigation -->
+<nav class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center h-14">
+            <a href="auctions.html" class="flex items-center gap-2 text-swamp-600 hover:text-swamp-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                <span class="text-sm font-medium">Market</span>
+            </a>
+            <div class="flex items-center gap-2">
+              <svg class="h-8 w-8 text-swamp-600 inline" fill="currentColor" version="1.1"
+                   id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="-122.88 -122.88 757.76 757.76">
+                <path d="M452.09,335.122c62.386-69.965,60.006-177.603,59.867-182.309c-0.255-8.712-7.161-15.767-15.864-16.21 c-2.307-0.116-34.685-1.557-74.997,6.427c-7.934-39.686-21.397-68.089-22.046-69.442c-3.695-7.715-12.621-11.393-20.681-8.529 c-1.409,0.502-30.793,11.089-64.301,33.391c-22.136-33.013-45.055-53.88-46.902-55.536c-6.353-5.7-15.98-5.7-22.333,0 c-1.847,1.658-24.767,22.523-46.902,55.536c-33.507-22.302-62.891-32.891-64.3-33.392c-8.061-2.866-16.983,0.815-20.681,8.529 c-0.649,1.353-14.111,29.756-22.046,69.442c-40.312-7.986-72.689-6.543-74.996-6.426c-8.706,0.441-15.61,7.497-15.865,16.21 c-0.138,4.706-2.518,112.345,59.867,182.309c-25.548,10.116-54.712,27.242-54.712,54.639c0,26.751,27.147,48.071,80.688,63.368 c45.665,13.047,106.079,20.232,170.114,20.232c64.035,0,124.449-7.185,170.114-20.232c53.54-15.297,80.688-36.617,80.688-63.368 C506.802,362.378,477.675,345.252,452.09,335.122z M478.058,170.096c-1.946,31.969-11.425,103.617-56.537,148.728 c-36.2,36.199-89.566,48.414-125.646,52.438c39.064-48.084,66.363-107.116,59.272-168.736 C398.199,176.455,451.645,171.071,478.058,170.096z M374.92,102.738c4.236,11.349,9.815,28.472,13.716,48.559 c-13.576,4.293-27.37,9.806-40.69,16.88c-4.406-14.561-10.245-28.283-16.784-40.922 C348.028,115.898,363.966,107.764,374.92,102.738z M256.021,79.056c35.584,38.182,66.859,90.846,66.859,143.503 c0,63.89-45.323,120.279-66.902,143.503c-21.587-23.163-66.859-79.39-66.859-143.503C189.12,170.1,220.169,117.642,256.021,79.056z M137.081,102.738c10.957,5.028,26.895,13.161,43.758,24.516c-6.539,12.639-12.377,26.362-16.784,40.922 c-13.319-7.074-27.113-12.587-40.689-16.88C127.267,131.207,132.847,114.083,137.081,102.738z M33.942,170.07 c26.377,0.94,79.734,6.278,122.913,32.453c-7.089,61.584,20.174,120.616,59.271,168.739 c-36.08-4.024-89.446-16.237-125.645-52.438C45.355,273.698,35.883,202.016,33.942,170.07z M416.928,420.976 c-42.759,12.217-99.912,18.946-160.927,18.946c-61.015,0-118.167-6.728-160.928-18.946 c-46.066-13.162-56.434-27.299-56.434-31.214c0-3.733,9.353-16.619,49.518-29.148c45.956,33.345,113.973,48.174,167.843,45.886 c53.029,2.254,121.345-12.148,167.843-45.886c40.165,12.529,49.518,25.415,49.518,29.148 C473.362,393.676,462.995,407.814,416.928,420.976z"></path>
+              </svg>
+                <span class="text-lg font-bold text-swamp-600">Lily Market</span>
+            </div>
+            <!-- Auth -->
+            <div class="relative" id="profile-widget-desktop">
+                <!-- Logged out (for consistensy) -->
+                <a href="#" id="signin-btn-desktop" onclick="signIn()"
+                       class="hidden flex items-center gap-1.5 text-swamp-600 hover:text-swamp-800 font-medium">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        Sign in
+                </a>
+                <!-- Logged in by default -->
+                <button id="avatar-btn-desktop" class="flex items-center gap-2 focus:outline-none"
+                        onclick="toggleProfileMenu()">
+                    <img id="avatar-desktop" src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" alt="User"
+                         class="w-10 h-10 rounded-full border-2 border-swamp-400">
+                    <svg class="w-3 h-3 text-swamp-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                </button>
+                <!-- Dropdown -->
+                <div id="profile-dropdown"
+                     class="hidden absolute right-0 top-10 w-44 bg-white rounded-2xl shadow-lg border border-swamp-100 py-1 z-50">
+                    <a href="/profile.html"
+                       class="flex items-center gap-2 px-4 py-2 text-sm text-swamp-700 hover:bg-swamp-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        Profile
+                    </a>
+                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-swamp-700 hover:bg-swamp-50">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Settings
+                    </a>
+                    <div class="border-t border-swamp-50 mt-1">
+                        <button onclick="signOut()"
+                                class="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-500 hover:bg-red-50">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                            </svg>
+                            Sign out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-3xl mx-auto">
+
+  <!-- Photo Carousel -->
+  <div class="relative bg-white overflow-hidden" style="height:280px;" id="carouselWrap">
+    <div class="carousel-track h-full" id="carouselTrack">
+      <div class="carousel-slide h-full"><img src="https://picsum.photos/seed/macbook21/800/560" alt="MacBook front" class="w-full h-full object-cover"></div>
+      <div class="carousel-slide h-full" style="background:linear-gradient(135deg,#dbeafe 0%,#3b82f6 100%); display:flex; align-items:center; justify-content:center; font-size:5rem;">🔌</div>
+      <div class="carousel-slide h-full" style="background:linear-gradient(135deg,#e0e7ff 0%,#6366f1 100%); display:flex; align-items:center; justify-content:center; font-size:5rem;">📦</div>
+    </div>
+
+    <!-- Dot indicators -->
+    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+      <div class="w-1.5 h-1.5 rounded-full bg-white opacity-100 transition-opacity" id="dot-0"></div>
+      <div class="w-1.5 h-1.5 rounded-full bg-white opacity-40 transition-opacity" id="dot-1"></div>
+      <div class="w-1.5 h-1.5 rounded-full bg-white opacity-40 transition-opacity" id="dot-2"></div>
+    </div>
+
+    <!-- Photo count badge -->
+    <div class="absolute top-3 right-3 bg-black/40 backdrop-blur text-white text-xs font-medium px-2 py-0.5 rounded-full">
+      1 / 3
+    </div>
+
+    <!-- Category badge -->
+    <div class="absolute top-3 left-3 bg-white/90 backdrop-blur text-swamp-700 text-xs font-semibold px-2.5 py-1 rounded-full">
+      💻 Tech
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="px-4 pt-4 space-y-0">
+
+    <!-- Title + meta -->
+    <div class="bg-white rounded-2xl p-4 mb-3 shadow-sm">
+      <div class="flex items-start justify-between gap-2">
+        <h1 class="text-lg font-bold text-swamp-900 leading-snug">MacBook Pro 13" 2021 — M1 chip</h1>
+        <span class="flex-shrink-0 bg-swamp-100 text-swamp-700 text-xs font-semibold px-2.5 py-1 rounded-full">Good</span>
+      </div>
+
+      <!-- Seller -->
+      <div class="flex items-center gap-2 mt-2.5">
+        <img src="https://i.pravatar.cc/200?u=frogger_vig@pravatar.com" class="w-8 h-8 rounded-full border-2 border-swamp-200 flex-shrink-0" alt="Viggo">
+        <div>
+          <p class="text-xs font-semibold text-swamp-800">Viggo The Frogger</p>
+          <p class="text-xs text-swamp-400">@frogger_vig</p>
+        </div>
+
+      </div>
+
+      <!-- Pickup -->
+      <div class="flex items-center gap-1.5 mt-3 bg-swamp-50 rounded-xl px-3 py-2">
+        <svg class="w-4 h-4 text-swamp-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span class="text-xs text-swamp-600 font-medium">Pickup: Main Library entrance, Building C</span>
+      </div>
+    </div>
+
+    <!-- Countdown + bid panel -->
+    <div class="bg-white rounded-2xl p-4 mb-3 shadow-sm">
+
+      <!-- Live indicator -->
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-1.5">
+          <span class="live-dot w-2 h-2 rounded-full bg-swamp-500"></span>
+          <span class="text-xs font-semibold text-swamp-600">Live auction</span>
+        </div>
+        <span class="text-xs text-swamp-400">12 watching</span>
+      </div>
+
+      <!-- Countdown -->
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <div class="countdown-block">
+          <div class="digit" id="cd-h">00</div>
+          <div class="label">hrs</div>
+        </div>
+        <span class="text-swamp-400 font-bold text-lg pb-1">:</span>
+        <div class="countdown-block">
+          <div class="digit" id="cd-m">47</div>
+          <div class="label">min</div>
+        </div>
+        <span class="text-swamp-400 font-bold text-lg pb-1">:</span>
+        <div class="countdown-block">
+          <div class="digit" id="cd-s">22</div>
+          <div class="label">sec</div>
+        </div>
+      </div>
+
+      <!-- Current bid display -->
+      <div class="text-center mb-4">
+        <p class="text-xs text-swamp-500 font-medium uppercase tracking-wide">Current bid</p>
+        <p class="text-4xl font-bold text-swamp-800 mt-0.5" id="currentBidDisplay">$740</p>
+        <p class="text-xs text-swamp-400 mt-0.5" id="bidCountDisplay">12 bids · highest: @maya_s</p>
+      </div>
+
+      <!-- Outbid banner (hidden by default) -->
+      <div id="outbidBanner" class="hidden bg-red-50 border border-red-200 rounded-xl p-2.5 mb-3 text-center">
+        <p class="text-sm font-semibold text-red-700">😬 You've been outbid! Place a higher bid to stay in.</p>
+      </div>
+
+      <!-- Buy Now -->
+      <div class="bg-swamp-50 rounded-xl p-3 mb-3 flex items-center justify-between">
+        <div>
+          <p class="text-sm font-semibold text-swamp-800">Buy Now</p>
+          <p class="text-xs text-swamp-500">Skip the auction — yours instantly</p>
+        </div>
+        <button onclick="triggerBuyNow()" class="bg-swamp-700 text-white font-bold px-4 py-2 rounded-full text-sm hover:bg-swamp-800 transition-colors shadow-sm">
+          $850
+        </button>
+      </div>
+
+      <!-- Bid form -->
+      <div>
+        <p class="text-xs text-swamp-500 mb-1.5">Minimum next bid: <span class="font-bold text-swamp-700">$750</span> (increment: $10)</p>
+        <div class="flex gap-2">
+          <div class="relative flex-1">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-swamp-500 font-semibold text-sm">$</span>
+            <input type="number" id="bidInput" class="bid-input w-full pl-7 pr-3 py-3 border-2 border-swamp-200 rounded-xl text-base font-semibold text-swamp-900" placeholder="750" min="750" step="10" value="750">
+          </div>
+          <button onclick="placeBid()" class="bg-swamp-500 hover:bg-swamp-600 text-white font-bold px-5 py-3 rounded-xl transition-colors text-sm shadow-sm whitespace-nowrap">
+            Place Bid 🐸
+          </button>
+        </div>
+        <p class="text-xs text-swamp-400 mt-1.5 text-center">Bids are binding. You commit to paying if you win.</p>
+      </div>
+    </div>
+
+    <!-- Tabs: Description / Bids -->
+    <div class="bg-white rounded-2xl shadow-sm overflow-hidden mb-3">
+      <div class="flex border-b border-swamp-100">
+        <button class="tab-btn active flex-1 py-3 text-sm text-swamp-600" id="tab-desc" onclick="showTab('desc')">Description</button>
+        <button class="tab-btn flex-1 py-3 text-sm text-swamp-500" id="tab-bids" onclick="showTab('bids')">
+          Bid History <span class="bg-swamp-100 text-swamp-700 text-xs px-1.5 py-0.5 rounded-full ml-1 font-bold" id="bidCountBadge">12</span>
+        </button>
+      </div>
+
+      <!-- Description tab -->
+      <div id="panel-desc" class="p-4">
+        <p class="text-sm text-swamp-700 leading-relaxed">
+          Selling my M1 MacBook Pro. Battery cycle count under 100. Comes with original charger and box. Minor scratches on the bottom lid, screen is perfect. Running macOS Sonoma. Perfect for CS students — handles Xcode, VSCode, Docker with ease.
+        </p>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <div class="bg-swamp-50 rounded-xl p-2.5">
+            <p class="text-xs text-swamp-500">Model</p>
+            <p class="text-sm font-semibold text-swamp-800">MBP 13" M1 2021</p>
+          </div>
+          <div class="bg-swamp-50 rounded-xl p-2.5">
+            <p class="text-xs text-swamp-500">RAM / Storage</p>
+            <p class="text-sm font-semibold text-swamp-800">8 GB / 256 GB</p>
+          </div>
+          <div class="bg-swamp-50 rounded-xl p-2.5">
+            <p class="text-xs text-swamp-500">Battery cycles</p>
+            <p class="text-sm font-semibold text-swamp-800">&lt; 100</p>
+          </div>
+          <div class="bg-swamp-50 rounded-xl p-2.5">
+            <p class="text-xs text-swamp-500">Includes</p>
+            <p class="text-sm font-semibold text-swamp-800">Charger + box</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bid history tab -->
+      <div id="panel-bids" class="hidden">
+        <div class="p-3 bg-swamp-50 border-b border-swamp-100 flex items-center gap-1.5">
+          <span class="live-dot w-2 h-2 rounded-full bg-swamp-500"></span>
+          <span class="text-xs font-semibold text-swamp-600">Live — updates automatically</span>
+        </div>
+        <div id="bidFeed" class="divide-y divide-swamp-50 max-h-64 overflow-y-auto">
+          <!-- Bids injected by JS -->
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main content -->
+</div><!-- /max-w-3xl -->
+
+<!-- Bid success toast -->
+<div id="bidToast" class="hidden fixed top-20 left-1/2 -translate-x-1/2 text-white text-sm px-5 py-3 rounded-full shadow-lg z-50 font-semibold" style="background:#15803d;white-space:nowrap;">
+  ✅ Bid placed! You're the highest bidder.
+</div>
+
+<!-- Win modal -->
+<div id="winModal" class="hidden fixed inset-0 bg-black/60 flex items-end justify-center z-50 pb-0">
+  <div class="bg-white rounded-t-3xl w-full max-w-md p-6 text-center shadow-2xl">
+    <div class="w-16 h-16 bg-swamp-100 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl">🏆</div>
+    <h2 class="text-xl font-bold text-swamp-900">You won the auction!</h2>
+    <p class="text-swamp-600 text-sm mt-1">Final price: <span class="font-bold text-swamp-800">$850</span> (Buy Now)</p>
+    <p class="text-swamp-500 text-xs mt-2">Message the seller to arrange pickup at the Main Library.</p>
+    <button onclick="document.getElementById('winModal').classList.add('hidden')" class="mt-4 w-full bg-swamp-500 text-white py-3 rounded-full font-semibold hover:bg-swamp-600">
+      Message Seller 💬
+    </button>
+    <button onclick="document.getElementById('winModal').classList.add('hidden')" class="mt-2 w-full text-swamp-500 text-sm py-1">
+      Close
+    </button>
+  </div>
+</div>
+
+<script>
+// ── Carousel ──────────────────────────────────────────────────────────────────
+let currentSlide = 0;
+const totalSlides = 3;
+const track = document.getElementById('carouselTrack');
+const countBadge = carouselWrap.querySelector('.absolute.top-3.right-3');
+
+function goToSlide(n) {
+  currentSlide = (n + totalSlides) % totalSlides;
+  track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  for(let i=0;i<totalSlides;i++){
+    const d = document.getElementById(`dot-${i}`);
+    if(d) d.style.opacity = i === currentSlide ? '1' : '0.4';
+  }
+  if(countBadge) countBadge.textContent = `${currentSlide+1} / ${totalSlides}`;
+}
+
+// Swipe support
+let touchStartX = 0;
+const wrap = document.getElementById('carouselWrap');
+
+wrap.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, {passive:true});
+wrap.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if(Math.abs(dx) > 40) goToSlide(dx < 0 ? currentSlide + 1 : currentSlide - 1);
+});
+wrap.addEventListener('click', e => {
+  const rect = wrap.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const width = rect.width;
+
+  goToSlide(clickX > width / 2 ? currentSlide + 1 : currentSlide - 1);
+});
+// ── Countdown ─────────────────────────────────────────────────────────────────
+let totalSecs = 47 * 60 + 22;
+function updateCountdown() {
+  if(totalSecs <= 0) {
+    document.getElementById('cd-h').textContent = '00';
+    document.getElementById('cd-m').textContent = '00';
+    document.getElementById('cd-s').textContent = '00';
+    return;
+  }
+  totalSecs--;
+  const h = Math.floor(totalSecs / 3600);
+  const m = Math.floor((totalSecs % 3600) / 60);
+  const s = totalSecs % 60;
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+}
+setInterval(updateCountdown, 1000);
+
+// ── Bid Data ──────────────────────────────────────────────────────────────────
+let bids = [
+  { user:'maya_s',    amount: 740, ago:'just now' },
+  { user:'tadpole22', amount: 730, ago:'2 min ago' },
+  { user:'lily_h',    amount: 710, ago:'5 min ago' },
+  { user:'pondboy',   amount: 690, ago:'12 min ago' },
+  { user:'maya_s',    amount: 660, ago:'18 min ago' },
+  { user:'frogfan',   amount: 640, ago:'25 min ago' },
+  { user:'tadpole22', amount: 620, ago:'31 min ago' },
+  { user:'lily_h',    amount: 600, ago:'40 min ago' },
+  { user:'pondboy',   amount: 580, ago:'52 min ago' },
+  { user:'maya_s',    amount: 560, ago:'1 hr ago'  },
+  { user:'frogfan',   amount: 530, ago:'1 hr ago'  },
+  { user:'tadpole22', amount: 500, ago:'2 hr ago'  },
+];
+
+function renderBidFeed() {
+  const feed = document.getElementById('bidFeed');
+  feed.innerHTML = bids.map((b,i) => `
+    <div class="bid-entry flex items-center justify-between px-4 py-2.5 ${i===0?'bg-swamp-50':''}">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-full bg-swamp-${100+((b.user.charCodeAt(0)%4)*100)} flex items-center justify-center text-swamp-700 font-bold text-xs">${b.user[0].toUpperCase()}</div>
+        <div>
+          <p class="text-sm font-semibold text-swamp-800">@${b.user} ${i===0?'<span class="text-xs bg-swamp-500 text-white px-1.5 py-0.5 rounded-full ml-1">Winning</span>':''}</p>
+          <p class="text-xs text-swamp-400">${b.ago}</p>
+        </div>
+      </div>
+      <p class="font-bold text-swamp-800 text-base">$${b.amount}</p>
+    </div>
+  `).join('');
+}
+renderBidFeed();
+
+// ── Place Bid ─────────────────────────────────────────────────────────────────
+let currentBid = 740;
+let myBid = false;
+
+function placeBid() {
+  const input = document.getElementById('bidInput');
+  const val = parseInt(input.value);
+  const minNext = currentBid + 10;
+
+  if(!val || val < minNext) {
+    input.style.borderColor = '#ef4444';
+    input.style.boxShadow = '0 0 0 3px rgba(239,68,68,0.15)';
+    setTimeout(()=>{ input.style.borderColor = ''; input.style.boxShadow = ''; }, 1500);
+    return;
+  }
+
+  currentBid = val;
+  myBid = true;
+
+  bids.unshift({ user:'you', amount: val, ago: 'just now' });
+  document.getElementById('bidCountBadge').textContent = bids.length;
+  document.getElementById('currentBidDisplay').textContent = `$${val}`;
+  document.getElementById('bidCountDisplay').textContent = `${bids.length} bids · highest: @you`;
+  document.getElementById('outbidBanner').classList.add('hidden');
+  renderBidFeed();
+
+  const toast = document.getElementById('bidToast');
+  toast.classList.remove('hidden');
+  setTimeout(()=>toast.classList.add('hidden'), 2500);
+
+  input.value = val + 10;
+
+  // Simulate being outbid after 4s
+  setTimeout(()=>{
+    if(myBid) {
+      myBid = false;
+      const overbid = val + 20;
+      currentBid = overbid;
+      bids.unshift({ user:'maya_s', amount: overbid, ago:'just now' });
+      document.getElementById('bidCountBadge').textContent = bids.length;
+      document.getElementById('currentBidDisplay').textContent = `$${overbid}`;
+      document.getElementById('bidCountDisplay').textContent = `${bids.length} bids · highest: @maya_s`;
+      document.getElementById('outbidBanner').classList.remove('hidden');
+      renderBidFeed();
+      input.value = overbid + 10;
+    }
+  }, 4000);
+}
+
+function triggerBuyNow() {
+  spawnConfetti();
+  setTimeout(()=> document.getElementById('winModal').classList.remove('hidden'), 600);
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function showTab(name) {
+  ['desc','bids'].forEach(t => {
+    document.getElementById(`panel-${t}`).classList.toggle('hidden', t!==name);
+    document.getElementById(`tab-${t}`).classList.toggle('active', t===name);
+  });
+}
+
+// ── Confetti ──────────────────────────────────────────────────────────────────
+function spawnConfetti() {
+  const colors = ['#22c55e','#15803d','#4ade80','#bbf7d0','#86efac','#fde68a','#fb923c'];
+  for(let i=0;i<40;i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random()*100+'vw';
+    el.style.top = '-10px';
+    el.style.background = colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDelay = Math.random()*0.8+'s';
+    el.style.animationDuration = (2+Math.random())+'s';
+    el.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 3500);
+  }
+}
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  const MOCK_USER = { name: "Viggo The Frogger", email: "viggo.f@greens.edu" };
+
+  function applyAuthState() {
+    const user = JSON.parse(sessionStorage.getItem('gsUser') || 'null');
+    const loggedIn = !!user;
+    document.getElementById('signin-btn-desktop').classList.toggle('hidden', loggedIn);
+    const btn = document.getElementById('avatar-btn-desktop');
+    btn.classList.toggle('hidden', !loggedIn);
+    btn.classList.toggle('flex', loggedIn);
+  }
+  function toggleProfileMenu() { document.getElementById('profile-dropdown').classList.toggle('hidden'); }
+  document.addEventListener('click', e => {
+    if (!document.getElementById('profile-widget-desktop').contains(e.target))
+      document.getElementById('profile-dropdown').classList.add('hidden');
+  });
+  function signOut() { sessionStorage.removeItem('gsUser'); applyAuthState(); toggleProfileMenu(); }
+  function signIn(user = MOCK_USER) { sessionStorage.setItem('gsUser', JSON.stringify(user)); applyAuthState(); }
+  signIn();
+</script>
+</body>
+</html>
