@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Frog Chess 🐸 - Greenswamp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+    <script src="froglogic.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        swamp: {
+                            50:  '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { box-sizing: border-box; user-select: none; }
+
+        .swamp-bg {
+            background-image: url('/istockphoto-1464399789-1024x1024.jpg');
+            background-repeat: repeat-x;
+            background-size: auto 100%;
+            background-position: center top;
+        }
+
+        /* ── Status panel ── */
+        .status-panel {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 9999px;
+            padding: 8px 14px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 10px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.08);
+            font-weight: bold;
+            color: #14532d;
+            transition: background 0.4s, border-color 0.4s;
+            min-width: 0;
+        }
+
+        
+        /* error — amber/red warning */
+        .status-panel.state-error {
+            background: #fff7ed;
+            border-color: #fed7aa;
+            color: #7c2d12;
+        }
+        .status-panel.state-error .turn-indicator { background: #c2410c; box-shadow: inset 0 1px 0 #fb923c, 0 2px 4px rgba(0,0,0,0.2); }
+        .status-panel.state-error .players-list   { background: #ffedd5; color: #9a3412; }
+        .status-panel.state-error .game-message   { background: #9a3412; }
+		.status-panel.state-error .player-badge   { background: #ffedd5; color: #9a3412; }
+		.status-panel.state-error .player-badge.active   { background: #ffedd5; color: #9a3412; box-shadow: 0 0 0 0; }
+
+        .turn-indicator {
+            background: #15803d;
+            padding: 7px 14px;
+            border-radius: 9999px;
+            color: #dcfce7;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-shadow: inset 0 1px 0 #4ade80, 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .players-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            background: #dcfce7;
+            padding: 5px 14px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            color: #166534;
+            flex: 1;
+            min-width: 0;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .player-badge {
+            padding: 3px 10px;
+            border-radius: 9999px;
+            background: #bbf7d0;
+            color: #14532d;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .player-badge.active {
+            background: #22c55e;
+            color: #f0fdf4;
+            box-shadow: 0 0 0 2px #16a34a;
+        }
+
+        .game-message {
+            background: #166534;
+            padding: 7px 14px;
+            border-radius: 9999px;
+            color: #dcfce7;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        /* ── Canvas parent ── */
+        #gameCanvasParent {
+            display: flex;
+            justify-content: center;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+            background: #3f7040;
+            width: 100%;
+            max-width: 520px;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto;
+        }
+
+        #gameCanvasParent canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+
+        /* ── Join modal overlay ── */
+        .join-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(20, 83, 45, 0.55);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            border-radius: 1rem; /* matches card rounding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .status-panel {
+                border-radius: 28px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .turn-indicator, .game-message {
+                text-align: center;
+            }
+            .join-area {
+                flex-direction: column;
+            }
+            .join-area input, .join-area button {
+                width: 100%;
+                flex: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-swamp-50 min-h-screen relative">
+
+    <!-- Background -->
+    <div class="fixed inset-0 swamp-bg -z-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-swamp-50/90 to-swamp-100/60 z-0"></div>
+
+    <!-- Content -->
+    <div class="relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+            <!-- Logo Header -->
+            <div class="text-center mb-12">
+                <div class="flex items-center justify-center space-x-3 mb-4">
+                    <img src="/green-toad-logo.svg" alt="Greenswamp Logo" class="h-16 w-16">
+                    <span class="text-4xl font-bold text-swamp-900">Greenswamp</span>
+                </div>
+                <p class="text-lg text-swamp-800">Frog Chess — Jump to Victory!</p>
+				<p class="mt-4 flex items-center justify-center space-x-4">
+                    <a href="./rules-bgg434812.pdf" class="text-swamp-700 hover:text-swamp-900 hover:underline">Read the rules</a>
+                    <a href="./frogs_by_probzzzz.png" class="text-swamp-700 hover:text-swamp-900 hover:underline">Look at frogs</a>
+                </p>
+            </div>
+
+            <!-- Game Card -->
+            <div class="relative max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 sm:p-10 border border-swamp-100">
+
+                <!-- Status Panel -->
+                <div class="status-panel">
+                    <div class="turn-indicator" id="turnText">🐸 LOBBY</div>
+                    <div class="players-list" id="playersList">— waiting for players —</div>
+                    <div class="game-message" id="gameMsg">🌿 Enter a name &amp; join game</div>
+                </div>
+
+                <!-- Phaser Canvas Mount Point -->
+                <div id="gameCanvasParent"></div>
+
+                <!-- Pass Button — shown when player has no valid moves -->
+                <div class="flex justify-center mt-4">
+                    <button id="passBtn"
+                            class="px-10 py-3 rounded-xl font-semibold text-sm transition-all duration-200
+                                   border-2 border-swamp-200 text-swamp-400 bg-white
+                                   border-swamp-500 text-swamp-700
+                                   hover:bg-swamp-50 hover:border-swamp-600
+                                   shadow-sm">
+                        ⏭ Pass Turn
+                    </button>
+                </div>
+
+                <!-- Join Modal Overlay (shown before server connection) -->
+                 <div class="join-modal-backdrop" id="joinModalBackdrop">
+                    <div class="bg-white rounded-2xl shadow-lg p-8 sm:p-12 border border-swamp-100 w-full max-w-md">
+
+                        <h2 class="text-2xl font-bold text-swamp-900 text-center mb-8">🐸 Jump into the Pond</h2>
+
+                        <form class="space-y-8">
+                            <!-- Player Name -->
+                            <div class="space-y-2">
+                                <label for="playerNameInput" class="block text-base font-semibold text-swamp-900">Your player name</label>
+                                <input type="text" id="playerNameInput"
+                                       maxlength="16"
+                                       placeholder="Frogger"
+                                       class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                                   border border-swamp-200 focus:border-swamp-400
+                                   focus:ring-2 focus:ring-swamp-200 placeholder-slate-400
+                                   text-slate-900 shadow-sm">
+                            </div>
+
+                            <!-- Game ID -->
+                            <div class="space-y-2">
+                                <label for="gameIdInput" class="block text-base font-semibold text-swamp-900">
+                                    Game ID <span class="font-normal text-swamp-600 text-sm">(leave blank to create)</span>
+                                </label>
+                                <input type="text" id="gameIdInput"
+                                       placeholder="Paste a Game ID here"
+                                       class="mt-1 block w-full rounded-xl bg-white px-5 py-3.5
+                                              border border-swamp-200 focus:border-swamp-400
+                                              focus:ring-2 focus:ring-swamp-200 placeholder-slate-400
+                                              text-slate-900 shadow-sm">
+                            </div>
+
+                            <!-- Join Button -->
+                            <button id="joinBtn"
+                                    class="w-full bg-gradient-to-br from-swamp-500 to-swamp-600 text-white
+                                           py-4 px-6 rounded-xl hover:from-swamp-600 hover:to-swamp-700
+                                           focus:ring-2 focus:ring-swamp-400 font-semibold
+                                           transition-all duration-200 shadow-lg">
+                                🐸 Join / Create Game
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /Game Card -->
+
+            <!-- Footer Links -->
+            <div class="mt-16 text-center">
+                <div class="flex items-center justify-center space-x-4 text-swamp-700">
+                    <a href="privacy.html" class="hover:text-swamp-900 hover:underline">Privacy</a>
+                    <span class="text-swamp-500">•</span>
+                    <a href="tos.html" class="hover:text-swamp-900 hover:underline">Terms</a>
+                    <span class="text-swamp-500">•</span>
+                    <a href="#" class="hover:text-swamp-900 hover:underline">Contact</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    // ── Modal dismiss ──────────────────────────────────────────
+    document.getElementById('joinBtn').addEventListener('click', function (e) {
+        e.preventDefault()
+        document.getElementById('joinModalBackdrop').style.display = 'none';
+        startCycling();
+    });
+// ── Status panel state definitions ────────────────────────
+    const STATES = [
+        {
+            state:   'waiting',
+            turn:    '🐸 LOBBY',
+            players: [{ name: 'FrogMaster', active: true }],
+            msg:     '🎲 Game: a3f9b2c1',
+        },
+        {
+            state:   'your-turn',
+            turn:    '🐸 YOUR TURN',
+            players: [{ name: 'FrogMaster', active: true }, { name: 'SwampKing', active: false }],
+            msg:     '✅ Pick a frog to move',
+        },
+        {
+            state:   'their-turn',
+            turn:    '⏳ THEIR TURN',
+            players: [{ name: 'FrogMaster', active: false }, { name: 'SwampKing', active: true }],
+            msg:     '⏳ SwampKing is thinking…',
+        },
+        {
+            state:   'error',
+            turn:    '⚠️ ERROR',
+            players: [{ name: 'FrogMaster', active: true }, { name: 'SwampKing', active: false }],
+            msg:     '🔴 500 Internal server error…',
+        },
+    ];
+    const STATE_CLASSES = ['state-error'];
+
+    const panel         = document.querySelector('.status-panel');
+    const turnEl        = document.getElementById('turnText');
+    const playersEl     = document.getElementById('playersList');
+    const msgEl         = document.getElementById('gameMsg');
+    const passBtn       = document.getElementById('passBtn');
+
+    function updateStatus({ state = '', turn = '', players = [], msg = '', passEnabled = false } = {}) {
+        panel.classList.remove(...STATE_CLASSES);
+        if (state) panel.classList.add('state-' + state);
+
+        turnEl.textContent   = turn;
+        playersEl.innerHTML  = Array.isArray(players)
+            ? players.map(p =>
+                `<span class="player-badge${p.active ? ' active' : ''}">${p.name}</span>`
+              ).join('')
+            : players;   // fallback: accept a raw string too
+        msgEl.textContent    = msg;
+        passBtn.disabled     = !passEnabled;
+    }
+
+    let demoIndex = 0;
+    updateStatus(STATES[0]);
+
+    function startCycling() {
+        setInterval(() => {
+            demoIndex = (demoIndex + 1) % STATES.length;
+            updateStatus(STATES[demoIndex]);
+        }, 2500);
+    }
+
+    class GridScene extends Phaser.Scene {
+        constructor() { super({ key: 'GridScene' }); }
+
+        preload() {
+            this.load.image('frogs', 'frogs_by_probzzzz.png');
+            this.load.once('filecomplete-image-frogs', () => {
+                this.textures.get('frogs').add('frog1', 0, 18, 18, 80, 80);
+                this.textures.get('frogs').add('frog2', 0, 102, 18, 80, 80);
+            });
+        }
+
+        create() {
+            const CELL     = 65;
+            const TOTAL    = 8;                           // 6 playable + 1 swamp each side
+            const BOARD_PX = TOTAL * CELL;                // 448
+            const OX       = (520 - BOARD_PX) / 2;       // 36
+            const OY       = (520 - BOARD_PX) / 2;       // 36
+
+            // ── Draw tiles ────────────────────────────────────────────────
+            for (let row = 0; row < TOTAL; row++) {
+                for (let col = 0; col < TOTAL; col++) {
+                    const light = (row + col) % 2 === 0;
+                    var fill  = light ? 0x88bb55 : 0x5a9e36;
+					if (row > 0 && row < TOTAL-1 && col > 0 && col < TOTAL-1) {
+						fill  = 0xe0f2fe;
+					}
+                    this.add.rectangle(
+                        OX + col * CELL + CELL / 2,
+                        OY + row * CELL + CELL / 2,
+                        CELL, CELL, fill
+                    ).setStrokeStyle(1, 0x2d5a14, 0.4);
+                }
+            }
+
+
+            // ── Frog layer ────────────────────────────────────────────────
+            this._frogs = {};  // key: 'col_row' → Phaser.GameObjects.Container
+
+            window.setBoardState = (cells = []) => {
+                // Clear previous sprites
+                Object.values(this._frogs).forEach(c => c.destroy());
+                this._frogs = {};
+
+                cells.forEach(({ col, row, color }) => {
+                    if (!color || col < 0 || col > 5 || row < 0 || row > 5) return;
+
+                    // +1 offset skips the swamp border column/row
+                    const x = OX + (col + 1) * CELL + CELL / 2;
+                    const y = OY + (row + 1) * CELL + CELL / 2;
+
+                    const frog = color === 'green' ? 'frog2' : 'frog1';
+                    const sprite   = this.add.image(x, y, 'frogs', frog)
+                                         .setDisplaySize(CELL * 0.75, CELL * 0.75);
+
+                    this._frogs[`${col}_${row}`] = sprite;
+                });
+            };
+
+            // ── Demo: random starting board ───────────────────────────────
+            const positions = [];
+            for (let r = 0; r < 6; r++)
+                for (let c = 0; c < 6; c++)
+                    positions.push({ col: c, row: r });
+            positions.sort(() => Math.random() - 0.5);
+            setBoardState([
+                ...positions.slice(0,  18).map(p => ({ ...p, color: 'green'  })),
+                ...positions.slice(18, 36).map(p => ({ ...p, color: 'orange' })),
+            ]);
+        }
+    }
+
+    new Phaser.Game({
+        type:            Phaser.AUTO,
+        parent:          'gameCanvasParent',
+        width:           520,
+        height:          520,
+        backgroundColor: '#3f7040',
+        scene:           GridScene,
+        scale: {
+            mode:       Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+        },
+    });
+
+</script>
+</body>
+</html>
