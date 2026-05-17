@@ -225,115 +225,10 @@ factory.WithWebHostBuilder(builder =>
 
 ---
 
-### 11.4 CI/CD Pipeline Integration
-
-Testing is only truly effective when it runs automatically on every change. Both GitHub Actions and Azure DevOps provide excellent support for .NET pipelines.
-
-#### 11.4.1 GitHub Actions Workflow Example
-
-Create `.github/workflows/dotnet-test.yml`:
-
-```yaml
-name: .NET Build & Test
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    services:
-      # If not using Testcontainers, you can spin up a service container
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: TestPassword
-          POSTGRES_DB: testdb
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Restore
-      run: dotnet restore
-
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
-
-    - name: Run Unit Tests
-      run: dotnet test tests/MyApp.UnitTests --configuration Release --no-build --logger "trx;LogFileName=unit_results.trx"
-
-    - name: Run Integration Tests
-      run: dotnet test tests/MyApp.IntegrationTests --configuration Release --no-build --logger "trx;LogFileName=integration_results.trx"
-      env:
-        ConnectionStrings__DefaultConnection: "Host=localhost;Database=testdb;Username=postgres;Password=TestPassword"
-
-    - name: Upload Test Results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: '**/*.trx'
-```
-
-If you use **Testcontainers**, Docker must be available. GitHub Actions runners already include Docker; you don’t need the `services` block, but you must ensure the workflow can run containers (runs-on: ubuntu-latest works fine).
-
-#### 11.4.2 Azure DevOps Pipeline (Simplified)
-
-```yaml
-trigger:
-- main
-
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
-- task: UseDotNet@2
-  inputs:
-    version: '8.x'
-
-- script: dotnet restore
-  displayName: Restore
-
-- script: dotnet build --no-restore --configuration Release
-  displayName: Build
-
-- script: dotnet test tests/MyApp.UnitTests --configuration Release --no-build --logger trx
-  displayName: Unit Tests
-
-- script: dotnet test tests/MyApp.IntegrationTests --configuration Release --no-build --logger trx
-  displayName: Integration Tests
-  env:
-    ConnectionStrings__DefaultConnection: $(TestDbConnectionString)
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
-```
-
-#### 11.4.3 Managing Secrets and Configuration
-
-Use CI/CD secure variables for connection strings, API keys, etc. In GitHub Actions, use repository secrets and reference them as `${{ secrets.SECRET_NAME }}`. For local development, use the `dotnet user-secrets` tool.
-
----
 
 ### 11.5 Continuous Deployment with Testing Gates
+
+Testing is only truly effective when it runs automatically on every change. Both GitHub Actions and Azure DevOps provide excellent support for .NET pipelines.
 
 A typical CI/CD pipeline goes:
 
@@ -351,21 +246,13 @@ A typical CI/CD pipeline goes:
 
 By treating test suites as deployment gates, you ensure that only validated code reaches users. Integration tests that run against a real database in a container inside CI give high confidence without a full staging environment.
 
----
-
-### 11.6 Best Practices for CI/CD and Test Infrastructure
-
-- **Keep tests fast**: Unit tests should complete in seconds; integration tests in minutes. Use Respawn to avoid slow database rebuilds.
-- **Isolate test data**: Each test should not depend on data from another test; use unique identifiers or wipe data.
-- **Parallelize**: xUnit runs tests in parallel by default; structure integration tests in separate collections to avoid database conflicts.
-- **Fail early**: Run unit tests before integration tests in CI.
-- **Treat flaky tests as bugs**: Quarantine and fix them immediately.
-- **Use artifacts**: Store test results and logs for debugging CI failures.
-- **Version control test scripts**: Pipeline YAML files, Docker Compose files for test dependencies, and test data scripts should all be in source control.
+Use CI/CD secure variables for connection strings, API keys, etc. In GitHub Actions, use repository secrets and reference them as `${{ secrets.SECRET_NAME }}`. For local development, use the `dotnet user-secrets` tool.
 
 ---
 
-### 11.7 Example: End-to-End Project Setup Summary
+## 11.8 Example: User Registration and Login (Step‑by‑Step)
+
+This section turns the theory into practice by building a minimal ASP.NET Core web API for user registration/login and testing it with a full test suite and CI pipeline. The domain is deliberately simple – a single field (`Username`) – so we can focus on the testing infrastructure.
 
 To add comprehensive testing to an ASP.NET solution:
 
@@ -379,11 +266,7 @@ To add comprehensive testing to an ASP.NET solution:
    - Uploads test results.
 6. Add branch protection rules requiring tests to pass before merging.
 
-By following this structure, you create a robust safety net that grows with your application and empowers your team to deliver with confidence.
 
-## 11.8 Example: User Registration and Login (Step‑by‑Step)
-
-This section turns the theory into practice by building a minimal ASP.NET Core web API for user registration/login and testing it with a full test suite and CI pipeline. The domain is deliberately simple – a single field (`Username`) – so we can focus on the testing infrastructure.
 
 ### 11.8.1 Solution Structure
 
