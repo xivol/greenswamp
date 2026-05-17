@@ -740,9 +740,44 @@ public class AuthControllerTests : IClassFixture<TestWebApplicationFactory>
 
 > **Note**: In a real project you’d also test empty input, very long strings, etc. They are omitted for brevity.
 
-### 11.8.5 BDD with Reqnroll (Optional)
+### 11.8.5 BDD Tools in .NET
 
-Feature file `UserRegistration.feature`:
+Behavior-Driven Development (BDD) is a software development approach that bridges the gap between business stakeholders, developers, and testers by using a shared, plain‑language format to describe how the system should behave. It is not a testing technique, but a collaborative way to define requirements that can be automatically executed as tests.
+
+We’ll add BDD scenarios to our existing UserLogin solution and connect them to the same TestWebApplicationFactory used by the integration tests.
+
+#### 11.8.5.1 Add the BDD Test Project
+
+Create a new xUnit test project (or add to existing functional tests project):
+
+```bash
+dotnet new xunit -n UserLogin.BddTests -o tests/UserLogin.BddTests
+cd tests/UserLogin.BddTests
+dotnet add reference ../../src/UserLogin.Api/UserLogin.Api.csproj
+dotnet add package Reqnroll.xUnit
+dotnet add package Reqnroll
+dotnet add package Microsoft.AspNetCore.Mvc.Testing
+# (Re-use the same TestWebApplicationFactory from IntegrationTests or copy it)
+```
+
+Add the `Reqnroll.json` configuration file to the project root with:
+
+```json
+{
+  "language": {
+    "feature": "en-US"
+  },
+  "generator": {
+    "allowDebugGeneratedFiles": true
+  }
+}
+```
+
+This tells Reqnroll to generate C# code from the `.feature` files.
+
+#### 11.8.5.2 Create a Feature File
+
+Add `Features/UserRegistration.feature`:
 
 ```gherkin
 Feature: User Registration and Login
@@ -750,30 +785,159 @@ Feature: User Registration and Login
   I want to register and login
   So that I can access the system
 
-Scenario: Successful registration
-  Given a new user named "diana"
-  When I register the user
-  Then the registration should succeed
+Scenario: Register a new user
+  Given a user with username "alice" does not exist
+  When I register the username "alice"
+  Then the registration should succeed with status "OK"
 
 Scenario: Duplicate registration fails
-  Given the user "emma" already exists
-  When I register "emma" again
-  Then the registration should fail with conflict
+  Given a user with username "bob" already exists
+  When I register the username "bob"
+  Then the registration should fail with status "Conflict"
 
-Scenario: Login of registered user
-  Given the user "frank" is registered
-  When I login as "frank"
-  Then the login should succeed
+Scenario: Login with registered user
+  Given a user with username "charlie" is registered
+  When I login with username "charlie"
+  Then the login should succeed with status "OK"
 
-Scenario: Login of unregistered user
-  Given no user named "ghost"
-  When I login as "ghost"
-  Then the login should fail with unauthorized
+Scenario: Login with unknown user
+  Given a user with username "ghost" does not exist
+  When I login with username "ghost"
+  Then the login should fail with status "Unauthorized"
 ```
 
-Step definitions would use `TestWebApplicationFactory` just like the integration tests, allowing full‑stack automation without a browser.
+####  11.8.5.3  Generate Step Definitions
 
-### 11.8.6 CI/CD Pipeline (GitHub Actions)
+Building the project will auto‑generate a stub step definition class (or you can create it manually). Create `StepDefinitions/UserRegistrationSteps.cs`:
+
+```csharp
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Reqnroll;
+using UserLogin.Api;
+using Xunit;
+
+[Binding]
+public sealed class UserRegistrationSteps
+{
+    private readonly HttpClient _client;
+    private HttpResponseMessage _response;
+
+    // Reuse the TestWebApplicationFactory (shared via a hook)
+    public UserRegistrationSteps(TestWebApplicationFactory factory)
+    {
+        _client = factory.CreateClient();
+    }
+
+    [Given(@"a user with username ""(.*)"" does not exist")]
+    public async Task GivenAUserWithUsernameDoesNotExist(string username)
+    {
+        // Nothing to do; the test database will be empty after reset.
+    }
+
+    [Given(@"a user with username ""(.*)"" already exists")]
+    [Given(@"a user with username ""(.*)"" is registered")]
+    public async Task GivenAUserWithUsernameIsRegistered(string username)
+    {
+        var content = new StringContent($"\"{username}\"", Encoding.UTF8, "application/json");
+        await _client.PostAsync("/api/auth/register", content);
+    }
+
+    [When(@"I register the username ""(.*)""")]
+    public async Task WhenIRegisterTheUsername(string username)
+    {
+        var content = new StringContent($"\"{username}\"", Encoding.UTF8, "application/json");
+        _response = await _client.PostAsync("/api/auth/register", content);
+    }
+
+    [When(@"I login with username ""(.*)""")]
+    public async Task WhenILoginWithUsername(string username)
+    {
+        var content = new StringContent($"\"{username}\"", Encoding.UTF8, "application/json");
+        _response = await _client.PostAsync("/api/auth/login", content);
+    }
+
+    [Then(@"the registration should succeed with status ""(.*)""")]
+    [Then(@"the registration should fail with status ""(.*)""")]
+    [Then(@"the login should succeed with status ""(.*)""")]
+    [Then(@"the login should fail with status ""(.*)""")]
+    public void ThenTheOutcomeShouldBeWithStatus(string status)
+    {
+        Assert.Equal(Enum.Parse<HttpStatusCode>(status), _response.StatusCode);
+    }
+}
+```
+
+####  11.8.5.4 Hooks (Setup / Teardown)
+
+Use `[BeforeScenario]` and `[AfterScenario]` hooks to reset the database and ensure isolation.
+
+```csharp
+[Binding]
+public class Hooks
+{
+    private readonly TestWebApplicationFactory _factory;
+
+    public Hooks(TestWebApplicationFactory factory)
+    {
+        _factory = factory;
+    }
+
+    [BeforeScenario]
+    public async Task BeforeScenario()
+    {
+        await _factory.ResetDatabaseAsync();
+    }
+}
+```
+
+Register the factory as a context‑injection dependency. Reqnroll’s built‑in DI (BoDi) can be configured in a `Startup` class or via a `[Binding]` class with `[BeforeTestRun]`:
+
+```csharp
+[Binding]
+public static class DependencyRegistration
+{
+    [BeforeTestRun]
+    public static async Task RegisterDependencies(IObjectContainer container)
+    {
+        var factory = new TestWebApplicationFactory();
+        await factory.InitializeAsync();
+        container.RegisterInstanceAs(factory, typeof(TestWebApplicationFactory), dispose: true);
+    }
+
+    [AfterTestRun]
+    public static async Task Cleanup(IObjectContainer container)
+    {
+        var factory = container.Resolve<TestWebApplicationFactory>();
+        await factory.DisposeAsync();
+    }
+}
+```
+
+Now all scenarios share the same `TestWebApplicationFactory` and have a clean database before each.
+
+####  11.8.5.5 Run the BDD Tests
+
+```bash
+dotnet test tests/UserLogin.BddTests
+```
+
+The test runner will discover Reqnroll scenarios as individual tests, each displayed with its Gherkin title.
+
+###  11.8.6 Living Documentation Output (Optional)
+
+Reqnroll can produce an HTML or JSON report of the feature files with pass/fail status using plugins like `Reqnroll.Tools.LivingDoc`. After execution, you can generate a living documentation site:
+
+```bash
+dotnet tool install --global Reqnroll.Tools.LivingDoc.CLI
+livingdoc test-assembly tests/UserLogin.BddTests/bin/Release/net8.0/UserLogin.BddTests.dll --output livingdoc.html
+```
+
+
+### 11.8.7 CI/CD Pipeline (GitHub Actions)
 
 `.github/workflows/dotnet-test.yml`:
 
@@ -821,7 +985,7 @@ jobs:
 
 Because integration tests use **Testcontainers**, the pipeline automatically starts a PostgreSQL container. No service definition needed. The runner must have Docker (GitHub’s `ubuntu-latest` does). If you wanted to avoid Docker, you could fall back to EF Core InMemory, but Testcontainers is far more reliable.
 
-### 11.8.7 Key Takeaways from This Example
+### 11.8.8 Key Takeaways from This Example
 
 - **Project separation**: `src` and `tests` folders with clear naming conventions.
 - **Unit tests** are fast, mock the repository, and verify service logic.
