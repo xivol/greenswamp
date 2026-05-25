@@ -1,15 +1,5 @@
 # Lecture Outline: Deploying ASP.NET Applications with Docker and CI/CD
 
-**Audience:** Developers with basic knowledge of ASP.NET Core; no prior Docker experience required.  
-**Duration:** ~105 minutes (including demos)  
-**Learning Objectives:**
-- Understand fundamental Docker concepts and why containers matter.
-- Learn how to containerize and optimize an ASP.NET application.
-- Build, tag, and push Docker images to a registry.
-- Explore deployment patterns for containerized ASP.NET apps.
-- Design CI/CD pipelines that automate build, test, and deployment.
-- Compare popular CI/CD tools (GitHub Actions, Azure Pipelines, etc.)
-
 ---
 
 ## 0. Introduction to Docker (15 min)
