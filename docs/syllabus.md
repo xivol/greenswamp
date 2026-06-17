@@ -59,10 +59,9 @@
 - **Описание:** Переход от генерации HTML к созданию API. Изучение принципов REST, создание контроллеров, маршрутизация, возврат JSON-ответов и документирование через Swagger/OpenAPI.
 - **Ключевые темы:** Принципы REST, ApiController, атрибутная маршрутизация, контент-негосиация (JSON), Swagger/OpenAPI, Postman.
 
-**Лекция 12. GrapgQL и gRPC системный подход к разработке API**
-- **Описание:** Переход от генерации HTML к созданию API. Изучение принципов REST, создание контроллеров, маршрутизация, возврат JSON-ответов и документирование через Swagger/OpenAPI.
-- **Ключевые темы:** Принципы REST, ApiController, атрибутная маршрутизация, контент-негосиация (JSON), Swagger/OpenAPI, Postman.
-
+**Лекция 12. GrapgQL и gRPC -- системный подход к разработке API**
+- **Описание:** Введение в язык запросов GraphQL как альтернативу REST. Решение проблем over-fetching и under-fetching. Построение схемы (Schema), реализация Query, Mutation и Subscription с использованием Hot Chocolate. Освоение gRPC на основе HTTP/2 и Protocol Buffers (Protobuf). Генерация кода из .proto-контрактов. Стриминг данных между клиентом и сервером.
+- **Ключевые темы:** GraphQL, Schema First / Code First, Query, Mutation, Subscription, Hot Chocolate, DataLoader. gRPC, Protocol Buffers, HTTP/2, кодогенерация, Unary / Server-стриминг / Client-стриминг / Bidirectional-стриминг, gRPC-клиенты.
 ---
 
 ### Модуль 4. Приложения в режиме реального времени, тестирование и развертывание приложений
